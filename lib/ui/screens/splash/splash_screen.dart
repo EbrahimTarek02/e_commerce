@@ -27,7 +27,8 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Image.asset(
       AppAssets.splashScreenImage,
-      fit: BoxFit.cover,
+      width: double.infinity,
+      fit: BoxFit.fill,
     );
   }
 }

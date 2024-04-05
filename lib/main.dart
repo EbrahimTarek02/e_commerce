@@ -1,4 +1,5 @@
 import 'package:e_commerce/ui/screens/sign_in/sign_in_screen.dart';
+import 'package:e_commerce/ui/screens/sign_up/sign_up_screen.dart';
 import 'package:e_commerce/ui/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -22,8 +23,9 @@ class MyApp extends StatelessWidget {
 
       initialRoute: SplashScreen.routeName,
       routes: {
-        SplashScreen.routeName : (_) => SplashScreen(),
-        SignInScreen.routeName : (_) => SignInScreen()
+        SplashScreen.routeName : (_) => const SplashScreen(),
+        SignInScreen.routeName : (_) => const SignInScreen(),
+        SignUpScreen.routeName : (_) => const SignUpScreen()
       },
     );
   }
