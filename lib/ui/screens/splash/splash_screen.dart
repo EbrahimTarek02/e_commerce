@@ -1,4 +1,4 @@
-import 'package:e_commerce/ui/screens/sign_in/sign_in_screen.dart';
+import 'package:e_commerce/ui/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

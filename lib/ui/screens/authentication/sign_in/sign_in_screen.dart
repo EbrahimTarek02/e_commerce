@@ -1,6 +1,7 @@
-import 'package:e_commerce/ui/screens/sign_in/sign_in_states.dart';
-import 'package:e_commerce/ui/screens/sign_in/sign_in_view_model.dart';
-import 'package:e_commerce/ui/screens/sign_up/sign_up_screen.dart';
+import 'package:e_commerce/ui/screens/authentication/authentication_states.dart';
+import 'package:e_commerce/ui/screens/authentication/authentication_view_model.dart';
+import 'package:e_commerce/ui/screens/authentication/sign_up/sign_up_screen.dart';
+import 'package:e_commerce/ui/shared_widgets/custom_text_form_field.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +18,15 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  SignInViewModel viewModel = SignInViewModel();
+  AuthenticationViewModel viewModel = AuthenticationViewModel();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SignInViewModel, SignInStates>(
+    return BlocBuilder<AuthenticationViewModel, AuthenticationStates>(
       bloc: viewModel,
-      builder: (context, signInStates) => Scaffold(
+      builder: (context, state) => Scaffold(
         backgroundColor: AppColors.primaryColor,
+
         body: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
 
@@ -73,31 +75,13 @@ class _SignInScreenState extends State<SignInScreen> {
                         fontWeight: FontWeight.normal
                     ),
                   ),
-                  TextFormField(
-                    // controller: ,
 
+                  CustomTextFormField(
+                    controller: viewModel.email,
                     keyboardType: TextInputType.emailAddress,
-
-                    decoration: InputDecoration(
-                      filled: true,
-                      focusColor: AppColors.white,
-
-                      hintText: 'Enter Your Email',
-                      hintStyle: GoogleFonts.poppins(
-                        color: AppColors.black.withOpacity(0.7),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w300
-                      ),
-
-                      errorStyle: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500
-                      ),
-
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                    ),
-
-                    validator: (inputText) => viewModel.validateEmail(inputText)
+                    hintText: 'Enter Your Email',
+                    validator: (_) => viewModel.validateEmail(),
+                    isPassword: false
                   ),
 
                   SizedBox(height: MediaQuery.sizeOf(context).height * 0.04),
@@ -110,40 +94,14 @@ class _SignInScreenState extends State<SignInScreen> {
                         fontWeight: FontWeight.normal
                     ),
                   ),
-                  TextFormField(
-                    // controller: ,
 
+                  CustomTextFormField(
+                    controller: viewModel.password,
                     keyboardType: TextInputType.visiblePassword,
-                    obscureText: viewModel.isObscured,
-
-                    decoration: InputDecoration(
-                      filled: true,
-                      focusColor: AppColors.white,
-
-                      hintText: 'Enter Your Password',
-                      hintStyle: GoogleFonts.poppins(
-                          color: AppColors.black.withOpacity(0.7),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w300
-                      ),
-
-                      errorStyle: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500
-                      ),
-
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-
-                      suffixIcon: IconButton(
-                        icon: viewModel.isObscured ?
-                              const Icon(Icons.visibility) :
-                              const Icon(Icons.visibility_off),
-                        onPressed: () => viewModel.changePasswordVisibility(),
-                      ),
-                      suffixIconColor: AppColors.textFormFieldIconColor
-                    ),
-
-                    validator: (inputText) => viewModel.validatePassword(inputText)
+                    hintText: 'Enter Your Password',
+                    validator: (_) => viewModel.validatePassword(),
+                    isPassword: true,
+                    viewModel: viewModel,
                   ),
 
                   Row(
@@ -183,7 +141,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
 
                     child: Text(
-                      'Login',
+                      'Sign In',
                       style: GoogleFonts.poppins(
                           color: AppColors.primaryColor,
                           fontSize: 20,
