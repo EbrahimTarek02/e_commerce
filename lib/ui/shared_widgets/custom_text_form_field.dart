@@ -1,4 +1,3 @@
-import 'package:e_commerce/ui/screens/authentication/authentication_view_model.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +7,7 @@ class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final String? Function(String?)? validator;
   final bool isPassword;
-  final AuthenticationViewModel? viewModel;
+  final dynamic viewModel;
   final TextEditingController controller;
 
   const CustomTextFormField(

@@ -1,6 +1,8 @@
+import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/ui/screens/authentication/authentication_states.dart';
-import 'package:e_commerce/ui/screens/authentication/authentication_view_model.dart';
+import 'package:e_commerce/ui/screens/authentication/sign_in/sign_in_view_model.dart';
 import 'package:e_commerce/ui/screens/authentication/sign_up/sign_up_screen.dart';
+import 'package:e_commerce/ui/screens/main/main_screen.dart';
 import 'package:e_commerce/ui/shared_widgets/custom_text_form_field.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
@@ -8,93 +10,111 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SignInScreen extends StatefulWidget {
+class SignInScreen extends StatelessWidget {
   static const String routeName = 'sign in screen';
 
-  const SignInScreen({super.key});
+  final SignInViewModel viewModel = getIt<SignInViewModel>();
 
-  @override
-  State<SignInScreen> createState() => _SignInScreenState();
-}
-
-class _SignInScreenState extends State<SignInScreen> {
-  AuthenticationViewModel viewModel = AuthenticationViewModel();
+  SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationViewModel, AuthenticationStates>(
+    return BlocConsumer<SignInViewModel, AuthenticationStates>(
       bloc: viewModel,
+      listener: (context, state) {
+        if (state is AuthenticationErrorState) {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  title: Text(
+                    "Login Failed",
+                    style: GoogleFonts.poppins(
+                        color: AppColors.black.withOpacity(0.7),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  content: Text(
+                    state.errorMessage,
+                    style: GoogleFonts.poppins(
+                        color: AppColors.black.withOpacity(0.7),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  actions: [
+                    TextButton(
+                      child: Text(
+                        "Confirm",
+                        style: GoogleFonts.poppins(
+                            color: AppColors.black.withOpacity(0.7),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    )
+                  ],
+                );
+              });
+        }
+        else if (state is AuthenticationSuccessState) {
+          Navigator.pushReplacementNamed(context, MainScreen.routeName);
+        }
+      },
       builder: (context, state) => Scaffold(
         backgroundColor: AppColors.primaryColor,
-
         body: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
-
           child: Padding(
             padding: const EdgeInsets.all(16),
-
             child: Form(
               key: viewModel.formKey,
-
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-
                 children: [
                   Image.asset(
                     AppAssets.appLogoWhite,
                     height: MediaQuery.sizeOf(context).height * 0.25,
                   ),
-
                   SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
-
                   Text(
                     'Welcome Back To Route',
                     style: GoogleFonts.poppins(
-                      color: AppColors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500
-                    ),
+                        color: AppColors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500),
                   ),
                   Text(
                     'Please sign in with your mail',
                     style: GoogleFonts.poppins(
                         color: AppColors.white,
                         fontSize: 16,
-                        fontWeight: FontWeight.w300
-                    ),
+                        fontWeight: FontWeight.w300),
                   ),
-
                   SizedBox(height: MediaQuery.sizeOf(context).height * 0.04),
-
                   Text(
                     'Email',
                     style: GoogleFonts.poppins(
                         color: AppColors.white,
                         fontSize: 18,
-                        fontWeight: FontWeight.normal
-                    ),
+                        fontWeight: FontWeight.normal),
                   ),
-
                   CustomTextFormField(
-                    controller: viewModel.email,
-                    keyboardType: TextInputType.emailAddress,
-                    hintText: 'Enter Your Email',
-                    validator: (_) => viewModel.validateEmail(),
-                    isPassword: false
-                  ),
-
+                      controller: viewModel.email,
+                      keyboardType: TextInputType.emailAddress,
+                      hintText: 'Enter Your Email',
+                      validator: (_) => viewModel.validateEmail(),
+                      isPassword: false),
                   SizedBox(height: MediaQuery.sizeOf(context).height * 0.04),
-
                   Text(
                     'Password',
                     style: GoogleFonts.poppins(
                         color: AppColors.white,
                         fontSize: 18,
-                        fontWeight: FontWeight.normal
-                    ),
+                        fontWeight: FontWeight.normal),
                   ),
-
                   CustomTextFormField(
                     controller: viewModel.password,
                     keyboardType: TextInputType.visiblePassword,
@@ -103,13 +123,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     isPassword: true,
                     viewModel: viewModel,
                   ),
-
                   Row(
                     children: [
                       const Spacer(),
                       TextButton(
-                        onPressed: (){
-                          // Navigate to Forgot Password Screen
+                        onPressed: () {
+                          // Navigate to forgot password screen
                         },
                         style: ElevatedButton.styleFrom(
                           alignment: Alignment.centerRight,
@@ -119,41 +138,32 @@ class _SignInScreenState extends State<SignInScreen> {
                           style: GoogleFonts.poppins(
                               color: AppColors.white,
                               fontSize: 18,
-                              fontWeight: FontWeight.normal
-                          ),
+                              fontWeight: FontWeight.normal),
                         ),
                       ),
                     ],
                   ),
-
                   SizedBox(height: MediaQuery.sizeOf(context).height * 0.03),
-
                   ElevatedButton(
-                    onPressed: () {
-                      viewModel.formKey.currentState!.validate();
-                      // Navigate to home screen
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)
-                      )
-                    ),
-
-                    child: Text(
-                      'Sign In',
-                      style: GoogleFonts.poppins(
-                          color: AppColors.primaryColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600
-                      ),
-                    ),
-                  ),
-
+                      onPressed: () {
+                        viewModel.signIn();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15))),
+                      child: state is AuthenticationLoadingState
+                          ? const CircularProgressIndicator()
+                          : Text(
+                              'Sign In',
+                              style: GoogleFonts.poppins(
+                                  color: AppColors.primaryColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            )),
                   SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
-
                   TextButton(
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.pushNamed(context, SignUpScreen.routeName);
                     },
                     child: Text(
@@ -161,8 +171,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       style: GoogleFonts.poppins(
                           color: AppColors.white,
                           fontSize: 16,
-                          fontWeight: FontWeight.normal
-                      ),
+                          fontWeight: FontWeight.normal),
                     ),
                   ),
                 ],

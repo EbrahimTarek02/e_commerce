@@ -5,3 +5,13 @@ class AuthenticationInitialState extends AuthenticationStates{
 
   AuthenticationInitialState({required this.isObscured});
 }
+
+class AuthenticationLoadingState extends AuthenticationStates{}
+
+class AuthenticationSuccessState extends AuthenticationStates{}
+
+class AuthenticationErrorState extends AuthenticationStates{
+  String errorMessage;
+
+  AuthenticationErrorState(this.errorMessage);
+}
