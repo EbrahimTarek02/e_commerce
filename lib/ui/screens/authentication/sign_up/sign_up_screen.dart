@@ -62,7 +62,7 @@ class SignUpScreen extends StatelessWidget {
             );
           }
           else if (state is AuthenticationSuccessState) {
-            Navigator.pushReplacementNamed(context, MainScreen.routeName);
+            Navigator.pushNamedAndRemoveUntil(context, MainScreen.routeName, (Route<dynamic> route) => false);
           }
         },
         builder: (context, state) {
@@ -173,12 +173,16 @@ class SignUpScreen extends StatelessWidget {
                           viewModel.signUp();
                         },
                         style: ElevatedButton.styleFrom(
+                            backgroundColor: state is AuthenticationLoadingState
+                                ? AppColors.primaryColor
+                                : AppColors.white,
+                            elevation: 0.0,
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15))),
                         child:
                         state is AuthenticationLoadingState ?
-                        const CircularProgressIndicator()
+                        const CircularProgressIndicator(color: AppColors.white)
                             :
                         Text(
                           'Sign Up',

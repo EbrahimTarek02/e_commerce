@@ -15,3 +15,6 @@ class AuthenticationErrorState extends AuthenticationStates{
 
   AuthenticationErrorState(this.errorMessage);
 }
+
+class VerifySentCodeLoadingState extends AuthenticationStates{}
+class VerifySentCodeSuccessState extends AuthenticationStates{}

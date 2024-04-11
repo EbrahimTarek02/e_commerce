@@ -30,11 +30,11 @@ class _SplashScreenState extends State<SplashScreen> {
         String? token = await sharedPrefsUtils.getToken();
         if (user != null && token != null) {
           if (!mounted) return;
-          Navigator.pushReplacementNamed(context, MainScreen.routeName);
+          Navigator.pushNamedAndRemoveUntil(context, MainScreen.routeName, (Route<dynamic> route) => false);
         }
         else {
           if (!mounted) return;
-          Navigator.pushReplacementNamed(context, SignInScreen.routeName);
+          Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routeName, (Route<dynamic> route) => false);
         }
       }
     );

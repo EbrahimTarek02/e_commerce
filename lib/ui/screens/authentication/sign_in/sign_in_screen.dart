@@ -1,5 +1,6 @@
 import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/ui/screens/authentication/authentication_states.dart';
+import 'package:e_commerce/ui/screens/authentication/forgot_password/verify_email/verify_email_screen.dart';
 import 'package:e_commerce/ui/screens/authentication/sign_in/sign_in_view_model.dart';
 import 'package:e_commerce/ui/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:e_commerce/ui/screens/main/main_screen.dart';
@@ -59,7 +60,7 @@ class SignInScreen extends StatelessWidget {
               });
         }
         else if (state is AuthenticationSuccessState) {
-          Navigator.pushReplacementNamed(context, MainScreen.routeName);
+          Navigator.pushNamedAndRemoveUntil(context, MainScreen.routeName, (Route<dynamic> route) => false);
         }
       },
       builder: (context, state) => Scaffold(
@@ -128,7 +129,7 @@ class SignInScreen extends StatelessWidget {
                       const Spacer(),
                       TextButton(
                         onPressed: () {
-                          // Navigate to forgot password screen
+                          Navigator.pushNamed(context, VerifyEmailScreen.routeName);
                         },
                         style: ElevatedButton.styleFrom(
                           alignment: Alignment.centerRight,
@@ -149,11 +150,15 @@ class SignInScreen extends StatelessWidget {
                         viewModel.signIn();
                       },
                       style: ElevatedButton.styleFrom(
+                        backgroundColor: state is AuthenticationLoadingState
+                          ? AppColors.primaryColor
+                          : AppColors.white,
+                          elevation: 0.0,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15))),
                       child: state is AuthenticationLoadingState
-                          ? const CircularProgressIndicator()
+                          ? const CircularProgressIndicator(color: AppColors.white,)
                           : Text(
                               'Sign In',
                               style: GoogleFonts.poppins(

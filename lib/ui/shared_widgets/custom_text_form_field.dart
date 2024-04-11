@@ -8,16 +8,18 @@ class CustomTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool isPassword;
   final dynamic viewModel;
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final bool? isEnabled;
 
   const CustomTextFormField(
       {super.key,
       required this.keyboardType,
       required this.hintText,
       required this.isPassword,
-      required this.controller,
-      required this.validator,
-      this.viewModel});
+      this.controller,
+      this.validator,
+      this.viewModel,
+      this.isEnabled});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +28,10 @@ class CustomTextFormField extends StatelessWidget {
 
         keyboardType: keyboardType,
         obscureText: isPassword ? viewModel!.isObscured : false,
+        enabled: isEnabled ?? true,
         decoration: InputDecoration(
             filled: true,
+            fillColor: AppColors.white,
             focusColor: AppColors.white,
             hintText: hintText,
             hintStyle: GoogleFonts.poppins(
@@ -35,8 +39,9 @@ class CustomTextFormField extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w300),
             errorStyle:
-                GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+            GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+            disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
             suffixIcon: isPassword
                 ? IconButton(
                     icon: viewModel!.isObscured
