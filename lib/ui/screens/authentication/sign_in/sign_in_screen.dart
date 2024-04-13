@@ -173,9 +173,10 @@ class SignInScreen extends StatelessWidget {
                     },
                     child: Text(
                       'Don’t have an account? Create Account',
+                      textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                           color: AppColors.white,
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.normal),
                     ),
                   ),

@@ -33,11 +33,10 @@ class MyApp extends StatelessWidget {
         SplashScreen.routeName : (_) => const SplashScreen(),
         SignInScreen.routeName : (_) => SignInScreen(),
         SignUpScreen.routeName : (_) => SignUpScreen(),
-        MainScreen.routeName : (_) => const MainScreen(),
         VerifyEmailScreen.routeName : (_) => VerifyEmailScreen(),
         VerifySentCodeScreen.routeName : (_) => VerifySentCodeScreen(),
-        ResetPasswordScreen.routeName : (_) => ResetPasswordScreen()
-
+        ResetPasswordScreen.routeName : (_) => ResetPasswordScreen(),
+        MainScreen.routeName : (_) => const MainScreen(),
       },
     );
   }

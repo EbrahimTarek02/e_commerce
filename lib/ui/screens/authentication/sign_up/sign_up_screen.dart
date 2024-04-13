@@ -202,7 +202,7 @@ class SignUpScreen extends StatelessWidget {
                           'Already have account? Sign In',
                           style: GoogleFonts.poppins(
                               color: AppColors.white,
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.normal),
                         ),
                       ),
