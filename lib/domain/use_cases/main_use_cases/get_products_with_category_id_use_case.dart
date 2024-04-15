@@ -6,14 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class GetAllProductsUseCase extends Cubit<MainStates> {
+class GetProductsWithCategoryIDUseCase extends Cubit<MainStates> {
   MainRepo mainRepo;
 
-  GetAllProductsUseCase(this.mainRepo) : super(MainLoadingState());
+  GetProductsWithCategoryIDUseCase(this.mainRepo) : super(MainLoadingState());
 
-  Future<void> execute() async{
+  Future<void> execute(String categoryID) async{
 
-    Either<String, ProductsResponseDM> response = await mainRepo.getAllProducts();
+    Either<String, ProductsResponseDM> response = await mainRepo.getAllProducts(categoryID: categoryID);
 
     response.fold((error) {
       emit(MainErrorState(error));

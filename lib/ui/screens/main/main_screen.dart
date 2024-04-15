@@ -2,7 +2,7 @@ import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/ui/screens/main/custom_bottom_nav_bar.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
-import 'package:e_commerce/ui/screens/main/tabs/categories/categories_tab.dart';
+import 'package:e_commerce/ui/screens/main/tabs/brands/brands_tab.dart';
 import 'package:e_commerce/ui/screens/main/tabs/home/home_tab.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/profile_tab.dart';
 import 'package:e_commerce/ui/screens/main/tabs/wish_list/wish_list_tab.dart';
@@ -25,7 +25,7 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> screens = [
     const HomeTab(),
-    const CategoriesTab(),
+    const BrandsTab(),
     const WishListTab(),
     const ProfileTab()
   ];

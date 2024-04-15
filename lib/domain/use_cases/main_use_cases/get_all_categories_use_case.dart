@@ -8,17 +8,16 @@ import 'package:injectable/injectable.dart';
 @injectable
 class GetAllCategoriesUseCase extends Cubit<MainStates> {
   MainRepo mainRepo;
-  CategoriesResponseDm allCategories = CategoriesResponseDm();
 
   GetAllCategoriesUseCase(this.mainRepo) : super(MainLoadingState());
 
   Future<void> execute() async{
 
     Either<String, CategoriesResponseDm> response = await mainRepo.getAllCategories();
+
     response.fold((error) {
       emit(MainErrorState(error));
     }, (success) {
-      allCategories = success;
       emit(MainSuccessState<CategoriesResponseDm>(success));
     });
   }

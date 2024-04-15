@@ -75,8 +75,8 @@ class _HomeTabState extends State<HomeTab> {
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                      itemCount: mainViewModel.getAllCategoriesUseCase.allCategories.Categories!.length,
-                      itemBuilder: (context, index) => GridViewBuilder(index, state)
+                      itemCount: state.data.Categories!.length,
+                      itemBuilder: (context, index) => GridViewBuilder(state.data.Categories![index])
                   )
                 );
               }
@@ -132,8 +132,8 @@ class _HomeTabState extends State<HomeTab> {
                     child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
-                        itemCount: mainViewModel.getAllProductsUseCase.allProducts.products!.length,
-                        itemBuilder: (context, index) => ProductItem(index, state)
+                        itemCount: state.data.products!.length,
+                        itemBuilder: (context, index) => ProductItem(index, state, false)
                     ),
                   );
                 }

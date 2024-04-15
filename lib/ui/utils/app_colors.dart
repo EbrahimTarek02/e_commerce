@@ -7,4 +7,5 @@ class AppColors{
   static const Color transparent = Colors.transparent;
   static const Color textFormFieldIconColor = Color(0XFF808080);
   static const Color yellow = Color(0XFFFDD835);
+  static const Color tabBarBackgroundColor = Color(0XFFDBE4ED);
 }

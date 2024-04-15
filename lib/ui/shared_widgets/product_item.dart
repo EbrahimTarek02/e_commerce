@@ -10,8 +10,9 @@ class ProductItem extends StatelessWidget {
 
   final MainSuccessState<ProductsResponseDM> productsResponse;
   final int index;
+  final bool isVertical;
 
-  const ProductItem(this.index, this.productsResponse, {Key? key}) : super(key: key);
+  const ProductItem(this.index, this.productsResponse, this.isVertical, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,8 @@ class ProductItem extends StatelessWidget {
       onTap: (){},
       child: Container(
         width: MediaQuery.of(context).size.width * 0.45,
-        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        height: MediaQuery.of(context).size.height * 0.33,
+        margin: isVertical ? const EdgeInsets.symmetric(vertical: 8.0) : const EdgeInsets.symmetric(horizontal: 8.0),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.primaryColor, width: 2),
@@ -71,7 +73,7 @@ class ProductItem extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: GoogleFonts.poppins(
                     fontSize: 14.0,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w700,
                     color: AppColors.primaryColor
                 ),
                 overflow: TextOverflow.ellipsis,
