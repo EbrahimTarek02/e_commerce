@@ -1,18 +1,35 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
-import 'package:e_commerce/ui/screens/main/main_states.dart';
+import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProductItem extends StatelessWidget {
+//ignore: must_be_immutable
+class ProductItem extends StatefulWidget {
 
-  final MainSuccessState<ProductsResponseDM> productsResponse;
-  final int index;
+  final Product product;
   final bool isVertical;
+  final bool isInWishList;
+  bool isLoading = false;
 
-  const ProductItem(this.index, this.productsResponse, this.isVertical, {Key? key}) : super(key: key);
+  ProductItem(this.product, this.isVertical, this.isInWishList, {Key? key}) : super(key: key);
+
+  @override
+  State<ProductItem> createState() => _ProductItemState();
+}
+
+class _ProductItemState extends State<ProductItem> {
+
+  late MainViewModel viewModel;
+
+  @override
+  void initState() {
+    viewModel = BlocProvider.of(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +38,7 @@ class ProductItem extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.45,
         height: MediaQuery.of(context).size.height * 0.33,
-        margin: isVertical ? const EdgeInsets.symmetric(vertical: 8.0) : const EdgeInsets.symmetric(horizontal: 8.0),
+        margin: widget.isVertical ? const EdgeInsets.symmetric(vertical: 8.0) : const EdgeInsets.symmetric(horizontal: 8.0),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.primaryColor, width: 2),
@@ -35,7 +52,7 @@ class ProductItem extends StatelessWidget {
               alignment: Alignment.topRight,
               children: [
                 CachedNetworkImage(
-                  imageUrl: productsResponse.data.products![index].imageCover ?? "",
+                  imageUrl: widget.product.imageCover ?? "",
                   imageBuilder: (context, imageProvider) => Container(
                     height: MediaQuery.of(context).size.height * 0.155,
                     width: double.infinity,
@@ -53,14 +70,109 @@ class ProductItem extends StatelessWidget {
                   errorWidget: (_, __, ___) => const Center(child: Icon(Icons.error),)
                 ),
                 Container(
-                  margin: const EdgeInsets.all(8.0),
-                  padding: const EdgeInsets.all(3.0),
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.white
                   ),
-                  child: const ImageIcon(
-                    AssetImage(AppAssets.wishListTabIcon),
+                  child: IconButton(
+                    onPressed: (){
+                      if (widget.isInWishList) {
+                        setState(() {
+                          widget.isLoading = true;
+                          viewModel.removeFromWishList(widget.product);
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  backgroundColor: AppColors.red,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  margin: const EdgeInsets.only(
+                                    bottom: 14.0,
+                                    right: 20.0,
+                                    left: 20.0
+                                  ),
+                                  content: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.clear,
+                                        color: AppColors.white,
+                                      ),
+                                      const SizedBox(width: 4.0,),
+                                      Text(
+                                        'Product Removed Successfully',
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.white
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                              )
+                          );
+                        });
+                      }
+                      else {
+                        setState(() {
+                          widget.isLoading = true;
+                          viewModel.addToWishList(widget.product);
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  backgroundColor: AppColors.green,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  margin: const EdgeInsets.only(
+                                      bottom: 10.0,
+                                      right: 20.0,
+                                      left: 20.0
+                                  ),
+                                  content: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.check,
+                                        color: AppColors.white,
+                                      ),
+                                      const SizedBox(width: 4.0,),
+                                      Text(
+                                        'Product Added Successfully',
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.white
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                              )
+                          );
+                        });
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.white,
+                      shadowColor: AppColors.tabBarBackgroundColor,
+                      elevation: 3.0
+                    ),
+                    icon: widget.isLoading
+                        ?
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.018,
+                      width: MediaQuery.of(context).size.width * 0.03,
+                      child: const CircularProgressIndicator(color: AppColors.primaryColor,),
+                    )
+                        :
+                    ImageIcon(
+                      AssetImage(
+                        widget.isInWishList ?  AppAssets.inWishListIcon : AppAssets.wishListTabIcon,
+                      ),
+                      color: AppColors.primaryColor,
+                    ),
                   ),
                 )
               ],
@@ -69,7 +181,7 @@ class ProductItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                productsResponse.data.products![index].brand?.name ?? "Brand",
+                widget.product.brand?.name ?? "Brand",
                 textAlign: TextAlign.start,
                 style: GoogleFonts.poppins(
                     fontSize: 14.0,
@@ -82,7 +194,7 @@ class ProductItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                productsResponse.data.products![index].title ?? "Product",
+                widget.product.title ?? "Product",
                 textAlign: TextAlign.start,
                 style: GoogleFonts.poppins(
                     fontSize: 14.0,
@@ -96,7 +208,7 @@ class ProductItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                "${productsResponse.data.products![index].price ?? "Price"} EGP",
+                "${widget.product.price ?? "Price"} EGP",
                 textAlign: TextAlign.start,
                 style: GoogleFonts.poppins(
                     fontSize: 14.0,
@@ -112,7 +224,7 @@ class ProductItem extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    "Reviews: ${productsResponse.data.products![index].ratingsAverage?.toStringAsFixed(2) ?? "Rate"}",
+                    "Reviews: ${widget.product.ratingsAverage?.toStringAsFixed(2) ?? "Rate"}",
                     style: GoogleFonts.poppins(
                         fontSize: 11.0,
                         fontWeight: FontWeight.w500,

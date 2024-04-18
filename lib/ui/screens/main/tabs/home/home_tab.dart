@@ -12,8 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeTab extends StatefulWidget {
-
-
   const HomeTab({Key? key}) : super(key: key);
 
   @override
@@ -31,7 +29,6 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
@@ -46,56 +43,52 @@ class _HomeTabState extends State<HomeTab> {
                 Text(
                   'Categories',
                   style: GoogleFonts.poppins(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.primaryColor
-                  ),
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.primaryColor),
                 ),
                 TextButton(
-                  onPressed: (){},
+                  onPressed: () {},
                   child: Text(
                     'View all',
                     style: GoogleFonts.poppins(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.primaryColor
-                    ),
+                        color: AppColors.primaryColor),
                   ),
                 ),
               ],
             ),
           ),
           BlocBuilder<GetAllCategoriesUseCase, MainStates>(
-            bloc: mainViewModel.getAllCategoriesUseCase,
-            builder: (context, state){
-              if (state is MainSuccessState<CategoriesResponseDm>) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.35,
-                  child: GridView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                      itemCount: state.data.Categories!.length,
-                      itemBuilder: (context, index) => GridViewBuilder(state.data.Categories![index])
-                  )
-                );
-              }
-              else if (state is MainErrorState) {
-                return Text(
-                  state.errorMessage
-                );
-              }
-              else {
-                return SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.35,
-                    child: const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,))
-                );
-              }
-            }
+              bloc: mainViewModel.getAllCategoriesUseCase,
+              builder: (context, state) {
+                if (state is MainSuccessState<CategoriesResponseDm>) {
+                  return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      child: GridView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2),
+                          itemCount: state.data.Categories!.length,
+                          itemBuilder: (context, index) =>
+                              GridViewBuilder(state.data.Categories![index])));
+                } else if (state is MainErrorState) {
+                  return Text(state.errorMessage);
+                } else {
+                  return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      child: const Center(
+                          child: CircularProgressIndicator(
+                        color: AppColors.primaryColor,
+                      )));
+                }
+              }),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.03,
           ),
-
-          SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
@@ -106,18 +99,16 @@ class _HomeTabState extends State<HomeTab> {
                   style: GoogleFonts.poppins(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w500,
-                      color: AppColors.primaryColor
-                  ),
+                      color: AppColors.primaryColor),
                 ),
                 TextButton(
-                  onPressed: (){},
+                  onPressed: () {},
                   child: Text(
                     'View all',
                     style: GoogleFonts.poppins(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.primaryColor
-                    ),
+                        color: AppColors.primaryColor),
                   ),
                 ),
               ],
@@ -125,32 +116,45 @@ class _HomeTabState extends State<HomeTab> {
           ),
           BlocBuilder<GetAllProductsUseCase, MainStates>(
               bloc: mainViewModel.getAllProductsUseCase,
-              builder: (context, state){
-                if (state is MainSuccessState<ProductsResponseDM>){
+              builder: (context, state) {
+                if (state is MainSuccessState<ProductsResponseDM>) {
                   return SizedBox(
                     height: MediaQuery.of(context).size.height * 0.33,
-                    child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: state.data.products!.length,
-                        itemBuilder: (context, index) => ProductItem(index, state, false)
+                    child: BlocBuilder<MainViewModel, MainStates>(
+                      bloc: mainViewModel,
+                      builder: (context, itemState) {
+                        if (itemState is ! MainLoadingState) {
+                          return ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.data.products!.length,
+                              itemBuilder: (context, index) {
+                                bool isInWishList = MainViewModel.wishList
+                                    .contains(state.data.products![index].id);
+                                return ProductItem(
+                                    state.data.products![index], false, isInWishList);
+                              });
+                        }
+                        else {
+                          return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
+                        }
+                      },
                     ),
                   );
-                }
-                else if (state is MainErrorState) {
-                  return Text(
-                    state.errorMessage
-                  );
-                }
-                else {
+                } else if (state is MainErrorState) {
+                  return Text(state.errorMessage);
+                } else {
                   return SizedBox(
                       height: MediaQuery.of(context).size.height * 0.33,
-                      child: const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,))
-                  );
+                      child: const Center(
+                          child: CircularProgressIndicator(
+                        color: AppColors.primaryColor,
+                      )));
                 }
-              }
-          ),
-          const SizedBox(height: 20.0,)
+              }),
+          const SizedBox(
+            height: 20.0,
+          )
         ],
       ),
     );

@@ -145,12 +145,21 @@ List<Widget> buildTabBarViewTabs(BuildContext context, List<Brand> brands, MainV
                       ),
                     )
                       :
-                    ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemCount: state.data.products!.length,
-                      itemBuilder: (context, index) => ProductItem(index, state, true)
-                  );
+                    BlocBuilder<MainViewModel, MainStates>(
+                      bloc: viewModel,
+                      builder: (context, itemState){
+                        return ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: state.data.products!.length,
+                            itemBuilder: (context, index) {
+                              bool isInWishList = MainViewModel.wishList
+                                  .contains(state.data.products![index].id);
+                              return ProductItem(state.data.products![index], true, isInWishList);
+                            }
+                        );
+                      }
+                    );
                 }
                 else if (state is MainErrorState) {
                   return Text(

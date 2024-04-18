@@ -33,8 +33,10 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     viewModel = getIt<MainViewModel>();
-    viewModel.getAllProducts();
-    viewModel.getAllCategories();
+    viewModel.getWishList().then((_) {
+      viewModel.getAllProducts();
+      viewModel.getAllCategories();
+    });
     super.initState();
   }
 
@@ -47,6 +49,7 @@ class _MainScreenState extends State<MainScreen> {
           bloc: viewModel,
           builder: (context, state) {
             return Scaffold(
+
                 backgroundColor: AppColors.white,
 
                 appBar: AppBar(

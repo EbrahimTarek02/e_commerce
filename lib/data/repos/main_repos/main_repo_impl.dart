@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:e_commerce/data/model/brands_response/BrandsResponseDM.dart';
 import 'package:e_commerce/data/model/categories_response/CategoriesResponseDM.dart';
+import 'package:e_commerce/data/model/get_wish_list_response/get_wish_list_response.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/domain/repos/main_repos/main_repo.dart';
 import 'package:e_commerce/domain/repos/main_repos/main_repo_ds.dart';
@@ -58,6 +59,42 @@ class MainRepoImpl extends MainRepo{
     }
     else{
       return const Left("Please check your internet connection and try again later");
+    }
+  }
+
+  @override
+  Future<Either<String, GetWishListResponse>> getWishList() async{
+    final ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
+
+    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi){
+      return mainRepoDS.getWishList();
+    }
+    else{
+      return const Left("Please check your internet connection and try again later");
+    }
+  }
+
+  @override
+  Future<String?> addToWishList(String productID) async{
+    final ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
+
+    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi){
+      return mainRepoDS.addToWishList(productID);
+    }
+    else{
+      return "Please check your internet connection and try again later";
+    }
+  }
+
+  @override
+  Future<String?> removeFromWishList(String productID) async{
+    final ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
+
+    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi){
+      return mainRepoDS.removeFromWishList(productID);
+    }
+    else{
+      return "Please check your internet connection and try again later";
     }
   }
 
