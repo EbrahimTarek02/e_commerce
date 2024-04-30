@@ -41,7 +41,6 @@ class CustomTextFormField extends StatelessWidget {
             errorStyle:
             GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-            disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
             suffixIcon: isPassword
                 ? IconButton(
                     icon: viewModel!.isObscured

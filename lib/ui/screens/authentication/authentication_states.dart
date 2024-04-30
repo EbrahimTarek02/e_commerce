@@ -2,8 +2,9 @@ abstract class AuthenticationStates {}
 
 class AuthenticationInitialState extends AuthenticationStates{
   bool isObscured;
+  bool? isEnabled = true;
 
-  AuthenticationInitialState({required this.isObscured});
+  AuthenticationInitialState({this.isEnabled, required this.isObscured});
 }
 
 class AuthenticationLoadingState extends AuthenticationStates{}
@@ -17,4 +18,5 @@ class AuthenticationErrorState extends AuthenticationStates{
 }
 
 class VerifySentCodeLoadingState extends AuthenticationStates{}
+
 class VerifySentCodeSuccessState extends AuthenticationStates{}

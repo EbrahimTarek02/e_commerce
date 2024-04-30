@@ -39,6 +39,7 @@ class SignUpRepoDSImpl extends SignUpRepoDS{
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
 
+        authenticationResponse.user!.password = password;
         sharedPrefsUtils.setUser(authenticationResponse.user!);
         sharedPrefsUtils.setToken(authenticationResponse.token!);
 
