@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
+import 'package:e_commerce/ui/screens/product_details/product_details_screen.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,9 @@ class _ProductItemState extends State<ProductItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){},
+      onTap: (){
+        Navigator.pushNamed(context, ProductDetailsScreen.routeName, arguments: [widget.product, widget.isInWishList]);
+      },
       child: Container(
         width: MediaQuery.of(context).size.width * 0.45,
         height: MediaQuery.of(context).size.height * 0.33,
@@ -53,9 +56,9 @@ class _ProductItemState extends State<ProductItem> {
               children: [
                 CachedNetworkImage(
                   imageUrl: widget.product.imageCover ?? "",
+                  height: MediaQuery.of(context).size.height * 0.155,
+                  width: double.infinity,
                   imageBuilder: (context, imageProvider) => Container(
-                    height: MediaQuery.of(context).size.height * 0.155,
-                    width: double.infinity,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                           image: imageProvider,
@@ -67,6 +70,7 @@ class _ProductItemState extends State<ProductItem> {
                       ),
                     ),
                   ),
+                  progressIndicatorBuilder: (_, __, ___) => const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),),
                   errorWidget: (_, __, ___) => const Center(child: Icon(Icons.error),)
                 ),
                 Container(
@@ -78,7 +82,7 @@ class _ProductItemState extends State<ProductItem> {
                       if (widget.isInWishList) {
                         setState(() {
                           widget.isLoading = true;
-                          viewModel.removeFromWishList(widget.product);
+                          viewModel.removeFromWishList(widget.product, false);
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -117,7 +121,7 @@ class _ProductItemState extends State<ProductItem> {
                       else {
                         setState(() {
                           widget.isLoading = true;
-                          viewModel.addToWishList(widget.product);
+                          viewModel.addToWishList(widget.product, false);
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

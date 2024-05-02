@@ -66,7 +66,7 @@ class SignInScreen extends StatelessWidget {
       builder: (context, state) => Scaffold(
         backgroundColor: AppColors.primaryColor,
         body: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Form(
@@ -144,7 +144,7 @@ class SignInScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.03),
+                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.02),
                   ElevatedButton(
                       onPressed: () {
                         viewModel.signIn();

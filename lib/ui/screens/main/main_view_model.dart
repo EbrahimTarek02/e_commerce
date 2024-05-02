@@ -81,12 +81,17 @@ class MainViewModel extends Cubit<MainStates> {
     });
   }
 
-  Future<void> addToWishList(Product product) async {
+  late bool isInWishList;
+
+  Future<void> addToWishList(Product product, bool loadData) async {
+    if (loadData) {
+      emit(WishIconLoadingState());
+    }
     String? response =  await addToWishListUseCase.execute(product.id ?? "");
-    emit(MainLoadingState());
     if (response == null){
       wishListProducts.add(product);
       wishList.add(product.id ?? "");
+      isInWishList = true;
       emit(MainSuccessState(null));
     }
     else {
@@ -94,12 +99,15 @@ class MainViewModel extends Cubit<MainStates> {
     }
   }
 
-  Future<void> removeFromWishList(Product product) async {
+  Future<void> removeFromWishList(Product product, bool loadData) async {
+    if (loadData) {
+      emit(WishIconLoadingState());
+    }
     String? response = await removeFromWishListUseCase.execute(product.id ?? "");
-    emit(MainLoadingState());
     if (response == null){
       wishListProducts.remove(product);
       wishList.remove(product.id ?? "");
+      isInWishList = false;
       emit(MainSuccessState(null));
     }
     else {

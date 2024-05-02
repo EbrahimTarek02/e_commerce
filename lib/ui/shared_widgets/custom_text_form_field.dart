@@ -26,6 +26,10 @@ class CustomTextFormField extends StatelessWidget {
     return TextFormField(
         controller: controller,
 
+        style: const TextStyle(
+          height: 1.0
+        ),
+
         keyboardType: keyboardType,
         obscureText: isPassword ? viewModel!.isObscured : false,
         enabled: isEnabled ?? true,

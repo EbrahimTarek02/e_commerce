@@ -17,3 +17,5 @@ class MainErrorState extends MainStates {
 
   MainErrorState(this.errorMessage);
 }
+
+class WishIconLoadingState extends MainStates {}

@@ -1,4 +1,3 @@
-import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/ui/screens/main/custom_bottom_nav_bar.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
@@ -32,7 +31,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    viewModel = getIt<MainViewModel>();
+    viewModel = BlocProvider.of(context);
     viewModel.getWishList().then((_) {
       viewModel.getAllProducts();
       viewModel.getAllCategories();

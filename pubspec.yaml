@@ -43,7 +43,7 @@ dependencies:
   get_it: ^7.6.8
   shared_preferences: ^2.2.2
   cached_network_image: ^3.3.1
-  fluttertoast: ^8.2.5
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
