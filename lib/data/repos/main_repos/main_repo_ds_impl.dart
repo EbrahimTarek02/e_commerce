@@ -38,15 +38,73 @@ class MainRepoDSImpl extends MainRepoDS{
   @override
   Future<Either<String, ProductsResponseDM>> getAllProducts({
     String? brandID,
-    String? categoryID
+    String? categoryID,
+    int priceLessThan = 99999,
+    int priceGreaterThan = 0,
+    bool? sortLowToHeightPrice
   }) async{
+
     String baseUrl = "ecommerce.routemisr.com";
     String endPoint = "api/v1/products";
 
     try{
       Uri uri;
 
-      if (brandID != null) {
+      if (categoryID != null) {
+        if (brandID != null) {
+          if (sortLowToHeightPrice != null) {
+            uri = Uri.https(
+                baseUrl,
+                endPoint,
+                {
+                  'category[in]' : categoryID,
+                  'price[gte]' : priceGreaterThan.toString(),
+                  'price[lte]' : priceLessThan.toString(),
+                  'brand' : brandID,
+                  'sort' : sortLowToHeightPrice ? "+price" : "-price"
+                }
+            );
+          }
+          else {
+            uri = Uri.https(
+                baseUrl,
+                endPoint,
+                {
+                  'category[in]' : categoryID,
+                  'price[gte]' : priceGreaterThan.toString(),
+                  'price[lte]' : priceLessThan.toString(),
+                  'brand' : brandID
+                }
+            );
+          }
+        }
+        else {
+          if (sortLowToHeightPrice != null) {
+            uri = Uri.https(
+                baseUrl,
+                endPoint,
+                {
+                  'category[in]' : categoryID,
+                  'price[gte]' : priceGreaterThan.toString(),
+                  'price[lte]' : priceLessThan.toString(),
+                  'sort' : sortLowToHeightPrice ? "+price" : "-price"
+                }
+            );
+          }
+          else {
+            uri = Uri.https(
+                baseUrl,
+                endPoint,
+                {
+                  'category[in]' : categoryID,
+                  'price[gte]' : priceGreaterThan.toString(),
+                  'price[lte]' : priceLessThan.toString(),
+                }
+            );
+          }
+        }
+      }
+      else if (brandID != null) {
         uri = Uri.https(
             baseUrl,
             endPoint,
@@ -55,19 +113,13 @@ class MainRepoDSImpl extends MainRepoDS{
             }
         );
       }
-      else if (categoryID != null) {
-        uri = Uri.https(
-            baseUrl,
-            endPoint,
-            {
-              'category[in]' : categoryID
-            }
-        );
-      }
       else {
         uri = Uri.https(baseUrl, endPoint);
       }
-      Response response = await get(uri);
+
+      String request = uri.toString().replaceAll("%2B", "+");
+
+      Response response = await get(Uri.parse(request));
 
       ProductsResponseDM productsResponse = ProductsResponseDM.fromJson(jsonDecode(response.body));
 

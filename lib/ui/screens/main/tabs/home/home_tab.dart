@@ -37,27 +37,12 @@ class _HomeTabState extends State<HomeTab> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Categories',
-                  style: GoogleFonts.poppins(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.primaryColor),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'View all',
-                    style: GoogleFonts.poppins(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.primaryColor),
-                  ),
-                ),
-              ],
+            child: Text(
+              'Categories',
+              style: GoogleFonts.poppins(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.primaryColor),
             ),
           ),
           BlocBuilder<GetAllCategoriesUseCase, MainStates>(

@@ -8,8 +8,11 @@ abstract class MainRepo {
   Future<Either<String, CategoriesResponseDm>> getAllCategories();
 
   Future<Either<String, ProductsResponseDM>> getAllProducts({
-    String brandID,
-    String categoryID
+    String? brandID,
+    String? categoryID,
+    int priceLessThan = 99999,
+    int priceGreaterThan = 0,
+    bool? sortLowToHeightPrice
   });
 
   Future<Either<String, BrandsResponseDm>> getAllBrands();

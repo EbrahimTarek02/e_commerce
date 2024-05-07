@@ -23,7 +23,7 @@ class ProductDetailsViewModel extends Cubit<ProductDetailsStates> {
   }
 
   void removeProduct() {
-    if (productCount > 0){
+    if (productCount > 1){
       productCount--;
     }
     emit(ChangeCounterState());

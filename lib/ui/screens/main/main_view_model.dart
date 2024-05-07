@@ -54,8 +54,29 @@ class MainViewModel extends Cubit<MainStates> {
     await getProductsWithBrandIDUseCase.execute(brandID);
   }
 
-  Future<void> getProductsWithCategoryID(String categoryID) async {
-    await getProductsWithCategoryIDUseCase.execute(categoryID);
+  Future<void> getProductsWithCategoryID(String categoryID, bool updateData, {
+    int priceLessThan = 99999,
+    int priceGreaterThan = 0,
+    String? brandID,
+    bool? sortLowToHeightPrice
+}) async {
+
+    if (brandID != null) {
+      if (sortLowToHeightPrice != null) {
+        await getProductsWithCategoryIDUseCase.execute(categoryID, updateData, priceLessThan: priceLessThan, priceGreaterThan: priceGreaterThan, brandID: brandID, sortLowToHeightPrice: sortLowToHeightPrice);
+      }
+      else {
+        await getProductsWithCategoryIDUseCase.execute(categoryID, updateData, priceLessThan: priceLessThan, priceGreaterThan: priceGreaterThan, brandID: brandID);
+      }
+    }
+    else {
+      if (sortLowToHeightPrice != null) {
+        await getProductsWithCategoryIDUseCase.execute(categoryID, updateData, priceLessThan: priceLessThan, priceGreaterThan: priceGreaterThan, sortLowToHeightPrice: sortLowToHeightPrice);
+      }
+      else {
+        await getProductsWithCategoryIDUseCase.execute(categoryID, updateData, priceLessThan: priceLessThan, priceGreaterThan: priceGreaterThan);
+      }
+    }
   }
 
   Future<void> getAllBrands() async {

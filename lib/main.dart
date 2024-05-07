@@ -8,6 +8,7 @@ import 'package:e_commerce/ui/screens/main/main_screen.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/edit_profile/edit_profile_tab.dart';
 import 'package:e_commerce/ui/screens/product_details/product_details_screen.dart';
+import 'package:e_commerce/ui/screens/products_of_category/products_of_category_screen.dart';
 import 'package:e_commerce/ui/screens/splash/splash_screen.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,8 @@ class MyApp extends StatelessWidget {
         ResetPasswordScreen.routeName : (_) => ResetPasswordScreen(),
         MainScreen.routeName : (_) => const MainScreen(),
         EditProfileTab.routeName : (_) => EditProfileTab(),
-        ProductDetailsScreen.routeName : (_) => const ProductDetailsScreen()
+        ProductDetailsScreen.routeName : (_) => const ProductDetailsScreen(),
+        ProductsOfCategoryScreen.routeName : (_) => const ProductsOfCategoryScreen()
       },
     );
   }

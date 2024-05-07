@@ -32,18 +32,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   late bool isInWishList;
 
   @override
-  void didChangeDependencies() {
+  void initState() {
     mainViewModel = BlocProvider.of(context);
-    List args = ModalRoute.of(context)!.settings.arguments as List;
-    product =  args[0];
-    isInWishList = args[1];
-    mainViewModel.isInWishList = isInWishList;
-    viewModel.getProductDetails(product.id!);
-    super.didChangeDependencies();
+    Future.delayed(
+      Duration.zero,
+      () {
+        viewModel.getProductDetails(product.id!);
+      },
+    );
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    List args = ModalRoute.of(context)!.settings.arguments as List;
+    product =  args[0];
+    isInWishList = args[1];
+    mainViewModel.isInWishList = isInWishList;
+
     return Scaffold(
       backgroundColor: AppColors.white,
 
@@ -348,23 +355,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.0),
-                                border: Border.all(color: AppColors.primaryColor)
-                            ),
-                            child: Text(
-                              "${product.sold} Sold",
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.poppins(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.primaryColor
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
                           Row(
                             children: [
                               Icon(
@@ -392,6 +382,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 color: AppColors.yellow,
                                 size: 20,
                               ),
+                              const SizedBox(width: 10.0,),
                               Text(
                                 product.ratingsAverage?.toStringAsFixed(2) ?? "Rate",
                                 style: GoogleFonts.poppins(

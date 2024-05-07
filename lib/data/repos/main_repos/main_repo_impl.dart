@@ -30,16 +30,34 @@ class MainRepoImpl extends MainRepo{
   @override
   Future<Either<String, ProductsResponseDM>> getAllProducts({
     String? brandID,
-    String? categoryID
+    String? categoryID,
+    int priceLessThan = 99999,
+    int priceGreaterThan = 0,
+    bool? sortLowToHeightPrice
   }) async{
     final ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
 
     if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi){
-      if (brandID != null) {
+      if (brandID != null && categoryID == null) {
         return mainRepoDS.getAllProducts(brandID: brandID);
       }
       else if (categoryID != null) {
-        return mainRepoDS.getAllProducts(categoryID: categoryID);
+        if (brandID != null){
+          if (sortLowToHeightPrice != null) {
+            return mainRepoDS.getAllProducts(categoryID: categoryID, priceLessThan: priceLessThan, priceGreaterThan: priceGreaterThan, brandID: brandID, sortLowToHeightPrice: sortLowToHeightPrice);
+          }
+          else {
+            return mainRepoDS.getAllProducts(categoryID: categoryID, priceLessThan: priceLessThan, priceGreaterThan: priceGreaterThan, brandID: brandID);
+          }
+        }
+        else {
+          if (sortLowToHeightPrice != null) {
+            return mainRepoDS.getAllProducts(categoryID: categoryID, priceLessThan: priceLessThan, priceGreaterThan: priceGreaterThan, sortLowToHeightPrice: sortLowToHeightPrice);
+          }
+          else {
+            return mainRepoDS.getAllProducts(categoryID: categoryID, priceLessThan: priceLessThan, priceGreaterThan: priceGreaterThan);
+          }
+        }
       }
       else {
         return mainRepoDS.getAllProducts();

@@ -52,6 +52,8 @@ class _MainScreenState extends State<MainScreen> {
                 backgroundColor: AppColors.white,
 
                 appBar: AppBar(
+                  backgroundColor: AppColors.white,
+
                   title: Image.asset(
                     AppAssets.appLogoBlue,
                     fit: BoxFit.cover,
