@@ -1,4 +1,5 @@
 import 'package:e_commerce/domain/di/di.dart';
+import 'package:e_commerce/ui/screens/all_products/all_products_screen.dart';
 import 'package:e_commerce/ui/screens/authentication/forgot_password/reset_password/reset_password_screen.dart';
 import 'package:e_commerce/ui/screens/authentication/forgot_password/verify_email/verify_email_screen.dart';
 import 'package:e_commerce/ui/screens/authentication/forgot_password/verify_sent_code/verify_sent_code_screen.dart';
@@ -47,7 +48,8 @@ class MyApp extends StatelessWidget {
         MainScreen.routeName : (_) => const MainScreen(),
         EditProfileTab.routeName : (_) => EditProfileTab(),
         ProductDetailsScreen.routeName : (_) => const ProductDetailsScreen(),
-        ProductsOfCategoryScreen.routeName : (_) => const ProductsOfCategoryScreen()
+        ProductsOfCategoryScreen.routeName : (_) => const ProductsOfCategoryScreen(),
+        AllProductsScreen.routeName : (_) => const AllProductsScreen()
       },
     );
   }

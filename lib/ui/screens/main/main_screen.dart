@@ -35,6 +35,7 @@ class _MainScreenState extends State<MainScreen> {
     viewModel.getWishList().then((_) {
       viewModel.getAllProducts();
       viewModel.getAllCategories();
+      viewModel.getAllBrands();
     });
     super.initState();
   }

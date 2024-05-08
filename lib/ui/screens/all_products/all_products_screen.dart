@@ -1,65 +1,56 @@
+import 'package:e_commerce/data/model/brands_response/BrandsResponseDM.dart';
 import 'package:e_commerce/data/model/categories_response/CategoriesResponseDM.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/domain/di/di.dart';
-import 'package:e_commerce/domain/use_cases/main_use_cases/get_products_with_category_id_use_case.dart';
+import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_brands_use_case.dart';
+import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_categories_use_case.dart';
+import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_products_with_filtration_use_case.dart';
+import 'package:e_commerce/ui/screens/all_products/all_products_states.dart';
+import 'package:e_commerce/ui/screens/all_products/all_products_view_model.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
-import 'package:e_commerce/ui/screens/products_of_category/prodducts_of_category_view_model.dart';
-import 'package:e_commerce/ui/screens/products_of_category/products_of_category_states.dart';
 import 'package:e_commerce/ui/shared_widgets/product_item.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProductsOfCategoryScreen extends StatefulWidget {
-  static const String routeName = "products of category";
+class AllProductsScreen extends StatefulWidget {
+  static const routeName = "all products screen";
 
-  const ProductsOfCategoryScreen({Key? key}) : super(key: key);
+  const AllProductsScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProductsOfCategoryScreen> createState() =>
-      _ProductsOfCategoryScreenState();
+  State<AllProductsScreen> createState() => _AllProductsScreenState();
 }
 
-class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
+class _AllProductsScreenState extends State<AllProductsScreen> {
   late MainViewModel mainViewModel;
-  ProductsOfCategoryViewModel viewModel = getIt<ProductsOfCategoryViewModel>();
-  Category? category;
+  AllProductsViewModel viewModel = getIt<AllProductsViewModel>();
   late RangeValues priceRange;
 
   @override
   void initState() {
     mainViewModel = BlocProvider.of(context);
-    Future.delayed(
-      Duration.zero,
-      () {
-        mainViewModel
-            .getProductsWithCategoryID(category?.id ?? "", true)
-            .then((value) {
-          priceRange = RangeValues(
-              GetProductsWithCategoryIDUseCase.minPrice.toDouble(),
-              GetProductsWithCategoryIDUseCase.maxPrice.toDouble());
-        });
-      },
-    );
+    priceRange = const RangeValues(0, 100000);
+    mainViewModel.getAllProductsWithFiltration();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    category = ModalRoute.of(context)!.settings.arguments as Category?;
 
-    return BlocBuilder<GetProductsWithCategoryIDUseCase, MainStates>(
-      bloc: mainViewModel.getProductsWithCategoryIDUseCase,
+    return BlocBuilder<GetAllProductsWithFiltrationUseCase, MainStates>(
+      bloc: mainViewModel.getAllProductsWithFiltrationUseCase,
       builder: (context, state) {
+
         return Scaffold(
             backgroundColor: AppColors.white,
 
             appBar: AppBar(
               iconTheme: const IconThemeData(color: AppColors.primaryColor),
               title: Text(
-                category?.name ?? "Category",
+                "Explore Products",
                 style: GoogleFonts.poppins(
                     color: AppColors.primaryColor,
                     fontSize: 20,
@@ -113,6 +104,100 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                             MediaQuery.of(context).size.height *
                                                 0.02,
                                       ),
+
+                                      Text(
+                                        "Categories",
+                                        textAlign: TextAlign.start,
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.primaryColor),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const Divider(),
+                                      BlocBuilder<GetAllCategoriesUseCase, MainStates>(
+                                        bloc: mainViewModel.getAllCategoriesUseCase,
+                                        builder: (context, categoriesState) {
+                                          if (categoriesState is MainSuccessState<CategoriesResponseDm>) {
+                                            viewModel.updateCategoriesCount(categoriesState.data.Categories ?? []);
+                                            return SizedBox(
+                                              height:
+                                              MediaQuery.of(context).size.height * 0.12,
+                                              child: GridView.builder(
+                                                itemCount: categoriesState.data.Categories?.length ?? 0, // brands length
+                                                gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 2,
+                                                    mainAxisSpacing: 10.0,
+                                                    crossAxisSpacing: 10.0,
+                                                    childAspectRatio: 0.22),
+                                                scrollDirection: Axis.horizontal,
+                                                itemBuilder: (context, index) {
+                                                  return BlocBuilder<
+                                                      AllProductsViewModel,
+                                                      AllProductsStates>(
+                                                    bloc: viewModel,
+                                                    builder: (context, _) {
+                                                      return InkWell(
+                                                        onTap: () {
+                                                          viewModel
+                                                              .changeCategoriesRadioButton(
+                                                              index);
+                                                        },
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                              color: AppColors
+                                                                  .primaryColor,
+                                                            ),
+                                                            borderRadius:
+                                                            BorderRadius.circular(
+                                                                16.0),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                            children: [
+                                                              Radio(
+                                                                groupValue: viewModel
+                                                                    .selectedCategory,
+                                                                onChanged: (_) {},
+                                                                value: index,
+                                                              ),
+                                                              Text(
+                                                                categoriesState.data.Categories?[index].name ?? "",
+                                                                style: GoogleFonts.poppins(
+                                                                    fontSize: 14.0,
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                    color: AppColors
+                                                                        .primaryColor),
+                                                                overflow: TextOverflow
+                                                                    .ellipsis,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          }
+                                          else {
+                                            return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
+                                          }
+                                        },
+                                      ),
+                                      SizedBox(
+                                        height:
+                                        MediaQuery.of(context).size.height *
+                                            0.03,
+                                      ),
+
                                       Text(
                                         "Brand",
                                         textAlign: TextAlign.start,
@@ -123,95 +208,89 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       const Divider(),
-                                      SizedBox(
-                                        height: GetProductsWithCategoryIDUseCase
-                                                    .categoryBrands.length >
-                                                3
-                                            ? MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.12
-                                            : MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.06,
-                                        child: GridView.builder(
-                                          itemCount:
-                                              GetProductsWithCategoryIDUseCase
-                                                  .categoryBrands.length,
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount:
-                                                      GetProductsWithCategoryIDUseCase
-                                                                  .categoryBrands
-                                                                  .length >
-                                                              3
-                                                          ? 2
-                                                          : 1,
-                                                  mainAxisSpacing: 10.0,
-                                                  crossAxisSpacing: 10.0,
-                                                  childAspectRatio: 0.25),
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context, index) {
-                                            return BlocBuilder<
-                                                ProductsOfCategoryViewModel,
-                                                ProductsOfCategoryStates>(
-                                              bloc: viewModel,
-                                              builder: (context, _) {
-                                                return InkWell(
-                                                  onTap: () {
-                                                    viewModel.changeRadioButton(
-                                                        index);
-                                                  },
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                        color: AppColors
-                                                            .primaryColor,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16.0),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Radio(
-                                                          groupValue: viewModel
-                                                              .selectedBrand,
-                                                          onChanged: (_) {},
-                                                          value: index,
-                                                        ),
-                                                        Text(
-                                                          GetProductsWithCategoryIDUseCase
-                                                              .categoryBrands
-                                                              .toList()[index],
-                                                          style: GoogleFonts.poppins(
-                                                              fontSize: 14.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                      BlocBuilder<GetAllBrandsUseCase, MainStates>(
+                                        bloc: mainViewModel.getAllBrandsUseCase,
+                                        builder: (context, brandsState){
+                                          if (brandsState is MainSuccessState<BrandsResponseDm>) {
+                                            viewModel.updateBrandsCount(brandsState.data.brands ?? []);
+                                            return SizedBox(
+                                              height:
+                                              MediaQuery.of(context).size.height * 0.12,
+                                              child: GridView.builder(
+                                                itemCount: brandsState.data.brands?.length ?? 0, // brands length
+                                                gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 2,
+                                                    mainAxisSpacing: 10.0,
+                                                    crossAxisSpacing: 10.0,
+                                                    childAspectRatio: 0.22),
+                                                scrollDirection: Axis.horizontal,
+                                                itemBuilder: (context, index) {
+                                                  return BlocBuilder<
+                                                      AllProductsViewModel,
+                                                      AllProductsStates>(
+                                                    bloc: viewModel,
+                                                    builder: (context, _) {
+                                                      return InkWell(
+                                                        onTap: () {
+                                                          viewModel
+                                                              .changeBrandsRadioButton(
+                                                              index);
+                                                        },
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            border: Border.all(
                                                               color: AppColors
-                                                                  .primaryColor),
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
+                                                                  .primaryColor,
+                                                            ),
+                                                            borderRadius:
+                                                            BorderRadius.circular(
+                                                                16.0),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                            children: [
+                                                              Radio(
+                                                                groupValue: viewModel
+                                                                    .selectedBrand,
+                                                                onChanged: (_) {},
+                                                                value: index,
+                                                              ),
+                                                              Text(
+                                                                brandsState.data.brands?[index].name ?? "",
+                                                                style: GoogleFonts.poppins(
+                                                                    fontSize: 14.0,
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                    color: AppColors
+                                                                        .primaryColor),
+                                                                overflow: TextOverflow
+                                                                    .ellipsis,
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              ),
                                             );
-                                          },
-                                        ),
+                                          }
+                                          else {
+                                            return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
+                                          }
+                                        },
                                       ),
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.03,
                                       ),
+
                                       Text(
                                         "Price Range",
                                         textAlign: TextAlign.start,
@@ -230,21 +309,16 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                 values: priceRange,
                                                 onChanged: (newPrice) {
                                                   priceRange = newPrice;
-                                                  priceSliderState(() {});
+                                                  priceSliderState(() {
+                                                  });
                                                 },
                                                 min:
-                                                    GetProductsWithCategoryIDUseCase
-                                                        .minPrice
-                                                        .toDouble(),
+                                                    0,
                                                 max:
-                                                    GetProductsWithCategoryIDUseCase
-                                                        .maxPrice
-                                                        .toDouble(),
+                                                  100000,
                                               ),
                                               Text(
-                                                "${priceRange.start
-                                                        .toInt()}    ${priceRange.end
-                                                        .toInt()}",
+                                                "${priceRange.start.toInt()}    ${priceRange.end.toInt()}",
                                                 textAlign: TextAlign.center,
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 18.0,
@@ -262,6 +336,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                             MediaQuery.of(context).size.height *
                                                 0.03,
                                       ),
+
                                       Text(
                                         "Sort",
                                         textAlign: TextAlign.start,
@@ -272,8 +347,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       const Divider(),
-                                      BlocBuilder<ProductsOfCategoryViewModel,
-                                          ProductsOfCategoryStates>(
+                                      BlocBuilder<AllProductsViewModel, AllProductsStates>(
                                         bloc: viewModel,
                                         builder: (context, _) {
                                           return Row(
@@ -286,8 +360,9 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                       .changeSortingType(0);
                                                 },
                                                 child: Container(
-                                                  padding: const EdgeInsets.only(
-                                                      right: 10.0),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10.0),
                                                   decoration: BoxDecoration(
                                                     border: Border.all(
                                                       color: AppColors
@@ -328,8 +403,9 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                       .changeSortingType(1);
                                                 },
                                                 child: Container(
-                                                  padding: const EdgeInsets.only(
-                                                      right: 10.0),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10.0),
                                                   decoration: BoxDecoration(
                                                     border: Border.all(
                                                       color: AppColors
@@ -373,20 +449,29 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                             MediaQuery.of(context).size.height *
                                                 0.03,
                                       ),
+
                                       ElevatedButton(
                                           onPressed: () {
-                                            mainViewModel.getProductsWithCategoryID(
-                                                category?.id ?? "",
-                                                false,
-                                                priceLessThan: priceRange.end.ceil(),
-                                                priceGreaterThan: priceRange.start.floor(),
-                                                brandID: viewModel.selectedBrand != null ? GetProductsWithCategoryIDUseCase.categoryBrandIDs.toList()[viewModel.selectedBrand!] : null,
-                                                sortLowToHeightPrice: viewModel.selectedSortingType == null ? null : viewModel.selectedSortingType == 0 ? false : true
-                                            );
+                                            mainViewModel.getAllProductsWithFiltration(
+                                                priceLessThan:
+                                                    priceRange.end.ceil(),
+                                                priceGreaterThan:
+                                                    priceRange.start.floor(),
+                                                brandID: viewModel.selectedBrand != null ? viewModel.brands[viewModel.selectedBrand!].id : null,
+                                                categoryID: viewModel.selectedCategory != null ? viewModel.categories[viewModel.selectedCategory!].id : null,
+                                                sortLowToHeightPrice: viewModel
+                                                            .selectedSortingType ==
+                                                        null
+                                                    ? null
+                                                    : viewModel.selectedSortingType ==
+                                                            0
+                                                        ? false
+                                                        : true);
                                             Navigator.pop(context);
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              backgroundColor: AppColors.primaryColor,
+                                              backgroundColor:
+                                                  AppColors.primaryColor,
                                               elevation: 0.0,
                                               padding:
                                                   const EdgeInsets.symmetric(
@@ -395,8 +480,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           15))),
-                                          child:
-                                              Text(
+                                          child: Text(
                                             'Show Results',
                                             style: GoogleFonts.poppins(
                                                 color: AppColors.white,
@@ -457,8 +541,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                         : const Center(
                             child: CircularProgressIndicator(
                             color: AppColors.primaryColor,
-                          )))
-        );
+                          ))));
       },
     );
   }

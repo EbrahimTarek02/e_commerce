@@ -35,33 +35,17 @@ class MainRepoImpl extends MainRepo{
     int priceGreaterThan = 0,
     bool? sortLowToHeightPrice
   }) async{
+
     final ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
 
     if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi){
-      if (brandID != null && categoryID == null) {
-        return mainRepoDS.getAllProducts(brandID: brandID);
-      }
-      else if (categoryID != null) {
-        if (brandID != null){
-          if (sortLowToHeightPrice != null) {
-            return mainRepoDS.getAllProducts(categoryID: categoryID, priceLessThan: priceLessThan, priceGreaterThan: priceGreaterThan, brandID: brandID, sortLowToHeightPrice: sortLowToHeightPrice);
-          }
-          else {
-            return mainRepoDS.getAllProducts(categoryID: categoryID, priceLessThan: priceLessThan, priceGreaterThan: priceGreaterThan, brandID: brandID);
-          }
-        }
-        else {
-          if (sortLowToHeightPrice != null) {
-            return mainRepoDS.getAllProducts(categoryID: categoryID, priceLessThan: priceLessThan, priceGreaterThan: priceGreaterThan, sortLowToHeightPrice: sortLowToHeightPrice);
-          }
-          else {
-            return mainRepoDS.getAllProducts(categoryID: categoryID, priceLessThan: priceLessThan, priceGreaterThan: priceGreaterThan);
-          }
-        }
-      }
-      else {
-        return mainRepoDS.getAllProducts();
-      }
+      return mainRepoDS.getAllProducts(
+        brandID: brandID,
+        categoryID: categoryID,
+        priceLessThan: priceLessThan,
+        priceGreaterThan: priceGreaterThan,
+        sortLowToHeightPrice: sortLowToHeightPrice
+      );
     }
     else{
       return const Left("Please check your internet connection and try again later");

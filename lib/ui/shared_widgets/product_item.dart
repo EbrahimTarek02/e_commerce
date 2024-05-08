@@ -56,7 +56,7 @@ class _ProductItemState extends State<ProductItem> {
               children: [
                 CachedNetworkImage(
                   imageUrl: widget.product.imageCover ?? "",
-                  height: MediaQuery.of(context).size.height * 0.155,
+                  height: MediaQuery.of(context).size.height * 0.18,
                   width: double.infinity,
                   imageBuilder: (context, imageProvider) => Container(
                     decoration: BoxDecoration(
@@ -182,14 +182,27 @@ class _ProductItemState extends State<ProductItem> {
               ],
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.005,),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            //   child: Text(
+            //     widget.product.brand?.name ?? "Brand",
+            //     textAlign: TextAlign.start,
+            //     style: GoogleFonts.poppins(
+            //         fontSize: 14.0,
+            //         fontWeight: FontWeight.w700,
+            //         color: AppColors.primaryColor
+            //     ),
+            //     overflow: TextOverflow.ellipsis,
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                widget.product.brand?.name ?? "Brand",
+                "${widget.product.price ?? "Price"} EGP",
                 textAlign: TextAlign.start,
                 style: GoogleFonts.poppins(
                     fontSize: 14.0,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                     color: AppColors.primaryColor
                 ),
                 overflow: TextOverflow.ellipsis,
@@ -209,19 +222,6 @@ class _ProductItemState extends State<ProductItem> {
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.005,),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                "${widget.product.price ?? "Price"} EGP",
-                textAlign: TextAlign.start,
-                style: GoogleFonts.poppins(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.primaryColor
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(left: 8.0),

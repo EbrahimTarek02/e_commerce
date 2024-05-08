@@ -105,16 +105,50 @@ class MainRepoDSImpl extends MainRepoDS{
         }
       }
       else if (brandID != null) {
+        if (sortLowToHeightPrice != null) {
+          uri = Uri.https(
+              baseUrl,
+              endPoint,
+              {
+                'brand' : brandID,
+                'price[gte]' : priceGreaterThan.toString(),
+                'price[lte]' : priceLessThan.toString(),
+                'sort' : sortLowToHeightPrice ? "+price" : "-price"
+              }
+          );
+        }
+        else {
+          uri = Uri.https(
+              baseUrl,
+              endPoint,
+              {
+                'brand' : brandID,
+                'price[gte]' : priceGreaterThan.toString(),
+                'price[lte]' : priceLessThan.toString(),
+              }
+          );
+        }
+      }
+      else if (sortLowToHeightPrice != null){
         uri = Uri.https(
             baseUrl,
             endPoint,
             {
-              'brand' : brandID
+              'price[gte]' : priceGreaterThan.toString(),
+              'price[lte]' : priceLessThan.toString(),
+              'sort' : sortLowToHeightPrice ? "+price" : "-price"
             }
         );
       }
       else {
-        uri = Uri.https(baseUrl, endPoint);
+        uri = Uri.https(
+          baseUrl,
+          endPoint,
+          {
+            'price[gte]' : priceGreaterThan.toString(),
+            'price[lte]' : priceLessThan.toString(),
+          }
+        );
       }
 
       String request = uri.toString().replaceAll("%2B", "+");

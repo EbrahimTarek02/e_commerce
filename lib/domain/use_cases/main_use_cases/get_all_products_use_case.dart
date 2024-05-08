@@ -13,6 +13,8 @@ class GetAllProductsUseCase extends Cubit<MainStates> {
 
   Future<void> execute() async{
 
+    emit(MainLoadingState());
+
     Either<String, ProductsResponseDM> response = await mainRepo.getAllProducts();
 
     response.fold((error) {

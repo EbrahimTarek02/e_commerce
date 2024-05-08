@@ -4,6 +4,7 @@ import 'package:e_commerce/domain/use_cases/main_use_cases/add_to_wish_list_use_
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_brands_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_categories_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_products_use_case.dart';
+import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_products_with_filtration_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_products_with_brand_id_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_products_with_category_id_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_wish_list_use_case.dart';
@@ -23,6 +24,7 @@ class MainViewModel extends Cubit<MainStates> {
   GetWishListUseCase getWishListUseCase;
   AddToWishListUseCase addToWishListUseCase;
   RemoveFromWishListUseCase removeFromWishListUseCase;
+  GetAllProductsWithFiltrationUseCase getAllProductsWithFiltrationUseCase;
 
   MainViewModel(
       this.getAllCategoriesUseCase,
@@ -32,7 +34,8 @@ class MainViewModel extends Cubit<MainStates> {
       this.getProductsWithCategoryIDUseCase,
       this.getWishListUseCase,
       this.addToWishListUseCase,
-      this.removeFromWishListUseCase)
+      this.removeFromWishListUseCase,
+      this.getAllProductsWithFiltrationUseCase)
       : super(MainInitialState());
 
   int currentIndex = 0;
@@ -48,6 +51,23 @@ class MainViewModel extends Cubit<MainStates> {
 
   Future<void> getAllProducts() async {
     await getAllProductsUseCase.execute();
+  }
+
+  Future<void> getAllProductsWithFiltration({
+    String? brandID,
+    String? categoryID,
+    int priceLessThan = 99999,
+    int priceGreaterThan = 0,
+    bool? sortLowToHeightPrice
+  }) async {
+
+    await getAllProductsWithFiltrationUseCase.execute(
+        brandID: brandID,
+        categoryID: categoryID,
+        priceLessThan: priceLessThan,
+        priceGreaterThan: priceGreaterThan,
+        sortLowToHeightPrice: sortLowToHeightPrice
+    );
   }
 
   Future<void> getProductsWithBrandID(String brandID) async {

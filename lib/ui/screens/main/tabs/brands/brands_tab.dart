@@ -24,7 +24,6 @@ class _BrandsTabState extends State<BrandsTab> {
   @override
   void initState() {
     viewModel = BlocProvider.of(context);
-    viewModel.getAllBrands();
     super.initState();
   }
 
