@@ -2,9 +2,11 @@ import 'package:e_commerce/data/model/categories_response/CategoriesResponseDM.d
 import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_products_with_category_id_use_case.dart';
+import 'package:e_commerce/ui/screens/cart/cart_screen.dart';
+import 'package:e_commerce/ui/screens/cart/cart_view_model.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
-import 'package:e_commerce/ui/screens/products_of_category/prodducts_of_category_view_model.dart';
+import 'package:e_commerce/ui/screens/products_of_category/products_of_category_view_model.dart';
 import 'package:e_commerce/ui/screens/products_of_category/products_of_category_states.dart';
 import 'package:e_commerce/ui/shared_widgets/product_item.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
@@ -24,6 +26,7 @@ class ProductsOfCategoryScreen extends StatefulWidget {
 
 class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
   late MainViewModel mainViewModel;
+  late CartViewModel cartViewModel;
   ProductsOfCategoryViewModel viewModel = getIt<ProductsOfCategoryViewModel>();
   Category? category;
   late RangeValues priceRange;
@@ -31,6 +34,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
   @override
   void initState() {
     mainViewModel = BlocProvider.of(context);
+    cartViewModel = BlocProvider.of(context);
     Future.delayed(
       Duration.zero,
       () {
@@ -68,7 +72,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
               actions: [
                 IconButton(
                     onPressed: () {
-                      // Navigate to cart screen
+                      Navigator.pushNamed(context, CartScreen.routeName);
                     },
                     icon: const Icon(
                       Icons.shopping_cart_outlined,
@@ -438,18 +442,21 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                   scrollDirection: Axis.vertical,
                                   itemCount: state.data.products!.length,
                                   gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 10.0,
-                                          childAspectRatio: 0.60),
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 10.0,
+                                      childAspectRatio: 0.60),
                                   itemBuilder: (context, index) {
                                     bool isInWishList = MainViewModel.wishList
                                         .contains(
-                                            state.data.products![index].id);
+                                        state.data.products![index].id);
+                                    bool isInCart = MainViewModel.cartIDs.contains(state.data.products![index].id);
                                     return ProductItem(
                                         state.data.products![index],
                                         true,
-                                        isInWishList);
+                                        isInWishList,
+                                        isInCart
+                                    );
                                   });
                             })
                     : state is MainErrorState

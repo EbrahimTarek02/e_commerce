@@ -1,5 +1,10 @@
+import 'package:e_commerce/data/model/cart_response/cart_response_DM.dart';
 import 'package:e_commerce/data/model/get_wish_list_response/get_wish_list_response.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
+import 'package:e_commerce/domain/use_cases/cart_use_cases/add_to_cart_use_case.dart';
+import 'package:e_commerce/domain/use_cases/cart_use_cases/get_cart_use_case.dart';
+import 'package:e_commerce/domain/use_cases/cart_use_cases/remove_from_cart_use_case.dart';
+import 'package:e_commerce/domain/use_cases/cart_use_cases/update_product_in_cart_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/add_to_wish_list_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_brands_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_categories_use_case.dart';
@@ -9,6 +14,7 @@ import 'package:e_commerce/domain/use_cases/main_use_cases/get_products_with_bra
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_products_with_category_id_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_wish_list_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/remove_from_wish_list_use_case.dart';
+import 'package:e_commerce/ui/screens/cart/cart_view_model.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +31,10 @@ class MainViewModel extends Cubit<MainStates> {
   AddToWishListUseCase addToWishListUseCase;
   RemoveFromWishListUseCase removeFromWishListUseCase;
   GetAllProductsWithFiltrationUseCase getAllProductsWithFiltrationUseCase;
+  GetCartUseCase getCartUseCase;
+  AddToCartUseCase addToCartUseCase;
+  RemoveFromCartUseCase removeFromCartUseCase;
+  UpdateProductInCartUseCase updateProductInCartUseCase;
 
   MainViewModel(
       this.getAllCategoriesUseCase,
@@ -35,7 +45,11 @@ class MainViewModel extends Cubit<MainStates> {
       this.getWishListUseCase,
       this.addToWishListUseCase,
       this.removeFromWishListUseCase,
-      this.getAllProductsWithFiltrationUseCase)
+      this.getAllProductsWithFiltrationUseCase,
+      this.getCartUseCase,
+      this.addToCartUseCase,
+      this.removeFromCartUseCase,
+      this.updateProductInCartUseCase)
       : super(MainInitialState());
 
   int currentIndex = 0;
@@ -154,5 +168,77 @@ class MainViewModel extends Cubit<MainStates> {
     else {
       emit(MainErrorState(response));
     }
+  }
+
+  static Set<String> cartIDs = {};
+  static Set<CartProducts> cartProducts = {};
+
+  Future<void> getCart() async{
+    emit(MainLoadingState());
+
+    Either<String, CartResponseDm> response = await getCartUseCase.getCart();
+
+    response.fold((error) {
+      emit(MainErrorState(error));
+    }, (success) {
+      for (CartProducts cartProduct in success.cart!.cartProducts!) {
+        cartIDs.add(cartProduct.product!.id!);
+      }
+      cartProducts = success.cart!.cartProducts!.toSet();
+      emit(MainSuccessState<CartResponseDm>(success));
+    });
+  }
+
+  late bool isInCart;
+
+  Future<void> addToCart(String productID, bool loadData, int productCount) async{
+    if (loadData){
+      emit(CartIconLoadingState());
+    }
+
+    Either<String, CartResponseDm> response = await addToCartUseCase.execute(productID);
+
+    response.fold((error) {
+      emit(MainErrorState(error));
+    }, (success) {
+      cartIDs.add(productID);
+      cartProducts = success.cart!.cartProducts!.toSet();
+      isInCart = true;
+      if (productCount > 1) {
+        updateProductInCart(productID, productCount);
+      }
+      else{
+        emit(MainSuccessState(success));
+      }
+    });
+  }
+
+  Future<void> removeFromCart(String productID, bool loadData) async{
+    if (loadData){
+      emit(CartIconLoadingState());
+    }
+
+    Either<String, CartResponseDm> response = await removeFromCartUseCase.execute(productID);
+
+    response.fold((error) {
+      emit(MainErrorState(error));
+    }, (success) {
+      cartIDs.remove(productID);
+      cartProducts = success.cart!.cartProducts!.toSet();
+      CartViewModel.updatedProducts.remove(productID);
+      isInCart = false;
+      emit(MainSuccessState(success));
+    });
+  }
+
+  Future<void> updateProductInCart(String productID, int productCount) async{
+
+    Either<String, CartResponseDm> response = await updateProductInCartUseCase.execute(productID, productCount);
+
+    response.fold((error) {
+      emit(MainErrorState(error));
+    }, (success) {
+      emit(MainSuccessState(success));
+    });
   }
 }

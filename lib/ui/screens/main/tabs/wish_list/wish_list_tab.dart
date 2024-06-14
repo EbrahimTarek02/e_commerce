@@ -29,7 +29,7 @@ class _WishListTabState extends State<WishListTab> {
     return BlocBuilder<MainViewModel, MainStates>(
       bloc: viewModel,
       builder: (context, state) {
-        if (state is MainSuccessState) {
+        if (state is MainSuccessState || state is CartIconLoadingState) {
           return MainViewModel.wishList.isEmpty
               ?
             Padding(
@@ -53,7 +53,10 @@ class _WishListTabState extends State<WishListTab> {
                   horizontal: 16.0
               ),
               itemCount: MainViewModel.wishList.length,
-              itemBuilder: (context, index) => WishListItem(MainViewModel.wishListProducts.toList()[index]),
+              itemBuilder: (context, index) {
+                bool isInCart = MainViewModel.cartIDs.contains(MainViewModel.wishListProducts.toList()[index].id);
+                return WishListItem(MainViewModel.wishListProducts.toList()[index], isInCart);
+              }
           );
         }
         else if (state is MainErrorState) {

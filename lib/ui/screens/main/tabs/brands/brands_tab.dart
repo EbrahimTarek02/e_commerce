@@ -19,11 +19,11 @@ class BrandsTab extends StatefulWidget {
 }
 
 class _BrandsTabState extends State<BrandsTab> {
-  late MainViewModel viewModel;
+  late MainViewModel mainViewModel;
 
   @override
   void initState() {
-    viewModel = BlocProvider.of(context);
+    mainViewModel = BlocProvider.of(context);
     super.initState();
   }
 
@@ -32,10 +32,10 @@ class _BrandsTabState extends State<BrandsTab> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: BlocBuilder<GetAllBrandsUseCase, MainStates>(
-        bloc: viewModel.getAllBrandsUseCase,
+        bloc: mainViewModel.getAllBrandsUseCase,
         builder: (context, state) {
           if (state is MainSuccessState<BrandsResponseDm>) {
-            viewModel.getProductsWithBrandID(state.data.brands![0].id ?? "");
+            mainViewModel.getProductsWithBrandID(state.data.brands![0].id ?? "");
             return DefaultTabController(
                 length: state.data.brands!.length,
                 initialIndex: 0,
@@ -51,7 +51,7 @@ class _BrandsTabState extends State<BrandsTab> {
                         quarterTurns: 1,
                         child: TabBar(
                           onTap: (int index) {
-                            viewModel.getProductsWithBrandID(state.data.brands![index].id ?? "");
+                            mainViewModel.getProductsWithBrandID(state.data.brands![index].id ?? "");
                           },
                           isScrollable: true,
                           tabAlignment: TabAlignment.start,
@@ -73,7 +73,7 @@ class _BrandsTabState extends State<BrandsTab> {
                         padding: const EdgeInsets.only(left: 24.0),
                         child: TabBarView(
                             physics: const NeverScrollableScrollPhysics(),
-                            children: buildTabBarViewTabs(context, state.data.brands!, viewModel)
+                            children: buildTabBarViewTabs(context, state.data.brands!, mainViewModel)
                         ),
                       ),
                     )
@@ -154,7 +154,8 @@ List<Widget> buildTabBarViewTabs(BuildContext context, List<Brand> brands, MainV
                             itemBuilder: (context, index) {
                               bool isInWishList = MainViewModel.wishList
                                   .contains(state.data.products![index].id);
-                              return ProductItem(state.data.products![index], true, isInWishList);
+                              bool isInCart = MainViewModel.cartIDs.contains(state.data.products![index].id);
+                              return ProductItem(state.data.products![index], true, isInWishList, isInCart);
                             }
                         );
                       }

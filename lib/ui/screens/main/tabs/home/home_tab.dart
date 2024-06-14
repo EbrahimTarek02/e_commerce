@@ -3,6 +3,7 @@ import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_categories_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_products_use_case.dart';
 import 'package:e_commerce/ui/screens/all_products/all_products_screen.dart';
+import 'package:e_commerce/ui/screens/cart/cart_view_model.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/home/widgets/grid_view_builder.dart';
@@ -21,10 +22,12 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   late MainViewModel mainViewModel;
+  late CartViewModel cartViewModel;
 
   @override
   void initState() {
     mainViewModel = BlocProvider.of(context);
+    cartViewModel = BlocProvider.of(context);
     super.initState();
   }
 
@@ -119,8 +122,10 @@ class _HomeTabState extends State<HomeTab> {
                               itemBuilder: (context, index) {
                                 bool isInWishList = MainViewModel.wishList
                                     .contains(state.data.products![index].id);
+                                bool isInCart = MainViewModel.cartIDs
+                                    .contains(state.data.products![index].id);
                                 return ProductItem(
-                                    state.data.products![index], false, isInWishList);
+                                  state.data.products![index], false, isInWishList, isInCart,);
                               });
                         }
                         else {

@@ -1,3 +1,4 @@
+import 'package:e_commerce/ui/screens/cart/cart_screen.dart';
 import 'package:e_commerce/ui/screens/main/custom_bottom_nav_bar.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
@@ -20,7 +21,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late MainViewModel viewModel;
+  late MainViewModel mainViewModel;
 
   List<Widget> screens = [
     const HomeTab(),
@@ -31,11 +32,13 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    viewModel = BlocProvider.of(context);
-    viewModel.getWishList().then((_) {
-      viewModel.getAllProducts();
-      viewModel.getAllCategories();
-      viewModel.getAllBrands();
+    mainViewModel = BlocProvider.of(context);
+    mainViewModel.getCart().then((_) {
+      mainViewModel.getWishList().then((__) {
+        mainViewModel.getAllProducts();
+        mainViewModel.getAllCategories();
+        mainViewModel.getAllBrands();
+      });
     });
     super.initState();
   }
@@ -44,9 +47,9 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
 
     return BlocProvider(
-      create: (context) => viewModel,
+      create: (context) => mainViewModel,
       child: BlocBuilder<MainViewModel, MainStates>(
-          bloc: viewModel,
+          bloc: mainViewModel,
           builder: (context, state) {
             return Scaffold(
 
@@ -63,7 +66,7 @@ class _MainScreenState extends State<MainScreen> {
                   actions: [
                     IconButton(
                         onPressed: (){
-                          // Navigate to cart screen
+                          Navigator.pushNamed(context, CartScreen.routeName);
                         },
                         icon: const Icon(
                           Icons.shopping_cart_outlined,
@@ -74,9 +77,9 @@ class _MainScreenState extends State<MainScreen> {
                   ],
                 ),
 
-                body: screens[viewModel.currentIndex],
+                body: screens[mainViewModel.currentIndex],
 
-                bottomNavigationBar: CustomBottomNavBar(viewModel)
+                bottomNavigationBar: CustomBottomNavBar(mainViewModel)
             );
           }
       ),

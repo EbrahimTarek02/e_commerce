@@ -7,6 +7,8 @@ import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_categories_us
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_products_with_filtration_use_case.dart';
 import 'package:e_commerce/ui/screens/all_products/all_products_states.dart';
 import 'package:e_commerce/ui/screens/all_products/all_products_view_model.dart';
+import 'package:e_commerce/ui/screens/cart/cart_screen.dart';
+import 'package:e_commerce/ui/screens/cart/cart_view_model.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/shared_widgets/product_item.dart';
@@ -26,12 +28,14 @@ class AllProductsScreen extends StatefulWidget {
 
 class _AllProductsScreenState extends State<AllProductsScreen> {
   late MainViewModel mainViewModel;
+  late CartViewModel cartViewModel;
   AllProductsViewModel viewModel = getIt<AllProductsViewModel>();
   late RangeValues priceRange;
 
   @override
   void initState() {
     mainViewModel = BlocProvider.of(context);
+    cartViewModel = BlocProvider.of(context);
     priceRange = const RangeValues(0, 100000);
     mainViewModel.getAllProductsWithFiltration();
     super.initState();
@@ -59,7 +63,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
               actions: [
                 IconButton(
                     onPressed: () {
-                      // Navigate to cart screen
+                      Navigator.pushNamed(context, CartScreen.routeName);
                     },
                     icon: const Icon(
                       Icons.shopping_cart_outlined,
@@ -522,18 +526,21 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                   scrollDirection: Axis.vertical,
                                   itemCount: state.data.products!.length,
                                   gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 10.0,
-                                          childAspectRatio: 0.60),
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 10.0,
+                                      childAspectRatio: 0.60),
                                   itemBuilder: (context, index) {
                                     bool isInWishList = MainViewModel.wishList
                                         .contains(
-                                            state.data.products![index].id);
+                                        state.data.products![index].id);
+                                    bool isInCart = MainViewModel.cartIDs.contains(state.data.products![index].id);
                                     return ProductItem(
                                         state.data.products![index],
                                         true,
-                                        isInWishList);
+                                        isInWishList,
+                                        isInCart
+                                    );
                                   });
                             })
                     : state is MainErrorState

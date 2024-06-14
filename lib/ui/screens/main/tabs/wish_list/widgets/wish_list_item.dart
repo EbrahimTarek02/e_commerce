@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
+import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/product_details/product_details_screen.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
@@ -11,9 +12,10 @@ import 'package:google_fonts/google_fonts.dart';
 //ignore: must_be_immutable
 class WishListItem extends StatefulWidget {
   final Product product;
+  bool isInCart;
   bool isLoading = false;
 
-  WishListItem(this.product, {Key? key}) : super(key: key);
+  WishListItem(this.product, this.isInCart, {Key? key}) : super(key: key);
 
   @override
   State<WishListItem> createState() => _WishListItemState();
@@ -21,11 +23,12 @@ class WishListItem extends StatefulWidget {
 
 class _WishListItemState extends State<WishListItem> {
 
-  late MainViewModel viewModel;
+  late MainViewModel mainViewModel;
 
   @override
   void initState() {
-    viewModel = BlocProvider.of(context);
+    mainViewModel = BlocProvider.of(context);
+    mainViewModel.isInCart = widget.isInCart;
     super.initState();
   }
 
@@ -88,7 +91,7 @@ class _WishListItemState extends State<WishListItem> {
                         onPressed: () {
                           setState(() {
                             widget.isLoading = true;
-                            viewModel.removeFromWishList(widget.product, false);
+                            mainViewModel.removeFromWishList(widget.product, false);
                           });
                         },
                         icon: widget.isLoading ?
@@ -124,25 +127,40 @@ class _WishListItemState extends State<WishListItem> {
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton(
-                      onPressed: (){
-                        // add item to cart
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryColor,
-                      ),
-                      child: Text(
-                        "Add to Cart",
-                        textAlign: TextAlign.start,
-                        style: GoogleFonts.poppins(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.white
-                        ),
-                      ),
-                    ),
+                  BlocBuilder<MainViewModel, MainStates>(
+                    bloc: mainViewModel,
+                    builder: (context, cartState) {
+                      if (cartState is CartIconLoadingState) {
+                        return Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
+                      }
+                      else {
+                        return Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton(
+                            onPressed: (){
+                              if (mainViewModel.isInCart) {
+                                mainViewModel.removeFromCart(widget.product.id ?? "", true);
+                              }
+                              else{
+                                mainViewModel.addToCart(widget.product.id ?? "", true, 1);
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryColor,
+                            ),
+                            child: Text(
+                              mainViewModel.isInCart ? "Remove from Cart" : "Add to Cart",
+                              textAlign: TextAlign.start,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.white
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ],
               ),

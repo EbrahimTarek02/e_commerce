@@ -30,6 +30,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   ProductDetailsViewModel viewModel = getIt<ProductDetailsViewModel>();
   late Product product;
   late bool isInWishList;
+  late bool isInCart;
 
   @override
   void initState() {
@@ -49,7 +50,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     List args = ModalRoute.of(context)!.settings.arguments as List;
     product =  args[0];
     isInWishList = args[1];
+    isInCart = args[2];
     mainViewModel.isInWishList = isInWishList;
+    mainViewModel.isInCart = isInCart;
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -70,6 +73,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             bloc: mainViewModel,
             builder: (context, wishIconState) {
               return Container(
+                padding: const EdgeInsets.only(right: 10),
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                 ),
@@ -151,7 +155,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.white,
                       shadowColor: AppColors.tabBarBackgroundColor,
-                      elevation: 3.0
+                      elevation: 3.0,
                   ),
                   icon:
                   wishIconState is WishIconLoadingState
@@ -172,16 +176,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
               );
             },
-          ),
-          IconButton(
-              onPressed: (){
-                // Navigate to cart screen
-              },
-              icon: const Icon(
-                Icons.shopping_cart_outlined,
-                color: AppColors.primaryColor,
-                size: 30,
-              )
           ),
         ],
       ),
@@ -472,31 +466,46 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         );
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: FloatingActionButton(
-                        onPressed: () {
-                          // Navigate to cart screen
-                        },
-                        backgroundColor: AppColors.primaryColor,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.add_shopping_cart,
-                              color: AppColors.white,
+                    BlocBuilder<MainViewModel, MainStates>(
+                      bloc: mainViewModel,
+                      builder: (context, cartState) {
+                        if (cartState is CartIconLoadingState) {
+                          return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
+                        }
+                        else {
+                          return Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: FloatingActionButton(
+                              onPressed: () {
+                                if (mainViewModel.isInCart) {
+                                  mainViewModel.removeFromCart(product.id ?? "", true);
+                                }
+                                else{
+                                  mainViewModel.addToCart(product.id ?? "", true, viewModel.productCount);
+                                }
+                              },
+                              backgroundColor: AppColors.primaryColor,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    mainViewModel.isInCart ? Icons.remove_shopping_cart_outlined : Icons.add_shopping_cart,
+                                    color: AppColors.white,
+                                  ),
+                                  const SizedBox(width: 20.0,),
+                                  Text(
+                                    mainViewModel.isInCart ? "Remove from Cart" : 'Add to Cart',
+                                    style: GoogleFonts.poppins(
+                                        color: AppColors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
                             ),
-                            const SizedBox(width: 20.0,),
-                            Text(
-                              'Add to Cart',
-                              style: GoogleFonts.poppins(
-                                  color: AppColors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ),
+                          );
+                        }
+                      },
                     ),
                   ],
                 ),

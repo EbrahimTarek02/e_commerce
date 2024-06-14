@@ -19,3 +19,5 @@ class MainErrorState extends MainStates {
 }
 
 class WishIconLoadingState extends MainStates {}
+
+class CartIconLoadingState extends MainStates {}
