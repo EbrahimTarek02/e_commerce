@@ -1,3 +1,4 @@
+import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/ui/screens/cart/cart_states.dart';
 import 'package:e_commerce/ui/screens/cart/cart_view_model.dart';
 import 'package:e_commerce/ui/screens/cart/widgets/cart_item.dart';
@@ -26,7 +27,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     mainViewModel = BlocProvider.of(context);
-    viewModel = BlocProvider.of(context);
+    viewModel = getIt<CartViewModel>();
     mainViewModel.getCart();
     super.initState();
   }
@@ -161,7 +162,7 @@ class _CartScreenState extends State<CartScreen> {
                             child: ListView.builder(
                               itemCount: MainViewModel.cartIDs.length,
                               itemBuilder: (context, index) {
-                                return CartItem(MainViewModel.cartProducts.toList()[index], cartState.data.cart.cartProducts[index].count);
+                                return CartItem(MainViewModel.cartProducts.toList()[index], cartState.data.cart.cartProducts[index].count, viewModel);
                               },
                             ),
                           ),

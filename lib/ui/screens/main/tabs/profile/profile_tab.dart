@@ -1,8 +1,10 @@
 import 'package:e_commerce/domain/di/di.dart';
+import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/profile_tab_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/edit_profile/edit_profile_tab.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfileTab extends StatefulWidget {
@@ -15,10 +17,12 @@ class ProfileTab extends StatefulWidget {
 class _ProfileTabState extends State<ProfileTab> {
 
   late ProfileTabViewModel viewModel;
+  late MainViewModel mainViewModel;
 
   @override
   void initState() {
     viewModel = getIt<ProfileTabViewModel>();
+    mainViewModel = BlocProvider.of(context);
     viewModel.getUser();
     super.initState();
   }
@@ -89,7 +93,7 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           const Spacer(),
           ElevatedButton(
-              onPressed: () {
+              onPressed: (){
                 viewModel.logout(context);
               },
               style: ElevatedButton.styleFrom(

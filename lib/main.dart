@@ -6,7 +6,6 @@ import 'package:e_commerce/ui/screens/authentication/forgot_password/verify_sent
 import 'package:e_commerce/ui/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:e_commerce/ui/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:e_commerce/ui/screens/cart/cart_screen.dart';
-import 'package:e_commerce/ui/screens/cart/cart_view_model.dart';
 import 'package:e_commerce/ui/screens/main/main_screen.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/edit_profile/edit_profile_tab.dart';
@@ -19,23 +18,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   configureDependencies();
-  runApp(MultiBlocProvider(
-      providers: [
+  runApp(
         BlocProvider(
           create: (context) => getIt<MainViewModel>(),
+          child: const MyApp(),
         ),
-        BlocProvider(
-          create: (context) => getIt<CartViewModel>(),
-        ),
-      ],
-      child: const MyApp())
   );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

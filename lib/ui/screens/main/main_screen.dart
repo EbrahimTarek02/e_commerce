@@ -33,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     mainViewModel = BlocProvider.of(context);
+    mainViewModel.changeBottomNavBarIndex(0);
     mainViewModel.getCart().then((_) {
       mainViewModel.getWishList().then((__) {
         mainViewModel.getAllProducts();
@@ -46,43 +47,40 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return BlocProvider(
-      create: (context) => mainViewModel,
-      child: BlocBuilder<MainViewModel, MainStates>(
-          bloc: mainViewModel,
-          builder: (context, state) {
-            return Scaffold(
+    return BlocBuilder<MainViewModel, MainStates>(
+        bloc: mainViewModel,
+        builder: (context, state) {
+          return Scaffold(
 
+              backgroundColor: AppColors.white,
+
+              appBar: AppBar(
                 backgroundColor: AppColors.white,
 
-                appBar: AppBar(
-                  backgroundColor: AppColors.white,
-
-                  title: Image.asset(
-                    AppAssets.appLogoBlue,
-                    fit: BoxFit.cover,
-                    height: MediaQuery.of(context).size.height * 0.037,
-                  ),
-                  actions: [
-                    IconButton(
-                        onPressed: (){
-                          Navigator.pushNamed(context, CartScreen.routeName);
-                        },
-                        icon: const Icon(
-                          Icons.shopping_cart_outlined,
-                          color: AppColors.primaryColor,
-                          size: 30,
-                        )
-                    )
-                  ],
+                title: Image.asset(
+                  AppAssets.appLogoBlue,
+                  fit: BoxFit.cover,
+                  height: MediaQuery.of(context).size.height * 0.037,
                 ),
+                actions: [
+                  IconButton(
+                      onPressed: (){
+                        Navigator.pushNamed(context, CartScreen.routeName);
+                      },
+                      icon: const Icon(
+                        Icons.shopping_cart_outlined,
+                        color: AppColors.primaryColor,
+                        size: 30,
+                      )
+                  )
+                ],
+              ),
 
-                body: screens[mainViewModel.currentIndex],
+              body: screens[mainViewModel.currentIndex],
 
-                bottomNavigationBar: CustomBottomNavBar(mainViewModel)
-            );
-          }
-      ),
+              bottomNavigationBar: CustomBottomNavBar(mainViewModel)
+          );
+        }
     );
   }
 }

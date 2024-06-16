@@ -14,8 +14,9 @@ class CartItem extends StatefulWidget {
   final CartProducts product;
   bool isLoading = false;
   int itemCount;
+  CartViewModel viewModel;
 
-  CartItem(this.product, this.itemCount, {Key? key}) : super(key: key);
+  CartItem(this.product, this.itemCount, this.viewModel, {Key? key}) : super(key: key);
 
   @override
   State<CartItem> createState() => _CartItemState();
@@ -24,12 +25,12 @@ class CartItem extends StatefulWidget {
 class _CartItemState extends State<CartItem> {
 
   late MainViewModel mainViewModel;
-  late CartViewModel viewModel;
+  // late CartViewModel viewModel;
 
   @override
   void initState() {
     mainViewModel = BlocProvider.of(context);
-    viewModel = BlocProvider.of(context);
+    // viewModel = BlocProvider.of(context);
     super.initState();
   }
 
@@ -140,7 +141,7 @@ class _CartItemState extends State<CartItem> {
                                 if (widget.itemCount > 1) {
                                   widget.itemCount--;
                                   CartViewModel.updatedProducts[widget.product.product.id!] = widget.itemCount;
-                                  viewModel.reducePrice(widget.product.price ?? 0);
+                                  widget.viewModel.reducePrice(widget.product.price ?? 0);
                                 }
                               });
                             },
@@ -153,7 +154,7 @@ class _CartItemState extends State<CartItem> {
                             )
                         ),
                         BlocBuilder<CartViewModel, CartStates>(
-                          bloc: viewModel,
+                          bloc: widget.viewModel,
                           builder: (context, cartState) {
                             return Text(
                               "${widget.itemCount}",
@@ -172,7 +173,7 @@ class _CartItemState extends State<CartItem> {
                               setState(() {
                                 widget.itemCount++;
                                 CartViewModel.updatedProducts[widget.product.product.id!] = widget.itemCount;
-                                viewModel.increasePrice(widget.product.price ?? 0);
+                                widget.viewModel.increasePrice(widget.product.price ?? 0);
                               });
                             },
                             padding: EdgeInsets.zero,
