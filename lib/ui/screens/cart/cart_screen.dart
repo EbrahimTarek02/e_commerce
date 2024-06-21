@@ -4,6 +4,7 @@ import 'package:e_commerce/ui/screens/cart/cart_view_model.dart';
 import 'package:e_commerce/ui/screens/cart/widgets/cart_item.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
+import 'package:e_commerce/ui/shared_widgets/loading_widget.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,26 +44,7 @@ class _CartScreenState extends State<CartScreen> {
         bloc: viewModel,
         listener: (context, state) {
           if (state is CartLoadingState) {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text(
-                    "Loading",
-                    style: GoogleFonts.poppins(
-                        color: AppColors.primaryColor,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600
-                    ),
-                  ),
-                  content: SizedBox(
-                      height: MediaQuery.sizeOf(context).height * 0.05,
-                      width: MediaQuery.sizeOf(context).width * 0.05,
-                      child: const Center(child: CircularProgressIndicator()))
-                );
-              }
-            );
+            LoadingWidget.showLoading(context);
           }
           else if (state is CartErrorState) {
             Navigator.pop(context);

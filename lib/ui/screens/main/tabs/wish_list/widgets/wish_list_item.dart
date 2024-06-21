@@ -3,6 +3,7 @@ import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/product_details/product_details_screen.dart';
+import 'package:e_commerce/ui/shared_widgets/loading_widget.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ import 'package:google_fonts/google_fonts.dart';
 class WishListItem extends StatefulWidget {
   final Product product;
   bool isInCart;
-  bool isLoading = false;
 
   WishListItem(this.product, this.isInCart, {Key? key}) : super(key: key);
 
@@ -90,18 +90,13 @@ class _WishListItemState extends State<WishListItem> {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            widget.isLoading = true;
-                            mainViewModel.removeFromWishList(widget.product, false);
+                            mainViewModel.removeFromWishList(widget.product, false).then((_){
+                              Navigator.pop(context);
+                            });
+                            LoadingWidget.showLoading(context);
                           });
                         },
-                        icon: widget.isLoading ?
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                          width: MediaQuery.of(context).size.width * 0.03,
-                          child: const CircularProgressIndicator(color: AppColors.primaryColor,),
-                        )
-                        :
-                        const ImageIcon(
+                        icon: const ImageIcon(
                           AssetImage(
                             AppAssets.inWishListIcon
                           ),
@@ -130,19 +125,21 @@ class _WishListItemState extends State<WishListItem> {
                   BlocBuilder<MainViewModel, MainStates>(
                     bloc: mainViewModel,
                     builder: (context, cartState) {
-                      if (cartState is CartIconLoadingState) {
-                        return Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
-                      }
-                      else {
                         return Align(
                           alignment: Alignment.centerRight,
                           child: ElevatedButton(
                             onPressed: (){
                               if (mainViewModel.isInCart) {
-                                mainViewModel.removeFromCart(widget.product.id ?? "", true);
+                                mainViewModel.removeFromCart(widget.product.id ?? "", true).then((_) {
+                                  Navigator.pop(context);
+                                });
+                                LoadingWidget.showLoading(context);
                               }
                               else{
-                                mainViewModel.addToCart(widget.product.id ?? "", true, 1);
+                                mainViewModel.addToCart(widget.product.id ?? "", true, 1).then((_) {
+                                  Navigator.pop(context);
+                                });
+                                LoadingWidget.showLoading(context);
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -159,7 +156,6 @@ class _WishListItemState extends State<WishListItem> {
                             ),
                           ),
                         );
-                      }
                     },
                   ),
                 ],

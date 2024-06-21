@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/product_details/product_details_screen.dart';
+import 'package:e_commerce/ui/shared_widgets/loading_widget.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +15,8 @@ class ProductItem extends StatefulWidget {
   final bool isVertical;
   final bool isInWishList;
   final bool isInCart;
-  bool isLoading = false;
-  bool cartIconIsLoading = false;
 
-  ProductItem(this.product, this.isVertical, this.isInWishList, this.isInCart,
+  const ProductItem(this.product, this.isVertical, this.isInWishList, this.isInCart,
       {Key? key})
       : super(key: key);
 
@@ -89,88 +88,24 @@ class _ProductItemState extends State<ProductItem> {
                   child: IconButton(
                     onPressed: () {
                       if (widget.isInWishList) {
-                        setState(() {
-                          widget.isLoading = true;
-                          mainViewModel.removeFromWishList(
-                              widget.product, false);
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: AppColors.red,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              behavior: SnackBarBehavior.floating,
-                              margin: const EdgeInsets.only(
-                                  bottom: 14.0, right: 20.0, left: 20.0),
-                              content: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.clear,
-                                    color: AppColors.white,
-                                  ),
-                                  const SizedBox(
-                                    width: 4.0,
-                                  ),
-                                  Text(
-                                    'Product Removed Successfully',
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.white),
-                                  ),
-                                ],
-                              )));
+                        mainViewModel.removeFromWishList(
+                            widget.product, false).then((_) {
+                          Navigator.pop(context);
                         });
+                        LoadingWidget.showLoading(context);
                       }
                       else {
-                        setState(() {
-                          widget.isLoading = true;
-                          mainViewModel.addToWishList(widget.product, false);
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: AppColors.green,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              behavior: SnackBarBehavior.floating,
-                              margin: const EdgeInsets.only(
-                                  bottom: 10.0, right: 20.0, left: 20.0),
-                              content: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.check,
-                                    color: AppColors.white,
-                                  ),
-                                  const SizedBox(
-                                    width: 4.0,
-                                  ),
-                                  Text(
-                                    'Product Added Successfully',
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.white),
-                                  ),
-                                ],
-                              )));
+                        mainViewModel.addToWishList(widget.product, false).then((_){
+                          Navigator.pop(context);
                         });
+                        LoadingWidget.showLoading(context);
                       }
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.white,
                         shadowColor: AppColors.tabBarBackgroundColor,
                         elevation: 3.0),
-                    icon: widget.isLoading
-                        ? SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.018,
-                            width: MediaQuery.of(context).size.width * 0.03,
-                            child: const CircularProgressIndicator(
-                              color: AppColors.primaryColor,
-                            ),
-                          )
-                        : ImageIcon(
+                    icon: ImageIcon(
                             AssetImage(
                               widget.isInWishList
                                   ? AppAssets.inWishListIcon
@@ -235,90 +170,19 @@ class _ProductItemState extends State<ProductItem> {
                   IconButton(
                       onPressed: () {
                         if (widget.isInCart) {
-                          setState(() {
-                            widget.cartIconIsLoading = true;
-                            mainViewModel.removeFromCart(widget.product.id ?? "", false);
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                backgroundColor: AppColors.red,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                ),
-                                behavior: SnackBarBehavior.floating,
-                                margin: const EdgeInsets.only(
-                                    bottom: 14.0, right: 20.0, left: 20.0),
-                                content: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.clear,
-                                      color: AppColors.white,
-                                    ),
-                                    const SizedBox(
-                                      width: 4.0,
-                                    ),
-                                    Text(
-                                      'Product Removed Successfully',
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.w400,
-                                          color: AppColors.white),
-                                    ),
-                                  ],
-                                )));
+                          mainViewModel.removeFromCart(widget.product.id ?? "", false).then((_) {
+                            Navigator.pop(context);
                           });
+                          LoadingWidget.showLoading(context);
                         }
                         else {
-                          setState(() {
-                            widget.cartIconIsLoading = true;
-                            mainViewModel.addToCart(widget.product.id ?? "", false, 1);
-                            ScaffoldMessenger.of(context)
-                                .hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    backgroundColor: AppColors.green,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(16.0),
-                                    ),
-                                    behavior: SnackBarBehavior.floating,
-                                    margin: const EdgeInsets.only(
-                                        bottom: 10.0,
-                                        right: 20.0,
-                                        left: 20.0),
-                                    content: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.check,
-                                          color: AppColors.white,
-                                        ),
-                                        const SizedBox(
-                                          width: 4.0,
-                                        ),
-                                        Text(
-                                          'Added To Cart',
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.w400,
-                                              color: AppColors.white),
-                                        ),
-                                      ],
-                                    )));
+                          mainViewModel.addToCart(widget.product.id ?? "", false, 1).then((_) {
+                            Navigator.pop(context);
                           });
+                          LoadingWidget.showLoading(context);
                         }
                       },
-                    icon: widget.cartIconIsLoading
-                        ? SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.018,
-                      width: MediaQuery.of(context).size.width * 0.03,
-                      child: const CircularProgressIndicator(
-                        color: AppColors.primaryColor,
-                      ),
-                    )
-                        :
-                    Icon(
+                    icon: Icon(
                             widget.isInCart ? Icons.check_circle : Icons.add_circle,
                             color: AppColors.primaryColor,
                             size: 26,

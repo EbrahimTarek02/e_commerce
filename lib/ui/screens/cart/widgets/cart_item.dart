@@ -3,6 +3,7 @@ import 'package:e_commerce/data/model/cart_response/cart_response_DM.dart';
 import 'package:e_commerce/ui/screens/cart/cart_states.dart';
 import 'package:e_commerce/ui/screens/cart/cart_view_model.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
+import 'package:e_commerce/ui/shared_widgets/loading_widget.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -87,18 +88,12 @@ class _CartItemState extends State<CartItem> {
                     const Spacer(),
                     IconButton(
                       onPressed: () {
-                        setState(() {
-                          widget.isLoading = true;
-                          mainViewModel.removeFromCart(widget.product.product?.id ?? "", false);
+                        mainViewModel.removeFromCart(widget.product.product?.id ?? "", false).then((_) {
+                          Navigator.pop(context);
                         });
+                        LoadingWidget.showLoading(context);
                       },
-                      icon: widget.isLoading ?
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                        width: MediaQuery.of(context).size.width * 0.03,
-                        child: const CircularProgressIndicator(color: AppColors.primaryColor,),
-                      )
-                          :
+                      icon:
                       const ImageIcon(
                         AssetImage(
                             AppAssets.deleteIcon

@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:e_commerce/data/model/authentication_response/authentication_response.dart';
 import 'package:e_commerce/data/model/cart_response/cart_response_DM.dart';
 import 'package:e_commerce/data/utils/shared_prefs_utils.dart';
 import 'package:e_commerce/domain/repos/cart_repos/cart_repo_ds.dart';
@@ -9,6 +9,11 @@ import 'package:injectable/injectable.dart';
 
 @Injectable(as: CartRepoDS)
 class CartRepoDSImpl extends CartRepoDS {
+
+  SharedPrefsUtils sharedPrefsUtils;
+
+  CartRepoDSImpl(this.sharedPrefsUtils);
+
   @override
   Future<Either<String, CartResponseDm>> getCart() async{
     String baseUrl = "ecommerce.routemisr.com";
@@ -31,6 +36,12 @@ class CartRepoDSImpl extends CartRepoDS {
       CartResponseDm cartResponseDm = CartResponseDm.fromJson(jsonDecode(response.body));
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
+        User? user = await sharedPrefsUtils.getUser();
+        if (user != null) {
+          user.role = cartResponseDm.cart!.cartOwner;
+          sharedPrefsUtils.setUser(user);
+        }
+
         return Right(cartResponseDm);
       }
       else {

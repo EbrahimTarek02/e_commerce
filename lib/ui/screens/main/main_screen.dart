@@ -34,13 +34,6 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     mainViewModel = BlocProvider.of(context);
     mainViewModel.changeBottomNavBarIndex(0);
-    mainViewModel.getCart().then((_) {
-      mainViewModel.getWishList().then((__) {
-        mainViewModel.getAllProducts();
-        mainViewModel.getAllCategories();
-        mainViewModel.getAllBrands();
-      });
-    });
     super.initState();
   }
 
