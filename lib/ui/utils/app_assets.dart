@@ -11,4 +11,6 @@ class AppAssets{
   static const String profileTabIcon = '${imagesPath}profile_icon.png';
   static const String inWishListIcon = '${imagesPath}in_wish_list_icon.png';
   static const String deleteIcon = '${imagesPath}delete_icon.png';
+  static const String mapsIcon = '${imagesPath}map.jpeg';
+  static const String addManuallyIcon = '${imagesPath}add_manually_icon.jpg';
 }

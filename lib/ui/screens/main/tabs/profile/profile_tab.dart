@@ -1,6 +1,7 @@
 import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/profile_tab_view_model.dart';
+import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/addresses/addresses_tab.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/edit_profile/edit_profile_tab.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,9 @@ class _ProfileTabState extends State<ProfileTab> {
               )
           ),
           TextButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.pushNamed(context, AddressesTab.routeName);
+              },
               style: ElevatedButton.styleFrom(
                 alignment: AlignmentDirectional.centerStart,
               ),
