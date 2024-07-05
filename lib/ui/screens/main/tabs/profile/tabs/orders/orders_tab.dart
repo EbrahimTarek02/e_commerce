@@ -1,4 +1,6 @@
+import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OrdersTab extends StatelessWidget {
 
@@ -8,6 +10,20 @@ class OrdersTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Placeholder();
+    return Scaffold(
+
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: AppColors.primaryColor),
+        title: Text(
+          "Orders",
+          style: GoogleFonts.poppins(
+              color: AppColors.primaryColor,
+              fontSize: 20,
+              fontWeight: FontWeight.w500
+          ),
+        ),
+      ),
+
+    );
   }
 }

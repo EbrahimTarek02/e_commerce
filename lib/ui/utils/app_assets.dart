@@ -13,4 +13,10 @@ class AppAssets{
   static const String deleteIcon = '${imagesPath}delete_icon.png';
   static const String mapsIcon = '${imagesPath}map.jpeg';
   static const String addManuallyIcon = '${imagesPath}add_manually_icon.jpg';
+  static const String mezaLogo = '${imagesPath}meza_logo.png';
+  static const String masterCardLogo = '${imagesPath}master_card_logo.png';
+  static const String visaLogo = '${imagesPath}visa_logo.png';
+  static const String payWitCodeIcon = '${imagesPath}pay_with_code_icon.png';
+  static const String cashOnDeliveryIcon = '${imagesPath}cash_on_delivery_icon.jpg';
+  static const String barcodeIcon = '${imagesPath}barcode_icon.png';
 }

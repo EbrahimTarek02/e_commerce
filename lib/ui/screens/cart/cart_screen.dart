@@ -2,6 +2,7 @@ import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/ui/screens/cart/cart_states.dart';
 import 'package:e_commerce/ui/screens/cart/cart_view_model.dart';
 import 'package:e_commerce/ui/screens/cart/widgets/cart_item.dart';
+import 'package:e_commerce/ui/screens/checkout/checkout_screen.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/shared_widgets/loading_widget.dart';
@@ -37,7 +38,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        viewModel.updateCartCounter();
+        viewModel.updateCartCounter(true);
         return Future.value(false);
       },
       child: BlocListener<CartViewModel, CartStates>(
@@ -93,7 +94,7 @@ class _CartScreenState extends State<CartScreen> {
                 }
             );
           }
-          else if (state is CartSuccessState){
+          else if (state is CartSuccessState && viewModel.popBack){
             Navigator.pop(context);
             Navigator.pop(context);
           }
@@ -117,8 +118,8 @@ class _CartScreenState extends State<CartScreen> {
               bloc: mainViewModel,
               builder: (context, cartState) {
                 if (cartState is MainSuccessState) {
-                  viewModel.totalPrice = cartState.data.cart?.totalCartPrice;
-                  if (cartState.data.numOfCartItems <= 0){
+                  viewModel.subTotalPrice = cartState.data.cart?.totalCartPrice ?? 0;
+                  if (cartState.data.cart.cartProducts.length == 0){
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
                       child: Center(
@@ -135,87 +136,193 @@ class _CartScreenState extends State<CartScreen> {
                     );
                   }
                   else {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            flex: 85,
-                            child: ListView.builder(
-                              itemCount: MainViewModel.cartIDs.length,
-                              itemBuilder: (context, index) {
-                                return CartItem(MainViewModel.cartProducts.toList()[index], cartState.data.cart.cartProducts[index].count, viewModel);
-                              },
-                            ),
+                    return Column(
+                      children: [
+                        Expanded(
+                          flex: 70,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            itemCount: MainViewModel.cartIDs.length,
+                            itemBuilder: (context, index) {
+                              return CartItem(MainViewModel.cartProducts.toList()[index], cartState.data.cart.cartProducts[index].count, viewModel);
+                            },
                           ),
-                          Expanded(
-                            flex: 15,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                        Expanded(
+                          flex: 30,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: BlocBuilder<CartViewModel, CartStates>(
+                              bloc: viewModel,
+                              builder: (context, state) {
+                                return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      "Total Price",
-                                      textAlign: TextAlign.start,
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.w500,
-                                          color: AppColors.primaryColor
-                                      ),
-                                    ),
-                                    BlocBuilder<CartViewModel, CartStates>(
-                                      bloc: viewModel,
-                                      builder: (context, _) {
-                                        return Text(
-                                          "EGP ${viewModel.totalPrice}",
-                                          textAlign: TextAlign.start,
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Sub Total",
                                           style: GoogleFonts.poppins(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.primaryColor
+                                              color: AppColors.primaryColor,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500
                                           ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const Spacer(),
+                                        SizedBox(
+                                          width: MediaQuery.sizeOf(context).width * 0.4,
+                                          child: Text(
+                                            viewModel.subTotalPrice.toString(),
+                                            style: GoogleFonts.poppins(
+                                                color: AppColors.primaryColor,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.end,
+                                          ),
+                                        ),
+                                        Text(
+                                          " EGP",
+                                          style: GoogleFonts.poppins(
+                                              color: AppColors.primaryColor,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Shipping Fee",
+                                          style: GoogleFonts.poppins(
+                                              color: AppColors.primaryColor,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const Spacer(),
+                                        SizedBox(
+                                          width: MediaQuery.sizeOf(context).width * 0.4,
+                                          child: Text(
+                                            viewModel.calculateShippingPrice().toString(),
+                                            style: GoogleFonts.poppins(
+                                                color: AppColors.primaryColor,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.end,
+                                          ),
+                                        ),
+                                        Text(
+                                          " EGP",
+                                          style: GoogleFonts.poppins(
+                                              color: AppColors.primaryColor,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
+                                    LayoutBuilder(
+                                      builder: (BuildContext context, BoxConstraints constraints) {
+                                        return Flex(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          direction: Axis.horizontal,
+                                          children: List.generate(viewModel.calculateDashCount(constraints), (_) {
+                                            return SizedBox(
+                                              width: 10.0,
+                                              height: 1.0,
+                                              child: DecoratedBox(
+                                                decoration: BoxDecoration(color: AppColors.primaryColor.withOpacity(0.5)),
+                                              ),
+                                            );
+                                          }),
                                         );
                                       },
                                     ),
-                                  ],
-                                ),
-                                ElevatedButton(
-                                  onPressed: (){},
-                                  style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.all(15.0),
-                                      backgroundColor: AppColors.primaryColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20.0),
-                                      )
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        "Check Out",
-                                        textAlign: TextAlign.start,
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 14.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: AppColors.white
+                                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Total Price",
+                                          style: GoogleFonts.poppins(
+                                              color: AppColors.primaryColor,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600
+                                          ),
+                                          textAlign: TextAlign.center,
                                         ),
-                                        overflow: TextOverflow.ellipsis,
+                                        const Spacer(),
+                                        SizedBox(
+                                          width: MediaQuery.sizeOf(context).width * 0.4,
+                                          child: Text(
+                                            viewModel.calculateTotalPrice().toString(),
+                                            style: GoogleFonts.poppins(
+                                                color: AppColors.primaryColor,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.end,
+                                          ),
+                                        ),
+                                        Text(
+                                          " EGP",
+                                          style: GoogleFonts.poppins(
+                                              color: AppColors.primaryColor,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
+                                    ElevatedButton(
+                                      onPressed: (){
+                                        viewModel.updateCartCounter(false).then((_) {
+                                          Navigator.popAndPushNamed(context, CheckoutScreen.routeName, arguments: [viewModel.subTotalPrice, cartState.data.cart.id]);
+                                        });
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                          backgroundColor: AppColors.primaryColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(20.0),
+                                          )
                                       ),
-                                      const SizedBox(width: 20.0,),
-                                      const Icon(
-                                        Icons.arrow_forward,
-                                        color: AppColors.white,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Check Out",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppColors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 20.0,),
+                                          const Icon(
+                                            Icons.arrow_forward,
+                                            color: AppColors.white,
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                    ),
+                                  ],
+                                );
+                              },
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     );
                   }
                 }

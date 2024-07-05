@@ -9,18 +9,24 @@ class LoadingWidget {
         barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
-              title: Text(
-                "Loading",
-                style: GoogleFonts.poppins(
-                    color: AppColors.primaryColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600
-                ),
-              ),
-              content: SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 0.05,
-                  width: MediaQuery.sizeOf(context).width * 0.05,
-                  child: const Center(child: CircularProgressIndicator()))
+              content: Row(
+                children: [
+                  SizedBox(
+                      height: MediaQuery.sizeOf(context).height * 0.05,
+                      width: MediaQuery.sizeOf(context).width * 0.07,
+                      child: const Center(child: CircularProgressIndicator())
+                  ),
+                  const SizedBox(width: 20.0,),
+                  Text(
+                    "Loading",
+                    style: GoogleFonts.poppins(
+                        color: AppColors.primaryColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600
+                    ),
+                  )
+                ],
+              )
           );
         }
     );

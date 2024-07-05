@@ -178,6 +178,9 @@ class MainViewModel extends Cubit<MainStates> {
   Future<void> getCart() async{
     emit(MainLoadingState());
 
+    cartIDs.clear();
+    cartProducts.clear();
+
     Either<String, CartResponseDm> response = await getCartUseCase.getCart();
 
     response.fold((error) {

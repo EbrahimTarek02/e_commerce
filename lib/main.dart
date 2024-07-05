@@ -9,6 +9,7 @@ import 'package:e_commerce/ui/screens/authentication/sign_in/sign_in_screen.dart
 import 'package:e_commerce/ui/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:e_commerce/ui/screens/cart/cart_screen.dart';
 import 'package:e_commerce/ui/screens/cart/cart_view_model.dart';
+import 'package:e_commerce/ui/screens/checkout/checkout_screen.dart';
 import 'package:e_commerce/ui/screens/main/main_screen.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/addresses/addresses_tab.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
         AddNewAddressManually.routeName : (_) => const AddNewAddressManually(),
         AddNewAddressUsingMap.routeName : (_) => const AddNewAddressUsingMap(),
         OrdersTab.routeName : (_) => const OrdersTab(),
+        CheckoutScreen.routeName : (_) => const CheckoutScreen(),
       },
     );
   }

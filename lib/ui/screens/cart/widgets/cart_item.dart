@@ -26,12 +26,10 @@ class CartItem extends StatefulWidget {
 class _CartItemState extends State<CartItem> {
 
   late MainViewModel mainViewModel;
-  // late CartViewModel viewModel;
 
   @override
   void initState() {
     mainViewModel = BlocProvider.of(context);
-    // viewModel = BlocProvider.of(context);
     super.initState();
   }
 
@@ -88,10 +86,10 @@ class _CartItemState extends State<CartItem> {
                     const Spacer(),
                     IconButton(
                       onPressed: () {
+                        LoadingWidget.showLoading(context);
                         mainViewModel.removeFromCart(widget.product.product?.id ?? "", false).then((_) {
                           Navigator.pop(context);
                         });
-                        LoadingWidget.showLoading(context);
                       },
                       icon:
                       const ImageIcon(
