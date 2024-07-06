@@ -15,6 +15,7 @@ import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/addresses/addresses_tab.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/edit_profile/edit_profile_tab.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/orders/orders_tab.dart';
+import 'package:e_commerce/ui/screens/order_details/order_details_screen.dart';
 import 'package:e_commerce/ui/screens/product_details/product_details_screen.dart';
 import 'package:e_commerce/ui/screens/products_of_category/products_of_category_screen.dart';
 import 'package:e_commerce/ui/screens/splash/splash_screen.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
         AddNewAddressUsingMap.routeName : (_) => const AddNewAddressUsingMap(),
         OrdersTab.routeName : (_) => const OrdersTab(),
         CheckoutScreen.routeName : (_) => const CheckoutScreen(),
+        OrderDetailsScreen.routeName : (_) => OrderDetailsScreen(),
       },
     );
   }

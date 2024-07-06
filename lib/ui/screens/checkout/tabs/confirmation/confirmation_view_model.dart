@@ -1,4 +1,4 @@
-import 'package:e_commerce/data/model/orders_response/checkout_response.dart';
+import 'package:e_commerce/data/model/checkout_response/checkout_response.dart';
 import 'package:e_commerce/domain/use_cases/checkout_use_cases/checkout_use_case.dart';
 import 'package:e_commerce/ui/screens/checkout/tabs/confirmation/confirmation_states.dart';
 import 'package:either_dart/either.dart';

@@ -1,5 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:e_commerce/data/model/orders_response/checkout_response.dart';
+import 'package:e_commerce/data/model/checkout_response/checkout_response.dart';
 import 'package:e_commerce/domain/repos/checkout_repos/checkout_repo.dart';
 import 'package:e_commerce/domain/repos/checkout_repos/checkout_repo_ds.dart';
 import 'package:either_dart/either.dart';

@@ -83,20 +83,6 @@ class _ProfileTabState extends State<ProfileTab> {
                 ),
               )
           ),
-          TextButton(
-              onPressed: (){},
-              style: ElevatedButton.styleFrom(
-                alignment: AlignmentDirectional.centerStart,
-              ),
-              child: Text(
-                "Payment",
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryColor,
-                ),
-              )
-          ),
           const Spacer(),
           ElevatedButton(
               onPressed: (){
@@ -105,9 +91,10 @@ class _ProfileTabState extends State<ProfileTab> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,
                   elevation: 0.0,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15))),
+                      borderRadius: BorderRadius.circular(15)
+                  )),
               child: Text(
                 'Logout',
                 style: GoogleFonts.poppins(

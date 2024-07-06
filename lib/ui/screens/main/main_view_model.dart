@@ -187,7 +187,7 @@ class MainViewModel extends Cubit<MainStates> {
       emit(MainErrorState(error));
     }, (success) {
       for (CartProducts cartProduct in success.cart!.cartProducts!) {
-        cartIDs.add(cartProduct.product!.id!);
+        cartIDs.add(cartProduct.product!.orderID!);
       }
       cartProducts = success.cart!.cartProducts!.toSet();
       emit(MainSuccessState<CartResponseDm>(success));
