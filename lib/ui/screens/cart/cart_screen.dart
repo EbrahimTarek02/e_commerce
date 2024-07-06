@@ -287,7 +287,7 @@ class _CartScreenState extends State<CartScreen> {
                                     ElevatedButton(
                                       onPressed: (){
                                         viewModel.updateCartCounter(false).then((_) {
-                                          Navigator.popAndPushNamed(context, CheckoutScreen.routeName, arguments: [viewModel.subTotalPrice, cartState.data.cart.orderID]);
+                                          Navigator.popAndPushNamed(context, CheckoutScreen.routeName, arguments: [viewModel.subTotalPrice, cartState.data.cart.id]);
                                         });
                                       },
                                       style: ElevatedButton.styleFrom(

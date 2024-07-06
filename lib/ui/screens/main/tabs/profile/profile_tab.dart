@@ -39,69 +39,82 @@ class _ProfileTabState extends State<ProfileTab> {
             onPressed: (){
               Navigator.pushNamed(context, EditProfileTab.routeName);
             },
-              style: ElevatedButton.styleFrom(
-                alignment: AlignmentDirectional.centerStart,
-              ),
-            child: Text(
-              "Profile",
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: AppColors.primaryColor,
-              ),
-            )
-          ),
-          TextButton(
-              onPressed: (){
-                Navigator.pushNamed(context, OrdersTab.routeName);
-              },
-              style: ElevatedButton.styleFrom(
-                alignment: AlignmentDirectional.centerStart,
-              ),
-              child: Text(
-                "Orders",
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryColor,
+            child: Row(
+              children: [
+                const Icon(Icons.person_outline),
+                SizedBox(width: MediaQuery.sizeOf(context).width * 0.03,),
+                Text(
+                  "Profile",
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryColor,
+                  ),
                 ),
-              )
+                const Spacer(),
+                const Icon(Icons.arrow_forward_ios),
+              ],
+            )
           ),
           TextButton(
               onPressed: (){
                 Navigator.pushNamed(context, AddressesTab.routeName);
               },
-              style: ElevatedButton.styleFrom(
-                alignment: AlignmentDirectional.centerStart,
-              ),
-              child: Text(
-                "Addresses",
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryColor,
-                ),
+              child: Row(
+                children: [
+                  const Icon(Icons.home_outlined),
+                  SizedBox(width: MediaQuery.sizeOf(context).width * 0.03,),
+                  Text(
+                    "Addresses",
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const Spacer(),
+                  const Icon(Icons.arrow_forward_ios),
+                ],
               )
           ),
-          const Spacer(),
-          ElevatedButton(
+          TextButton(
+              onPressed: (){
+                Navigator.pushNamed(context, OrdersTab.routeName);
+              },
+              child: Row(
+                children: [
+                  const Icon(Icons.shopping_bag_outlined),
+                  SizedBox(width: MediaQuery.sizeOf(context).width * 0.03,),
+                  Text(
+                    "Orders",
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const Spacer(),
+                  const Icon(Icons.arrow_forward_ios),
+                ],
+              )
+          ),
+          TextButton(
               onPressed: (){
                 viewModel.logout(context);
               },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryColor,
-                  elevation: 0.0,
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)
-                  )),
-              child: Text(
-                'Logout',
-                style: GoogleFonts.poppins(
-                    color: AppColors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600
-                ),
+              child: Row(
+                children: [
+                  const Icon(Icons.logout),
+                  SizedBox(width: MediaQuery.sizeOf(context).width * 0.03,),
+                  Text(
+                    "Logout",
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ],
               )
           ),
         ],

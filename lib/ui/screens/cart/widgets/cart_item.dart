@@ -87,7 +87,7 @@ class _CartItemState extends State<CartItem> {
                     IconButton(
                       onPressed: () {
                         LoadingWidget.showLoading(context);
-                        mainViewModel.removeFromCart(widget.product.product?.orderID ?? "", false).then((_) {
+                        mainViewModel.removeFromCart(widget.product.product?.id ?? "", false).then((_) {
                           Navigator.pop(context);
                         });
                       },
@@ -133,7 +133,7 @@ class _CartItemState extends State<CartItem> {
                               setState(() {
                                 if (widget.itemCount > 1) {
                                   widget.itemCount--;
-                                  CartViewModel.updatedProducts[widget.product.product.orderID!] = widget.itemCount;
+                                  CartViewModel.updatedProducts[widget.product.product.id!] = widget.itemCount;
                                   widget.viewModel.reducePrice(widget.product.price ?? 0);
                                 }
                               });
@@ -165,7 +165,7 @@ class _CartItemState extends State<CartItem> {
                             onPressed: (){
                               setState(() {
                                 widget.itemCount++;
-                                CartViewModel.updatedProducts[widget.product.product.orderID!] = widget.itemCount;
+                                CartViewModel.updatedProducts[widget.product.product.id!] = widget.itemCount;
                                 widget.viewModel.increasePrice(widget.product.price ?? 0);
                               });
                             },

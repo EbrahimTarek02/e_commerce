@@ -223,7 +223,7 @@ class EditProfileTab extends StatelessWidget {
                       viewModel: viewModel,
                       isEnabled: viewModel.isEnabled,
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.13),
                     state is AuthenticationLoadingState ?
                     const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,))
                     :

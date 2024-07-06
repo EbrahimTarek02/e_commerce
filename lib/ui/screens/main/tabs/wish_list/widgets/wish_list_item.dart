@@ -129,24 +129,24 @@ class _WishListItemState extends State<WishListItem> {
                           alignment: Alignment.centerRight,
                           child: ElevatedButton(
                             onPressed: (){
-                              if (mainViewModel.isInCart) {
+                              if (mainViewModel.isInCart && widget.isInCart) {
+                                LoadingWidget.showLoading(context);
                                 mainViewModel.removeFromCart(widget.product.id ?? "", true).then((_) {
                                   Navigator.pop(context);
                                 });
-                                LoadingWidget.showLoading(context);
                               }
                               else{
+                                LoadingWidget.showLoading(context);
                                 mainViewModel.addToCart(widget.product.id ?? "", true, 1).then((_) {
                                   Navigator.pop(context);
                                 });
-                                LoadingWidget.showLoading(context);
                               }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primaryColor,
                             ),
                             child: Text(
-                              mainViewModel.isInCart ? "Remove from Cart" : "Add to Cart",
+                              mainViewModel.isInCart && widget.isInCart ? "Remove from Cart" : "Add to Cart",
                               textAlign: TextAlign.start,
                               style: GoogleFonts.poppins(
                                   fontSize: 14.0,
