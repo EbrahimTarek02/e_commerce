@@ -37,27 +37,37 @@ class _CartItemState extends State<CartItem> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(right: 10.0),
-      margin: const EdgeInsets.only(bottom: 24.0),
+      margin: const EdgeInsets.symmetric(vertical: 12.0),
+      height: MediaQuery.sizeOf(context).height * 0.15,
       decoration: BoxDecoration(
-        border: Border.all(
-            color: AppColors.primaryColor,
-            width: 2
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadowColor,
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          )
+        ],
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CachedNetworkImage(
               imageUrl: widget.product.product?.imageCover ?? "",
               height: MediaQuery.of(context).size.height * 0.2,
-              width: MediaQuery.of(context).size.width * 0.35,
+              width: MediaQuery.of(context).size.width * 0.32,
               imageBuilder: (context, imageProvider) => Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: imageProvider,
                     fit: BoxFit.fill,
                   ),
-                  borderRadius: BorderRadius.circular(14.0),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(14.0),
+                    bottomLeft: Radius.circular(14.0),
+                  ),
                 ),
               ),
               progressIndicatorBuilder: (_, __, ___) => const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),),
@@ -71,16 +81,17 @@ class _CartItemState extends State<CartItem> {
                 Row(
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.33,
+                      width: MediaQuery.of(context).size.width * 0.35,
                       child: Text(
                         widget.product.product?.title ?? "product title",
                         textAlign: TextAlign.start,
                         style: GoogleFonts.poppins(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w600,
                             color: AppColors.primaryColor
                         ),
                         overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                       ),
                     ),
                     const Spacer(),
@@ -94,8 +105,9 @@ class _CartItemState extends State<CartItem> {
                       icon:
                       const ImageIcon(
                         AssetImage(
-                            AppAssets.deleteIcon
+                            AppAssets.deleteIcon,
                         ),
+                        size: 18,
                         color: AppColors.primaryColor,
                       ),
                       padding: const EdgeInsets.all(5.0),
@@ -109,78 +121,96 @@ class _CartItemState extends State<CartItem> {
                   ],
                 ),
                 Text(
-                  "EGP ${widget.product.price ?? "product price"}",
+                  widget.product.product?.brand.name ?? "product brand",
                   textAlign: TextAlign.start,
                   style: GoogleFonts.poppins(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w700,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w600,
                       color: AppColors.primaryColor
                   ),
                   overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        color: AppColors.primaryColor
+                const Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "${widget.product.price ?? "product price"} EGP",
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.poppins(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryColor
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                            onPressed: (){
-                              setState(() {
-                                if (widget.itemCount > 1) {
-                                  widget.itemCount--;
-                                  CartViewModel.updatedProducts[widget.product.product.id!] = widget.itemCount;
-                                  widget.viewModel.reducePrice(widget.product.price ?? 0);
-                                }
-                              });
-                            },
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            icon: const Icon(
-                              Icons.remove_circle_outline,
-                              color: AppColors.white,
-                              size: 20,
-                            )
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: AppColors.tabBarBackgroundColor,
                         ),
-                        BlocBuilder<CartViewModel, CartStates>(
-                          bloc: widget.viewModel,
-                          builder: (context, cartState) {
-                            return Text(
-                              "${widget.itemCount}",
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.poppins(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.white
+                        width: MediaQuery.sizeOf(context).width * 0.2,
+                        height: MediaQuery.sizeOf(context).height * 0.04,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  if (widget.itemCount > 1) {
+                                    widget.itemCount--;
+                                    CartViewModel.updatedProducts[widget.product.product.id!] = widget.itemCount;
+                                    widget.viewModel.reducePrice(widget.product.price ?? 0);
+                                  }
+                                });
+                              },
+                              child: const Icon(
+                                Icons.remove_circle_outline,
+                                color: AppColors.primaryColor,
+                                size: 20,
                               ),
-                              overflow: TextOverflow.ellipsis,
-                            );
-                          },
+                            ),
+                            BlocBuilder<CartViewModel, CartStates>(
+                              bloc: widget.viewModel,
+                              builder: (context, cartState) {
+                                return Text(
+                                  "${widget.itemCount}",
+                                  textAlign: TextAlign.start,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.primaryColor
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                );
+                              },
+                            ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  widget.itemCount++;
+                                  CartViewModel.updatedProducts[widget.product.product.id!] = widget.itemCount;
+                                  widget.viewModel.increasePrice(widget.product.price ?? 0);
+                                });
+                              },
+                              child: const Icon(
+                                Icons.add_circle_outline,
+                                color: AppColors.primaryColor,
+                                size: 20,
+                              ),
+                            ),
+                          ],
                         ),
-                        IconButton(
-                            onPressed: (){
-                              setState(() {
-                                widget.itemCount++;
-                                CartViewModel.updatedProducts[widget.product.product.id!] = widget.itemCount;
-                                widget.viewModel.increasePrice(widget.product.price ?? 0);
-                              });
-                            },
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            icon: const Icon(
-                              Icons.add_circle_outline,
-                              color: AppColors.white,
-                              size: 20,
-                            )
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
+                SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,)
               ],
             ),
           ),

@@ -109,7 +109,7 @@ class _CartScreenState extends State<CartScreen> {
                 "Cart",
                 style: GoogleFonts.poppins(
                     color: AppColors.primaryColor,
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600),
               ),
             ),
@@ -141,7 +141,7 @@ class _CartScreenState extends State<CartScreen> {
                         Expanded(
                           flex: 70,
                           child: ListView.builder(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.all(16.0),
                             itemCount: MainViewModel.cartIDs.length,
                             itemBuilder: (context, index) {
                               return CartItem(MainViewModel.cartProducts.toList()[index], cartState.data.cart.cartProducts[index].count, viewModel);
@@ -150,8 +150,15 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         Expanded(
                           flex: 30,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Container(
+                            padding: const EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: AppColors.tabBarBackgroundColor.withOpacity(0.3),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(25.0),
+                                topRight: Radius.circular(25.0),
+                              )
+                            ),
                             child: BlocBuilder<CartViewModel, CartStates>(
                               bloc: viewModel,
                               builder: (context, state) {
@@ -164,8 +171,8 @@ class _CartScreenState extends State<CartScreen> {
                                           "Sub Total",
                                           style: GoogleFonts.poppins(
                                               color: AppColors.primaryColor,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
@@ -176,8 +183,8 @@ class _CartScreenState extends State<CartScreen> {
                                             viewModel.subTotalPrice.toString(),
                                             style: GoogleFonts.poppins(
                                                 color: AppColors.primaryColor,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600
                                             ),
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.end,
@@ -187,8 +194,8 @@ class _CartScreenState extends State<CartScreen> {
                                           " EGP",
                                           style: GoogleFonts.poppins(
                                               color: AppColors.primaryColor,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600
                                           ),
                                         ),
                                       ],
@@ -200,8 +207,8 @@ class _CartScreenState extends State<CartScreen> {
                                           "Shipping Fee",
                                           style: GoogleFonts.poppins(
                                               color: AppColors.primaryColor,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
@@ -212,8 +219,8 @@ class _CartScreenState extends State<CartScreen> {
                                             viewModel.calculateShippingPrice().toString(),
                                             style: GoogleFonts.poppins(
                                                 color: AppColors.primaryColor,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600
                                             ),
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.end,
@@ -223,13 +230,13 @@ class _CartScreenState extends State<CartScreen> {
                                           " EGP",
                                           style: GoogleFonts.poppins(
                                               color: AppColors.primaryColor,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600
                                           ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
+                                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.015,),
                                     LayoutBuilder(
                                       builder: (BuildContext context, BoxConstraints constraints) {
                                         return Flex(
@@ -247,14 +254,14 @@ class _CartScreenState extends State<CartScreen> {
                                         );
                                       },
                                     ),
-                                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
+                                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.015,),
                                     Row(
                                       children: [
                                         Text(
                                           "Total Price",
                                           style: GoogleFonts.poppins(
                                               color: AppColors.primaryColor,
-                                              fontSize: 18,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.w600
                                           ),
                                           textAlign: TextAlign.center,
@@ -266,7 +273,7 @@ class _CartScreenState extends State<CartScreen> {
                                             viewModel.calculateTotalPrice().toString(),
                                             style: GoogleFonts.poppins(
                                                 color: AppColors.primaryColor,
-                                                fontSize: 18,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.w600
                                             ),
                                             overflow: TextOverflow.ellipsis,
@@ -277,13 +284,14 @@ class _CartScreenState extends State<CartScreen> {
                                           " EGP",
                                           style: GoogleFonts.poppins(
                                               color: AppColors.primaryColor,
-                                              fontSize: 18,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.w600
                                           ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
+                                    const Spacer(),
+                                    // SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
                                     ElevatedButton(
                                       onPressed: (){
                                         viewModel.updateCartCounter(false).then((_) {
@@ -303,8 +311,8 @@ class _CartScreenState extends State<CartScreen> {
                                           Text(
                                             "Check Out",
                                             style: GoogleFonts.poppins(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.w600,
                                               color: AppColors.white,
                                             ),
                                           ),

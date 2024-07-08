@@ -1,4 +1,4 @@
-import 'package:e_commerce/data/model/categories_response/CategoriesResponseDM.dart';
+import 'package:e_commerce/data/model/categories_response/categories_response_DM.dart';
 
 class ProductsResponseDM {
   ProductsResponseDM({

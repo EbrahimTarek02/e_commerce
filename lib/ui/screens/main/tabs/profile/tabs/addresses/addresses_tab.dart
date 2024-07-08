@@ -104,7 +104,7 @@ class _AddressesTabState extends State<AddressesTab> {
                                       "Use Maps",
                                       style: GoogleFonts.poppins(
                                           color: AppColors.primaryColor,
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.w600
                                       ),
                                     ),
@@ -150,7 +150,7 @@ class _AddressesTabState extends State<AddressesTab> {
                                       "Add Manually",
                                       style: GoogleFonts.poppins(
                                           color: AppColors.primaryColor,
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.w600
                                       ),
                                     ),
@@ -167,7 +167,7 @@ class _AddressesTabState extends State<AddressesTab> {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
                     elevation: 0.0,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15))),
                 child: Row(
@@ -182,7 +182,7 @@ class _AddressesTabState extends State<AddressesTab> {
                       "Add New Address",
                       style: GoogleFonts.poppins(
                           color: AppColors.white,
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.w400
                       ),
                     ),

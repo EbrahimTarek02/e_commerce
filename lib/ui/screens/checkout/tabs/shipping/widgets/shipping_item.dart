@@ -51,30 +51,28 @@ class ShippingItem extends StatelessWidget {
                   const SizedBox()
             ],
           ),
-          SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
           Text(
             address.details ?? "Address Details",
             style: GoogleFonts.poppins(
                 color: AppColors.primaryColor,
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
           Text(
             address.city ?? "Address City",
             style: GoogleFonts.poppins(
                 color: AppColors.primaryColor,
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: FontWeight.w500
             ),
           ),
-          SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
+          SizedBox(height: MediaQuery.sizeOf(context).height * 0.005,),
           Text(
             address.phone ?? "Address Contact Info",
             style: GoogleFonts.poppins(
                 color: AppColors.primaryColor,
-                fontSize: 16,
+                fontSize: 12,
                 fontWeight: FontWeight.w600
             ),
           ),

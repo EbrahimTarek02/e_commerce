@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:e_commerce/data/model/categories_response/CategoriesResponseDM.dart';
+import 'package:e_commerce/data/model/categories_response/categories_response_DM.dart';
 import 'package:e_commerce/ui/screens/products_of_category/products_of_category_screen.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +22,8 @@ class GridViewBuilder extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.13,
-            width: MediaQuery.of(context).size.width * 0.25,
+            height: MediaQuery.sizeOf(context).height * 0.1,
+            width: MediaQuery.sizeOf(context).width * 0.2,
             clipBehavior: Clip.antiAlias,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
@@ -38,7 +38,7 @@ class GridViewBuilder extends StatelessWidget {
             category.name ?? "Category",
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
-                fontSize: 14.0,
+                fontSize: 12.0,
                 fontWeight: FontWeight.w500,
                 color: AppColors.primaryColor
             ),

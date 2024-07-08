@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
           }
           else {
             if (!mounted) return;
-            Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routeName, (Route<dynamic> route) => false);
+            Future.delayed(const Duration(seconds: 3), () => Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routeName, (Route<dynamic> route) => false));
           }
         }
     );

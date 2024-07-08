@@ -49,7 +49,6 @@ class _WishListTabState extends State<WishListTab> {
               :
             ListView.builder(
               padding: const EdgeInsets.symmetric(
-                  vertical: 24.0,
                   horizontal: 16.0
               ),
               itemCount: MainViewModel.wishList.length,

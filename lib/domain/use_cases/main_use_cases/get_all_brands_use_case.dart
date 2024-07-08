@@ -1,4 +1,4 @@
-import 'package:e_commerce/data/model/brands_response/BrandsResponseDM.dart';
+import 'package:e_commerce/data/model/brands_response/brands_response_DM.dart';
 import 'package:e_commerce/domain/repos/main_repos/main_repo.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:either_dart/either.dart';

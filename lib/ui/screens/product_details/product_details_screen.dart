@@ -65,68 +65,31 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           "Product Details",
           style: GoogleFonts.poppins(
               color: AppColors.primaryColor,
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.w600),
         ),
         actions: [
           BlocBuilder<MainViewModel, MainStates>(
             bloc: mainViewModel,
             builder: (context, wishIconState) {
-              return Container(
-                padding: const EdgeInsets.only(right: 10),
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  onPressed: (){
-                    if (mainViewModel.isInWishList) {
-                        mainViewModel.removeFromWishList(product, true);
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              backgroundColor: AppColors.red,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              behavior: SnackBarBehavior.floating,
-                              margin: const EdgeInsets.only(
-                                  bottom: 14.0,
-                                  right: 20.0,
-                                  left: 20.0
-                              ),
-                              content: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.clear,
-                                    color: AppColors.white,
-                                  ),
-                                  const SizedBox(width: 4.0,),
-                                  Text(
-                                    'Product Removed Successfully',
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.white
-                                    ),
-                                  ),
-                                ],
-                              )
-                          )
-                      );
-                    }
-                    else {
-                        mainViewModel.addToWishList(product, true);
+              return Padding(
+                padding: const EdgeInsets.only(right: 14.0),
+                child: CircleAvatar(
+                  maxRadius: 16,
+                  child: IconButton(
+                    onPressed: (){
+                      if (mainViewModel.isInWishList) {
+                          mainViewModel.removeFromWishList(product, true);
                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                                backgroundColor: AppColors.green,
+                                backgroundColor: AppColors.red,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16.0),
                                 ),
                                 behavior: SnackBarBehavior.floating,
                                 margin: const EdgeInsets.only(
-                                    bottom: 10.0,
+                                    bottom: 14.0,
                                     right: 20.0,
                                     left: 20.0
                                 ),
@@ -134,12 +97,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     const Icon(
-                                      Icons.check,
+                                      Icons.clear,
                                       color: AppColors.white,
                                     ),
                                     const SizedBox(width: 4.0,),
                                     Text(
-                                      'Product Added Successfully',
+                                      'Product Removed Successfully',
                                       style: GoogleFonts.poppins(
                                           fontSize: 14.0,
                                           fontWeight: FontWeight.w400,
@@ -150,28 +113,67 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 )
                             )
                         );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.white,
-                      shadowColor: AppColors.tabBarBackgroundColor,
-                      elevation: 3.0,
-                  ),
-                  icon:
-                  wishIconState is WishIconLoadingState
-                      ?
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.018,
-                    width: MediaQuery.of(context).size.width * 0.03,
-                    child: const CircularProgressIndicator(color: AppColors.primaryColor,),
-                  )
-                      :
-                  ImageIcon(
-                    AssetImage(
-                      mainViewModel.isInWishList ?  AppAssets.inWishListIcon :
-                      AppAssets.wishListTabIcon,
+                      }
+                      else {
+                          mainViewModel.addToWishList(product, true);
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  backgroundColor: AppColors.green,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  margin: const EdgeInsets.only(
+                                      bottom: 10.0,
+                                      right: 20.0,
+                                      left: 20.0
+                                  ),
+                                  content: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.check,
+                                        color: AppColors.white,
+                                      ),
+                                      const SizedBox(width: 4.0,),
+                                      Text(
+                                        'Product Added Successfully',
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.white
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                              )
+                          );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.white,
+                        shadowColor: AppColors.tabBarBackgroundColor,
+                        elevation: 3.0,
+                      padding: EdgeInsets.zero
                     ),
-                    color: AppColors.primaryColor,
+                    icon:
+                    wishIconState is WishIconLoadingState
+                        ?
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.018,
+                      width: MediaQuery.of(context).size.width * 0.03,
+                      child: const CircularProgressIndicator(color: AppColors.primaryColor,),
+                    )
+                        :
+                    ImageIcon(
+                      AssetImage(
+                        mainViewModel.isInWishList ?  AppAssets.inWishListIcon :
+                        AppAssets.wishListTabIcon,
+                      ),
+                      size: 20,
+                      color: AppColors.primaryColor,
+                    ),
                   ),
                 ),
               );
@@ -195,82 +197,77 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       options: CarouselOptions(
                         autoPlay: true,
                         enlargeCenterPage: true,
-                        height: MediaQuery.of(context).size.height * 0.3
+                        height: MediaQuery.of(context).size.height * 0.4
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        product.title ?? "Title",
-                        textAlign: TextAlign.start,
-                        style: GoogleFonts.poppins(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primaryColor
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        "Brand: ${product.brand?.name ?? "Brand"}",
-                        textAlign: TextAlign.start,
-                        style: GoogleFonts.poppins(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryColor
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
+
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "EGP ${(product.price) ?? "Price"}",
-                            textAlign: TextAlign.start,
-                            style: GoogleFonts.poppins(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primaryColor
+                          SizedBox(
+                            width: MediaQuery.sizeOf(context).width * 0.65,
+                            child: Text(
+                              "${product.title ?? "Title"} (${product.brand?.name ?? "Brand"})",
+                              textAlign: TextAlign.start,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.primaryColor
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
-                          Text(
-                            product.price != null ? "EGP ${(product.price! * 1.2).floor()}" : "",
-                            textAlign: TextAlign.start,
-                            style: GoogleFonts.poppins(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.textFormFieldIconColor,
-                                decoration: TextDecoration.lineThrough
-                            ),
-                            overflow: TextOverflow.ellipsis,
+                          Column(
+                            children: [
+                              Text(
+                                "${(product.price) ?? "Price"} EGP",
+                                textAlign: TextAlign.start,
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.primaryColor
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                product.price != null ? "${(product.price! * 1.2).floor()} EGP" : "",
+                                textAlign: TextAlign.start,
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textFormFieldIconColor,
+                                    decoration: TextDecoration.lineThrough
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
                         "Description",
                         textAlign: TextAlign.start,
                         style: GoogleFonts.poppins(
-                            fontSize: 18.0,
+                            fontSize: 14.0,
                             fontWeight: FontWeight.w600,
                             color: AppColors.primaryColor
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child:
-                      (product.description ?? '').length < 70
+                      (product.description ?? '').length < 100
                           ?
                       Text(
                         product.description ?? "Description",
@@ -278,7 +275,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         style: GoogleFonts.poppins(
                             fontSize: 12.0,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.primaryColor
+                            color: AppColors.primaryColor.withOpacity(0.7)
                         ),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -287,62 +284,74 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       BlocBuilder<ProductDetailsViewModel, ProductDetailsStates>(
                         bloc: viewModel,
                         builder: (context, descriptionState) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text(
-                                !viewModel.textIsVisible ? "${(product.description ?? "").substring(0, 70)}..." : (product.description ?? ""),
-                                textAlign: TextAlign.start,
-                                style: GoogleFonts.poppins(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.primaryColor
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  const Spacer(),
-                                  TextButton(
-                                    onPressed: (){
-                                      // setState(() {
-                                      //   textVisible = !textVisible;
-                                      // });
-                                      viewModel.changeTextVisibility();
-                                    },
-                                    child: Text(
-                                      !viewModel.textIsVisible ? "Read more..." : "Show Less",
-                                      textAlign: TextAlign.start,
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.primaryColor
-                                      ),
-                                    ),
+                          return InkWell(
+                            onTap: (){
+                              viewModel.changeTextVisibility();
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  !viewModel.textIsVisible ? (product.description ?? "").substring(0, 100) : (product.description ?? ""),
+                                  textAlign: TextAlign.start,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.primaryColor.withOpacity(0.7)
                                   ),
-                                ],
-                              ),
-                            ],
+                                  maxLines: viewModel.textIsVisible ? null : 2,
+                                  overflow: TextOverflow.fade,
+                                ),
+                                Text(
+                                  !viewModel.textIsVisible ? "Read more..." : "Show Less",
+                                  textAlign: TextAlign.start,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.red
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                         },
                       )
                       ,
                     ),
+
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(6.0),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
+                              borderRadius: BorderRadius.circular(8.0),
                               border: Border.all(color: AppColors.primaryColor)
                             ),
                             child: Text(
                               "${product.quantity} Available",
                               textAlign: TextAlign.start,
                               style: GoogleFonts.poppins(
-                                  fontSize: 14.0,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.primaryColor
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(6.0),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(color: AppColors.primaryColor)
+                            ),
+                            child: Text(
+                              "${product.sold} Sold",
+                              textAlign: TextAlign.start,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 12.0,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.primaryColor
                               ),
@@ -354,34 +363,34 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               Icon(
                                 product.ratingsAverage! >= 1 ? Icons.star_rate_rounded : (product.ratingsAverage! >= 0.5 ? Icons.star_half_rounded : Icons.star_border_rounded),
                                 color: AppColors.yellow,
-                                size: 20,
+                                size: 18,
                               ),
                               Icon(
                                 product.ratingsAverage! >= 2 ? Icons.star_rate_rounded : (product.ratingsAverage! >= 1.5 ? Icons.star_half_rounded : Icons.star_border_rounded),
                                 color: AppColors.yellow,
-                                size: 20,
+                                size: 18,
                               ),
                               Icon(
                                 product.ratingsAverage! >= 3 ? Icons.star_rate_rounded : (product.ratingsAverage! >= 2.5 ? Icons.star_half_rounded : Icons.star_border_rounded),
                                 color: AppColors.yellow,
-                                size: 20,
+                                size: 18,
                               ),
                               Icon(
                                 product.ratingsAverage! >= 4 ? Icons.star_rate_rounded : (product.ratingsAverage! >= 3.5 ? Icons.star_half_rounded : Icons.star_border_rounded),
                                 color: AppColors.yellow,
-                                size: 20,
+                                size: 18,
                               ),
                               Icon(
                                 product.ratingsAverage! >= 5 ? Icons.star_rate_rounded : (product.ratingsAverage! >= 4.5 ? Icons.star_half_rounded : Icons.star_border_rounded),
                                 color: AppColors.yellow,
-                                size: 20,
+                                size: 18,
                               ),
-                              const SizedBox(width: 10.0,),
+                              const SizedBox(width: 4.0,),
                               Text(
                                 product.ratingsAverage?.toStringAsFixed(2) ?? "Rate",
                                 style: GoogleFonts.poppins(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w400,
                                   color: AppColors.primaryColor,
                                 ),
                                 overflow: TextOverflow.ellipsis,
@@ -391,6 +400,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ],
                       ),
                     ),
+
+                    SizedBox(height: MediaQuery.sizeOf(context).height *0.02,),
+
                     BlocBuilder <ProductDetailsViewModel, ProductDetailsStates>(
                       bloc: viewModel,
                       builder: (context, counterState) {
@@ -406,17 +418,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     "Total Price",
                                     textAlign: TextAlign.start,
                                     style: GoogleFonts.poppins(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w600,
                                         color: AppColors.primaryColor
                                     ),
                                   ),
                                   Text(
-                                    "EGP ${product.price! * viewModel.productCount}",
+                                    "${product.price! * viewModel.productCount} EGP",
                                     textAlign: TextAlign.start,
                                     style: GoogleFonts.poppins(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w600,
                                         color: AppColors.primaryColor
                                     ),
                                   ),
@@ -424,38 +436,45 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderRadius: BorderRadius.circular(16.0),
                                     border: Border.all(color: AppColors.primaryColor),
                                     color: AppColors.primaryColor
                                 ),
+                                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                                width: MediaQuery.sizeOf(context).width * 0.3,
+                                height: MediaQuery.sizeOf(context).height * 0.05,
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    IconButton(
-                                        onPressed: (){
+                                    InkWell(
+                                        onTap: (){
                                           viewModel.removeProduct();
                                         },
-                                        icon: const Icon(
+                                        child: const Icon(
                                           Icons.remove_circle_outline,
                                           color: AppColors.white,
+                                          size: 20,
                                         )
                                     ),
                                     Text(
                                       "${viewModel.productCount}",
                                       textAlign: TextAlign.start,
                                       style: GoogleFonts.poppins(
-                                          fontSize: 14.0,
+                                          fontSize: 12.0,
                                           fontWeight: FontWeight.w500,
                                           color: AppColors.white
                                       ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    IconButton(
-                                        onPressed: (){
+                                    InkWell(
+                                        onTap: (){
                                           viewModel.addProduct(product.quantity?.toInt() ?? 0);
                                         },
-                                        icon: const Icon(
+                                        child: const Icon(
                                           Icons.add_circle_outline,
                                           color: AppColors.white,
+                                          size: 20,
                                         )
                                     ),
                                   ],
@@ -466,6 +485,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         );
                       },
                     ),
+
+                    SizedBox(height: MediaQuery.sizeOf(context).height *0.02,),
+
                     BlocBuilder<MainViewModel, MainStates>(
                       bloc: mainViewModel,
                       builder: (context, cartState) {
@@ -474,8 +496,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         }
                         else {
                           return Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: FloatingActionButton(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: ElevatedButton(
                               onPressed: () {
                                 if (mainViewModel.isInCart) {
                                   mainViewModel.removeFromCart(product.id ?? "", true);
@@ -484,20 +506,27 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   mainViewModel.addToCart(product.id ?? "", true, viewModel.productCount);
                                 }
                               },
-                              backgroundColor: AppColors.primaryColor,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primaryColor,
+                                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0)
+                                )
+                              ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     mainViewModel.isInCart ? Icons.remove_shopping_cart_outlined : Icons.add_shopping_cart,
                                     color: AppColors.white,
+                                    size: 18,
                                   ),
-                                  const SizedBox(width: 20.0,),
+                                  const SizedBox(width: 14.0,),
                                   Text(
                                     mainViewModel.isInCart ? "Remove from Cart" : 'Add to Cart',
                                     style: GoogleFonts.poppins(
                                         color: AppColors.white,
-                                        fontSize: 18,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ],

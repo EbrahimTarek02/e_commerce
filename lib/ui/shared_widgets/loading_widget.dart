@@ -12,16 +12,16 @@ class LoadingWidget {
               content: Row(
                 children: [
                   SizedBox(
-                      height: MediaQuery.sizeOf(context).height * 0.05,
-                      width: MediaQuery.sizeOf(context).width * 0.07,
-                      child: const Center(child: CircularProgressIndicator())
+                      height: MediaQuery.sizeOf(context).height * 0.02,
+                      width: MediaQuery.sizeOf(context).width * 0.04,
+                      child: const Center(child: CircularProgressIndicator(color: AppColors.primaryColor, strokeWidth: 3,))
                   ),
                   const SizedBox(width: 20.0,),
                   Text(
                     "Loading",
                     style: GoogleFonts.poppins(
                         color: AppColors.primaryColor,
-                        fontSize: 20,
+                        fontSize: 16,
                         fontWeight: FontWeight.w600
                     ),
                   )

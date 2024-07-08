@@ -68,145 +68,189 @@ class SignUpScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.primaryColor,
-          body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Form(
-                key: viewModel.formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Image.asset(
-                      AppAssets.appLogoWhite,
-                      height: MediaQuery.sizeOf(context).height * 0.25,
-                    ),
-                    SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.01),
-                    Text(
-                      'Full Name',
-                      style: GoogleFonts.poppins(
-                          color: AppColors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    CustomTextFormField(
-                        controller: viewModel.fullName,
-                        keyboardType: TextInputType.name,
-                        hintText: 'Enter Your Full Name',
-                        validator: (_) => viewModel.validateFullName(),
-                        isPassword: false),
-                    SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.04),
-                    Text(
-                      'Phone Number',
-                      style: GoogleFonts.poppins(
-                          color: AppColors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    CustomTextFormField(
-                      controller: viewModel.phoneNumber,
-                      keyboardType: TextInputType.phone,
-                      hintText: 'Enter Your Phone Number',
-                      isPassword: false,
-                      viewModel: viewModel,
-                      validator: (_) => viewModel.validatePhoneNumber(),
-                    ),
-                    SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.04),
-                    Text(
-                      'Email',
-                      style: GoogleFonts.poppins(
-                          color: AppColors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    CustomTextFormField(
-                      controller: viewModel.email,
-                      keyboardType: TextInputType.emailAddress,
-                      hintText: 'Enter Your Email',
-                      isPassword: false,
-                      viewModel: viewModel,
-                      validator: (_) => viewModel.validateEmail(),
-                    ),
-                    SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.04),
-                    Text(
-                      'Password',
-                      style: GoogleFonts.poppins(
-                          color: AppColors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    CustomTextFormField(
-                      controller: viewModel.password,
-                      keyboardType: TextInputType.visiblePassword,
-                      hintText: 'Enter Your Password',
-                      validator: (_) => viewModel.validatePassword(),
-                      isPassword: true,
-                      viewModel: viewModel,
-                    ),
-                    SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.04),
-                    Text(
-                      'Confirm Password',
-                      style: GoogleFonts.poppins(
-                          color: AppColors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    CustomTextFormField(
-                      controller: viewModel.passwordConfirmation,
-                      keyboardType: TextInputType.visiblePassword,
-                      hintText: 'Re-enter Your Password',
-                      validator: (_) =>
-                          viewModel.validatePasswordConfirmation(),
-                      isPassword: true,
-                      viewModel: viewModel,
-                    ),
-                    SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.05),
-                    ElevatedButton(
-                      onPressed: () {
-                        viewModel.signUp();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: state is AuthenticationLoadingState
-                              ? AppColors.primaryColor
-                              : AppColors.white,
-                          elevation: 0.0,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15))),
-                      child:
-                      state is AuthenticationLoadingState ?
-                      const CircularProgressIndicator(color: AppColors.white)
-                          :
-                      Text(
-                        'Sign Up',
-                        style: GoogleFonts.poppins(
-                            color: AppColors.primaryColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Form(
+                  key: viewModel.formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Image.asset(
+                        AppAssets.appLogoWhite,
+                        height: MediaQuery.sizeOf(context).height * 0.23,
                       ),
-                    ),
-                    SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.01),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, SignInScreen.routeName);
-                      },
-                      child: Text(
-                        'Already have account? Sign In',
+                      SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.01),
+                      Text(
+                        'Full Name',
                         style: GoogleFonts.poppins(
                             color: AppColors.white,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontWeight: FontWeight.normal),
                       ),
-                    ),
-                  ],
+                      CustomTextFormField(
+                          controller: viewModel.fullName,
+                          keyboardType: TextInputType.name,
+                          hintText: 'Enter Your Full Name',
+                          validator: (_) => viewModel.validateFullName(),
+                          isPassword: false),
+                      SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.03),
+                      Text(
+                        'Phone Number',
+                        style: GoogleFonts.poppins(
+                            color: AppColors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal),
+                      ),
+                      CustomTextFormField(
+                        controller: viewModel.phoneNumber,
+                        keyboardType: TextInputType.phone,
+                        hintText: 'Enter Your Phone Number',
+                        isPassword: false,
+                        viewModel: viewModel,
+                        validator: (_) => viewModel.validatePhoneNumber(),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.03),
+                      Text(
+                        'Email',
+                        style: GoogleFonts.poppins(
+                            color: AppColors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal),
+                      ),
+                      CustomTextFormField(
+                        controller: viewModel.email,
+                        keyboardType: TextInputType.emailAddress,
+                        hintText: 'Enter Your Email',
+                        isPassword: false,
+                        viewModel: viewModel,
+                        validator: (_) => viewModel.validateEmail(),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.03),
+                      Text(
+                        'Password',
+                        style: GoogleFonts.poppins(
+                            color: AppColors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal),
+                      ),
+                      CustomTextFormField(
+                        controller: viewModel.password,
+                        keyboardType: TextInputType.visiblePassword,
+                        hintText: 'Enter Your Password',
+                        validator: (_) => viewModel.validatePassword(),
+                        isPassword: true,
+                        viewModel: viewModel,
+                      ),
+                      SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.03),
+                      Text(
+                        'Confirm Password',
+                        style: GoogleFonts.poppins(
+                            color: AppColors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal),
+                      ),
+                      CustomTextFormField(
+                        controller: viewModel.passwordConfirmation,
+                        keyboardType: TextInputType.visiblePassword,
+                        hintText: 'Re-enter Your Password',
+                        validator: (_) =>
+                            viewModel.validatePasswordConfirmation(),
+                        isPassword: true,
+                        viewModel: viewModel,
+                      ),
+                      SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.06),
+                      ElevatedButton(
+                        onPressed: () {
+                          viewModel.signUp(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: state is AuthenticationLoadingState
+                                ? AppColors.primaryColor
+                                : AppColors.white,
+                            elevation: 0.0,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12))),
+                        child:
+                        state is AuthenticationLoadingState ?
+                        const CircularProgressIndicator(color: AppColors.white)
+                            :
+                        Text(
+                          'Sign Up',
+                          style: GoogleFonts.poppins(
+                              color: AppColors.primaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      SizedBox(height: MediaQuery.sizeOf(context).height * 0.03),
+                      Row(
+                        children: [
+                          const Expanded(child: Divider(color: AppColors.white,)),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Text(
+                              'Or Continue with',
+                              style: GoogleFonts.poppins(
+                                  color: AppColors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                          ),
+                          const Expanded(child: Divider(color: AppColors.white,)),
+                        ],
+                      ),
+                      SizedBox(height: MediaQuery.sizeOf(context).height * 0.03),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: AppColors.white,
+                            maxRadius: 18.0,
+
+                            child: Image.asset(
+                              AppAssets.googleLogo,
+                              scale: 2,
+                            ),
+                          ),
+                          const Icon(
+                            Icons.facebook_rounded,
+                            color: AppColors.white,
+                            size: 40,
+                          ),
+                          const Icon(
+                            Icons.apple_rounded,
+                            color: AppColors.white,
+                            size: 40,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.01),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, SignInScreen.routeName);
+                        },
+                        child: Text(
+                          'Already have account? Sign In',
+                          style: GoogleFonts.poppins(
+                              color: AppColors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

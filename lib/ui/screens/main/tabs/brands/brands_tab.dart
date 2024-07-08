@@ -1,4 +1,4 @@
-import 'package:e_commerce/data/model/brands_response/BrandsResponseDM.dart';
+import 'package:e_commerce/data/model/brands_response/brands_response_DM.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_brands_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_products_with_brand_id_use_case.dart';
@@ -42,7 +42,7 @@ class _BrandsTabState extends State<BrandsTab> {
                 child: Row(
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.35,
+                      width: MediaQuery.sizeOf(context).width * 0.35,
                       decoration: BoxDecoration(
                           color: AppColors.tabBarBackgroundColor,
                           borderRadius: BorderRadius.circular(16.0)

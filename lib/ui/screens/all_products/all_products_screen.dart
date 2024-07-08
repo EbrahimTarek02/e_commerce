@@ -1,5 +1,5 @@
-import 'package:e_commerce/data/model/brands_response/BrandsResponseDM.dart';
-import 'package:e_commerce/data/model/categories_response/CategoriesResponseDM.dart';
+import 'package:e_commerce/data/model/brands_response/brands_response_DM.dart';
+import 'package:e_commerce/data/model/categories_response/categories_response_DM.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_brands_use_case.dart';
@@ -88,21 +88,19 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                         CrossAxisAlignment.stretch,
                                     children: [
                                       Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: IconButton(
-                                          onPressed: () {
+                                        alignment: Alignment.center,
+                                        child: InkWell(
+                                          onTap: () {
                                             Navigator.pop(context);
                                           },
-                                          icon: const Icon(
-                                            Icons.close,
+                                          child: const Icon(
+                                            Icons.keyboard_arrow_down,
                                             color: AppColors.primaryColor,
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                AppColors.tabBarBackgroundColor,
+                                            size: 30,
                                           ),
                                         ),
                                       ),
+
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
@@ -113,12 +111,14 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                         "Categories",
                                         textAlign: TextAlign.start,
                                         style: GoogleFonts.poppins(
-                                            fontSize: 18.0,
+                                            fontSize: 16.0,
                                             fontWeight: FontWeight.w500,
                                             color: AppColors.primaryColor),
                                         overflow: TextOverflow.ellipsis,
                                       ),
+
                                       const Divider(),
+
                                       BlocBuilder<GetAllCategoriesUseCase, MainStates>(
                                         bloc: mainViewModel.getAllCategoriesUseCase,
                                         builder: (context, categoriesState) {
@@ -166,8 +166,13 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                                               Radio(
                                                                 groupValue: viewModel
                                                                     .selectedCategory,
-                                                                onChanged: (_) {},
+                                                                onChanged: (_) {
+                                                                  viewModel
+                                                                      .changeCategoriesRadioButton(
+                                                                      index);
+                                                                },
                                                                 value: index,
+                                                                toggleable: true,
                                                               ),
                                                               Text(
                                                                 categoriesState.data.Categories?[index].name ?? "",
@@ -196,6 +201,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                           }
                                         },
                                       ),
+
                                       SizedBox(
                                         height:
                                         MediaQuery.of(context).size.height *
@@ -206,12 +212,14 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                         "Brand",
                                         textAlign: TextAlign.start,
                                         style: GoogleFonts.poppins(
-                                            fontSize: 18.0,
+                                            fontSize: 16.0,
                                             fontWeight: FontWeight.w500,
                                             color: AppColors.primaryColor),
                                         overflow: TextOverflow.ellipsis,
                                       ),
+
                                       const Divider(),
+
                                       BlocBuilder<GetAllBrandsUseCase, MainStates>(
                                         bloc: mainViewModel.getAllBrandsUseCase,
                                         builder: (context, brandsState){
@@ -259,8 +267,13 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                                               Radio(
                                                                 groupValue: viewModel
                                                                     .selectedBrand,
-                                                                onChanged: (_) {},
+                                                                onChanged: (_) {
+                                                                  viewModel
+                                                                      .changeBrandsRadioButton(
+                                                                      index);
+                                                                },
                                                                 value: index,
+                                                                toggleable: true,
                                                               ),
                                                               Text(
                                                                 brandsState.data.brands?[index].name ?? "",
@@ -289,6 +302,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                           }
                                         },
                                       ),
+
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
@@ -299,12 +313,14 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                         "Price Range",
                                         textAlign: TextAlign.start,
                                         style: GoogleFonts.poppins(
-                                            fontSize: 18.0,
+                                            fontSize: 16.0,
                                             fontWeight: FontWeight.w500,
                                             color: AppColors.primaryColor),
                                         overflow: TextOverflow.ellipsis,
                                       ),
+
                                       const Divider(),
+
                                       StatefulBuilder(
                                         builder: (context, priceSliderState) {
                                           return Column(
@@ -325,7 +341,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                                 "${priceRange.start.toInt()}    ${priceRange.end.toInt()}",
                                                 textAlign: TextAlign.center,
                                                 style: GoogleFonts.poppins(
-                                                    fontSize: 18.0,
+                                                    fontSize: 14.0,
                                                     fontWeight: FontWeight.w500,
                                                     color:
                                                         AppColors.primaryColor),
@@ -335,6 +351,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                           );
                                         },
                                       ),
+
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
@@ -345,12 +362,14 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                         "Sort",
                                         textAlign: TextAlign.start,
                                         style: GoogleFonts.poppins(
-                                            fontSize: 18.0,
+                                            fontSize: 16.0,
                                             fontWeight: FontWeight.w500,
                                             color: AppColors.primaryColor),
                                         overflow: TextOverflow.ellipsis,
                                       ),
+
                                       const Divider(),
+
                                       BlocBuilder<AllProductsViewModel, AllProductsStates>(
                                         bloc: viewModel,
                                         builder: (context, _) {
@@ -383,8 +402,12 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                                       Radio(
                                                         groupValue: viewModel
                                                             .selectedSortingType,
-                                                        onChanged: (val) {},
+                                                        onChanged: (val) {
+                                                          viewModel
+                                                              .changeSortingType(0);
+                                                        },
                                                         value: 0,
+                                                        toggleable: true,
                                                       ),
                                                       Text(
                                                         "Highest Price",
@@ -426,8 +449,11 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                                       Radio(
                                                         groupValue: viewModel
                                                             .selectedSortingType,
-                                                        onChanged: (val) {},
+                                                        onChanged: (_) {
+                                                          viewModel.changeSortingType(1);
+                                                        },
                                                         value: 1,
+                                                        toggleable: true,
                                                       ),
                                                       Text(
                                                         "Lowest Price",
@@ -479,7 +505,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                               elevation: 0.0,
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                      vertical: 16),
+                                                      vertical: 12),
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -488,7 +514,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                             'Show Results',
                                             style: GoogleFonts.poppins(
                                                 color: AppColors.white,
-                                                fontSize: 18,
+                                                fontSize: 16,
                                                 fontWeight: FontWeight.w500),
                                           )),
                                     ],
@@ -498,7 +524,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                     },
                     backgroundColor: AppColors.primaryColor,
                     child: const Icon(
-                      Icons.filter_list_alt,
+                      Icons.tune,
                       color: AppColors.white,
                     ),
                   )

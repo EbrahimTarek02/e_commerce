@@ -48,12 +48,10 @@ class _MainScreenState extends State<MainScreen> {
               backgroundColor: AppColors.white,
 
               appBar: AppBar(
-                backgroundColor: AppColors.white,
-
                 title: Image.asset(
                   AppAssets.appLogoBlue,
-                  fit: BoxFit.cover,
-                  height: MediaQuery.of(context).size.height * 0.037,
+                  fit: BoxFit.fill,
+                  height: MediaQuery.of(context).size.height * 0.03,
                 ),
                 actions: [
                   IconButton(
@@ -63,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
                       icon: const Icon(
                         Icons.shopping_cart_outlined,
                         color: AppColors.primaryColor,
-                        size: 30,
+                        size: 26,
                       )
                   )
                 ],

@@ -1,4 +1,3 @@
-import 'package:e_commerce/ui/screens/checkout/tabs/payment_methods/payment_methods_states.dart';
 import 'package:e_commerce/ui/screens/checkout/tabs/payment_methods/payment_methods_view_model.dart';
 import 'package:e_commerce/ui/screens/checkout/tabs/payment_methods/widgets/payment_method_item.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
@@ -37,21 +36,18 @@ class _PaymentMethodsTabState extends State<PaymentMethodsTab> {
                 fontSize: 16,
                 fontWeight: FontWeight.w600),
           ),
+
           SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
-          BlocBuilder<PaymentMethodsViewModel, PaymentMethodsStates>(
-            bloc: viewModel,
-            builder: (context, state) {
-              return Column(
-                children: [
-                  const PaymentMethodItem("Master Card", AppAssets.masterCardLogo, 0),
-                  const PaymentMethodItem("Visa", AppAssets.visaLogo, 1),
-                  const PaymentMethodItem("Meza", AppAssets.mezaLogo, 2),
-                  const PaymentMethodItem("Pay with bill reference", AppAssets.payWitCodeIcon, 3),
-                  const PaymentMethodItem("Cash on Delivery", AppAssets.cashOnDeliveryIcon, 4),
-                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.1,)
-                ],
-              );
-            },
+
+          Column(
+            children: [
+              const PaymentMethodItem("Master Card", AppAssets.masterCardLogo, 0),
+              const PaymentMethodItem("Visa", AppAssets.visaLogo, 1),
+              const PaymentMethodItem("Meza", AppAssets.mezaLogo, 2),
+              const PaymentMethodItem("Pay with bill reference", AppAssets.payWitCodeIcon, 3),
+              const PaymentMethodItem("Cash on Delivery", AppAssets.cashOnDeliveryIcon, 4),
+              SizedBox(height: MediaQuery.sizeOf(context).height * 0.1,)
+            ],
           )
         ],
       ),

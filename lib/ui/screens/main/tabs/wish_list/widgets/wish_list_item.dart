@@ -36,19 +36,26 @@ class _WishListItemState extends State<WishListItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, ProductDetailsScreen.routeName, arguments: [widget.product, true]);
+        Navigator.pushNamed(context, ProductDetailsScreen.routeName, arguments: [widget.product, true, widget.isInCart]);
       },
       child: Container(
         padding: const EdgeInsets.only(right: 10.0),
-        margin: const EdgeInsets.only(bottom: 24.0),
+        margin: const EdgeInsets.symmetric(vertical: 12.0),
+        height: MediaQuery.sizeOf(context).height * 0.18,
         decoration: BoxDecoration(
-          border: Border.all(
-            color: AppColors.primaryColor,
-            width: 2
-          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.shadowColor,
+              spreadRadius: 3,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            )
+          ],
+          color: AppColors.white,
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CachedNetworkImage(
               imageUrl: widget.product.imageCover ?? "",
@@ -60,7 +67,10 @@ class _WishListItemState extends State<WishListItem> {
                     image: imageProvider,
                     fit: BoxFit.fill,
                   ),
-                  borderRadius: BorderRadius.circular(14.0),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(14.0),
+                    bottomLeft: Radius.circular(14.0),
+                  ),
                 ),
               ),
                 progressIndicatorBuilder: (_, __, ___) => const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),),
@@ -72,21 +82,23 @@ class _WishListItemState extends State<WishListItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.33,
+                        width: MediaQuery.sizeOf(context).width * 0.33,
                         child: Text(
                           widget.product.title ?? "product title",
                           textAlign: TextAlign.start,
                           style: GoogleFonts.poppins(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w700,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w600,
                               color: AppColors.primaryColor
                           ),
                           overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                         ),
                       ),
-                      const Spacer(),
                       IconButton(
                         onPressed: () {
                           setState(() {
@@ -100,6 +112,7 @@ class _WishListItemState extends State<WishListItem> {
                           AssetImage(
                             AppAssets.inWishListIcon
                           ),
+                          size: 18,
                           color: AppColors.primaryColor,
                         ),
                         padding: const EdgeInsets.all(5.0),
@@ -107,17 +120,18 @@ class _WishListItemState extends State<WishListItem> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.white,
                             shadowColor: AppColors.tabBarBackgroundColor,
-                            elevation: 3.0
+                            elevation: 3.0,
                         ),
                       ),
                     ],
                   ),
+                  const Spacer(),
                   Text(
-                    "EGP ${widget.product.price ?? "product price"}",
+                    "${widget.product.price ?? "product price"} EGP",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.poppins(
                         fontSize: 14.0,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                         color: AppColors.primaryColor
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -143,21 +157,27 @@ class _WishListItemState extends State<WishListItem> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primaryColor,
+                              backgroundColor: AppColors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0)
+                              ),
                             ),
-                            child: Text(
+                            child:
+                            Text(
                               mainViewModel.isInCart && widget.isInCart ? "Remove from Cart" : "Add to Cart",
                               textAlign: TextAlign.start,
                               style: GoogleFonts.poppins(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.white
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.primaryColor
                               ),
                             ),
                           ),
                         );
                     },
                   ),
+                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
                 ],
               ),
             ),

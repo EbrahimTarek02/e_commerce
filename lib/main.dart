@@ -51,6 +51,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
         useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          color: AppColors.white
+        ),
+        scaffoldBackgroundColor: AppColors.white
       ),
 
       initialRoute: SplashScreen.routeName,

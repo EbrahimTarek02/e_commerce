@@ -21,10 +21,11 @@ class ResetPasswordScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
-      body: Center(
+      appBar: AppBar(backgroundColor: AppColors.primaryColor,),
+      body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 60),
           child: Form(
             key: viewModel.formKey,
             child: BlocConsumer<ResetPasswordViewModel, AuthenticationStates>(
@@ -72,27 +73,13 @@ class ResetPasswordScreen extends StatelessWidget {
                 },
                 builder: (context, state) {
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.08),
-                      const CircleAvatar(
-                        backgroundColor: AppColors.white,
-                        radius: 90,
-                        child: Icon(
-                          Icons.lock_reset_outlined,
-                          size: 120.0,
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                      SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.04),
                       Text(
                         "Reset Your Password",
                         style: GoogleFonts.poppins(
                             color: AppColors.white,
-                            fontSize: 22,
+                            fontSize: 18,
                             fontWeight: FontWeight.w500),
                         textAlign: TextAlign.center,
                       ),
@@ -100,18 +87,19 @@ class ResetPasswordScreen extends StatelessWidget {
                         "Please enter your new password",
                         style: GoogleFonts.poppins(
                             color: AppColors.white,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.normal),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.06),
+                          height: MediaQuery.sizeOf(context).height * 0.04),
                       CustomTextFormField(
                           keyboardType: TextInputType.emailAddress,
                           hintText: args,
                           isPassword: false,
                           isEnabled: false,
-                          viewModel: viewModel),
+                          viewModel: viewModel,
+                      ),
                       SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.02),
                       CustomTextFormField(
@@ -121,6 +109,15 @@ class ResetPasswordScreen extends StatelessWidget {
                           viewModel: viewModel,
                           controller: viewModel.newPassword,
                           validator: (_) => viewModel.validatePassword()),
+                      SizedBox(height: MediaQuery.sizeOf(context).height * 0.02),
+                      Text(
+                        "Your Password must contain: At least 8 characters and At least 1 Number",
+                        style: GoogleFonts.poppins(
+                            color: AppColors.tabBarBackgroundColor.withOpacity(0.3),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.center,
+                      ),
                       SizedBox(height: MediaQuery.sizeOf(context).height * 0.1),
                       ElevatedButton(
                           onPressed: () {
@@ -133,10 +130,10 @@ class ResetPasswordScreen extends StatelessWidget {
                                       : AppColors.white,
                               elevation: 0.0,
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 16),
+                                  vertical: 12),
                               shape: RoundedRectangleBorder(
                                   borderRadius:
-                                      BorderRadius.circular(15))),
+                                      BorderRadius.circular(12))),
                           child: state is AuthenticationLoadingState
                               ? const CircularProgressIndicator(
                                   color: AppColors.white,
@@ -145,7 +142,7 @@ class ResetPasswordScreen extends StatelessWidget {
                                   'Reset Password',
                                   style: GoogleFonts.poppins(
                                       color: AppColors.primaryColor,
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w600),
                                 )),
                     ],

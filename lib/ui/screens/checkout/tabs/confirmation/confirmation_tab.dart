@@ -73,7 +73,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                           "Thank you",
                           style: GoogleFonts.poppins(
                               color: AppColors.primaryColor,
-                              fontSize: 20,
+                              fontSize: 18,
                               fontWeight: FontWeight.w600
                           ),
                           textAlign: TextAlign.center,
@@ -82,12 +82,12 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                           "Your order was placed successfully",
                           style: GoogleFonts.poppins(
                               color: AppColors.primaryColor,
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: MediaQuery.sizeOf(context).height * 0.05,),
+                        SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -95,7 +95,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                               "Date",
                               style: GoogleFonts.poppins(
                                   color: AppColors.primaryColor,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),
                               textAlign: TextAlign.center,
@@ -104,7 +104,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                               "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
                               style: GoogleFonts.poppins(
                                   color: AppColors.primaryColor,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),
                               textAlign: TextAlign.center,
@@ -119,7 +119,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                               "Time",
                               style: GoogleFonts.poppins(
                                   color: AppColors.primaryColor,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),
                               textAlign: TextAlign.center,
@@ -128,7 +128,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                               viewModel.calculateCurrentTime(),
                               style: GoogleFonts.poppins(
                                   color: AppColors.primaryColor,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),
                               textAlign: TextAlign.center,
@@ -143,7 +143,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                               "Payment Method",
                               style: GoogleFonts.poppins(
                                   color: AppColors.primaryColor,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),
                               textAlign: TextAlign.center,
@@ -154,7 +154,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                                 viewModel.getPaymentMethod(checkoutViewModel.paymentMethodIndex!),
                                 style: GoogleFonts.poppins(
                                     color: AppColors.primaryColor,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500
                                 ),
                                 textAlign: TextAlign.end,
@@ -163,16 +163,16 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                             ),
                           ],
                         ),
-                        SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
+                        SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
                         Divider(color: AppColors.primaryColor.withOpacity(0.5)),
-                        SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
+                        SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
                         Row(
                           children: [
                             Text(
                               "Sub Total",
                               style: GoogleFonts.poppins(
                                   color: AppColors.primaryColor,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),
                               textAlign: TextAlign.center,
@@ -184,7 +184,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                                 checkoutViewModel.subTotalPrice.toString(),
                                 style: GoogleFonts.poppins(
                                     color: AppColors.primaryColor,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500
                                 ),
                                 textAlign: TextAlign.end,
@@ -195,7 +195,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                               " EGP",
                               style: GoogleFonts.poppins(
                                   color: AppColors.primaryColor,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),
                               textAlign: TextAlign.end,
@@ -209,7 +209,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                               "Shipping Fee",
                               style: GoogleFonts.poppins(
                                   color: AppColors.primaryColor,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),
                               textAlign: TextAlign.center,
@@ -221,7 +221,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                                 checkoutViewModel.calculateShippingPrice(),
                                 style: GoogleFonts.poppins(
                                     color: AppColors.primaryColor,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500
                                 ),
                                 textAlign: TextAlign.end,
@@ -232,7 +232,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                               " EGP",
                               style: GoogleFonts.poppins(
                                   color: AppColors.primaryColor,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),
                               textAlign: TextAlign.end,
@@ -246,7 +246,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                               "Total",
                               style: GoogleFonts.poppins(
                                   color: AppColors.primaryColor,
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600
                               ),
                               textAlign: TextAlign.center,
@@ -258,7 +258,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                                 checkoutViewModel.calculateTotalPrice(),
                                 style: GoogleFonts.poppins(
                                     color: AppColors.primaryColor,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w600
                                 ),
                                 textAlign: TextAlign.end,
@@ -269,14 +269,14 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                               " EGP",
                               style: GoogleFonts.poppins(
                                   color: AppColors.primaryColor,
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600
                               ),
                               textAlign: TextAlign.center,
                             ),
                           ],
                         ),
-                        SizedBox(height: MediaQuery.sizeOf(context).height * 0.03,),
+                        SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
                           child: LayoutBuilder(
@@ -297,7 +297,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                             },
                           ),
                         ),
-                        SizedBox(height: MediaQuery.sizeOf(context).height * 0.03,),
+                        SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -307,8 +307,9 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                               height: MediaQuery.sizeOf(context).height * 0.1,
                             ),
                             Container(
-                              width: MediaQuery.sizeOf(context).width * 0.4,
-                              height: MediaQuery.sizeOf(context).height * 0.08,
+                              // width: MediaQuery.sizeOf(context).width * 0.3,
+                              // height: MediaQuery.sizeOf(context).height * 0.07,
+                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14.0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16.0),
                                 border: Border.all(
@@ -320,7 +321,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                                   viewModel.isPaid(checkoutViewModel.paymentMethodIndex!),
                                   style: GoogleFonts.poppins(
                                       color: AppColors.primaryColor,
-                                      fontSize: 24,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w500
                                   ),
                                 ),
@@ -348,25 +349,28 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                     child: const Icon(
                       Icons.check,
                       color: AppColors.white,
-                      size: 40,
+                      size: 35,
                     ),
                   ),
                   Positioned(
-                      bottom: MediaQuery.sizeOf(context).height * 0.14,
+                      bottom: MediaQuery.sizeOf(context).height * 0.13,
                       left: 0,
                       child: CircleAvatar(
                         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                        maxRadius: 18.0,
                       )
                   ),
                   Positioned(
-                      bottom: MediaQuery.sizeOf(context).height * 0.14,
+                      bottom: MediaQuery.sizeOf(context).height * 0.13,
                       right: 0,
                       child: CircleAvatar(
-                          backgroundColor: Theme.of(context).scaffoldBackgroundColor
+                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                        maxRadius: 18.0,
                       )
                   ),
                 ],
               ),
+              SizedBox(height: MediaQuery.sizeOf(context).height * 0.03,),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: ElevatedButton(
@@ -377,7 +381,7 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.0)
+                        borderRadius: BorderRadius.circular(16.0)
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 12.0),
                   ),
@@ -385,8 +389,8 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
                     "Continue Shopping",
                     style: GoogleFonts.poppins(
                         color: AppColors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500
                     ),
                     textAlign: TextAlign.center,
                   ),

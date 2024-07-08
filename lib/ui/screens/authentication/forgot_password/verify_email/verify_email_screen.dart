@@ -3,7 +3,6 @@ import 'package:e_commerce/ui/screens/authentication/authentication_states.dart'
 import 'package:e_commerce/ui/screens/authentication/forgot_password/verify_email/verify_email_view_model.dart';
 import 'package:e_commerce/ui/screens/authentication/forgot_password/verify_sent_code/verify_sent_code_screen.dart';
 import 'package:e_commerce/ui/shared_widgets/custom_text_form_field.dart';
-import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,36 +26,25 @@ class VerifyEmailScreen extends StatelessWidget {
           "Forgot Password",
           style: GoogleFonts.poppins(
               color: AppColors.white,
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.normal),
         ),
       ),
 
       body: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(16.0),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 60),
         child: Form(
           key: viewModel.formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                  height: MediaQuery.of(context).size.height * 0.28,
-                  decoration:  const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          fit: BoxFit.contain,
-                          image:  AssetImage(AppAssets.verifyPasswordImage)
-                      )
-                  )
-              ),
-              SizedBox(height: MediaQuery.sizeOf(context).height * 0.05),
+
               Text(
                 "Password Recovery",
                 style: GoogleFonts.poppins(
                     color: AppColors.white,
-                    fontSize: 22,
+                    fontSize: 18,
                     fontWeight: FontWeight.w500),
                 textAlign: TextAlign.center,
               ),
@@ -64,11 +52,11 @@ class VerifyEmailScreen extends StatelessWidget {
                 "Enter your email to recover your password",
                 style: GoogleFonts.poppins(
                     color: AppColors.white,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.normal),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: MediaQuery.sizeOf(context).height * 0.03),
+              SizedBox(height: MediaQuery.sizeOf(context).height * 0.05,),
               CustomTextFormField(
                 keyboardType: TextInputType.emailAddress,
                 hintText: "Enter Your Email",
@@ -76,7 +64,7 @@ class VerifyEmailScreen extends StatelessWidget {
                 controller: viewModel.email,
                 validator: (_) => viewModel.validateEmail()
               ),
-              SizedBox(height: MediaQuery.sizeOf(context).height * 0.15),
+              SizedBox(height: MediaQuery.sizeOf(context).height * 0.03,),
               BlocConsumer<VerifyEmailViewModel, AuthenticationStates>(
                 bloc: viewModel,
                 listener: (context, state) {
@@ -134,9 +122,9 @@ class VerifyEmailScreen extends StatelessWidget {
                               ? AppColors.primaryColor
                               : AppColors.white,
                           elevation: 0.0,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15))),
+                              borderRadius: BorderRadius.circular(12))),
                       child:
                       state is AuthenticationLoadingState
                           ? const CircularProgressIndicator(color: AppColors.white,)
@@ -144,7 +132,7 @@ class VerifyEmailScreen extends StatelessWidget {
                         'Recover Password',
                         style: GoogleFonts.poppins(
                             color: AppColors.primaryColor,
-                            fontSize: 20,
+                            fontSize: 16,
                             fontWeight: FontWeight.w600),
                       )
                   );

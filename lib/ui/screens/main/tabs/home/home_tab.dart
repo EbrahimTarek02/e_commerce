@@ -1,4 +1,5 @@
-import 'package:e_commerce/data/model/categories_response/CategoriesResponseDM.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:e_commerce/data/model/categories_response/categories_response_DM.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_categories_use_case.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_products_use_case.dart';
@@ -7,6 +8,7 @@ import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/home/widgets/grid_view_builder.dart';
 import 'package:e_commerce/ui/shared_widgets/product_item.dart';
+import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,17 +34,58 @@ class _HomeTabState extends State<HomeTab> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          CarouselSlider(
+            items: [
+              Container(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: Image.asset(
+                  AppAssets.offer_1,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Container(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: Image.asset(
+                  AppAssets.offer_2,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Container(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: Image.asset(
+                  AppAssets.offer_3,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ],
+            options: CarouselOptions(
+              height: MediaQuery.sizeOf(context).height * 0.2,
+              autoPlay: true,
+              enlargeCenterPage: true
+            )
+          ),
+          SizedBox(height: MediaQuery.sizeOf(context).height * 0.03,),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
               'Categories',
               style: GoogleFonts.poppins(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
                   color: AppColors.primaryColor),
             ),
           ),
@@ -51,7 +94,7 @@ class _HomeTabState extends State<HomeTab> {
               builder: (context, state) {
                 if (state is MainSuccessState<CategoriesResponseDm>) {
                   return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.35,
+                      height: MediaQuery.sizeOf(context).height * 0.28,
                       child: GridView.builder(
                           physics: const BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
@@ -65,7 +108,7 @@ class _HomeTabState extends State<HomeTab> {
                   return Text(state.errorMessage);
                 } else {
                   return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.35,
+                      height: MediaQuery.sizeOf(context).height * 0.28,
                       child: const Center(
                           child: CircularProgressIndicator(
                         color: AppColors.primaryColor,
@@ -73,18 +116,18 @@ class _HomeTabState extends State<HomeTab> {
                 }
               }),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.03,
+            height: MediaQuery.sizeOf(context).height * 0.03,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.only(left: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Explore Products',
                   style: GoogleFonts.poppins(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w600,
                       color: AppColors.primaryColor),
                 ),
                 TextButton(
@@ -95,7 +138,7 @@ class _HomeTabState extends State<HomeTab> {
                     'View all',
                     style: GoogleFonts.poppins(
                         fontSize: 12.0,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w300,
                         color: AppColors.primaryColor),
                   ),
                 ),
@@ -107,7 +150,7 @@ class _HomeTabState extends State<HomeTab> {
               builder: (context, state) {
                 if (state is MainSuccessState<ProductsResponseDM>) {
                   return SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.33,
+                    height: MediaQuery.sizeOf(context).height * 0.3,
                     child: BlocBuilder<MainViewModel, MainStates>(
                       bloc: mainViewModel,
                       builder: (context, itemState) {
@@ -135,16 +178,13 @@ class _HomeTabState extends State<HomeTab> {
                   return Text(state.errorMessage);
                 } else {
                   return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.33,
+                      height: MediaQuery.sizeOf(context).height * 0.33,
                       child: const Center(
                           child: CircularProgressIndicator(
                         color: AppColors.primaryColor,
                       )));
                 }
               }),
-          const SizedBox(
-            height: 20.0,
-          )
         ],
       ),
     );

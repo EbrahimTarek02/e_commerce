@@ -11,7 +11,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.085,
+      // height: MediaQuery.of(context).size.height * 0.07,
       decoration: const BoxDecoration(
           color: AppColors.primaryColor,
           borderRadius: BorderRadius.only(
@@ -28,9 +28,11 @@ class CustomBottomNavBar extends StatelessWidget {
               },
               icon: CircleAvatar(
                 backgroundColor: viewModel.currentIndex == 0 ? AppColors.white : AppColors.primaryColor,
+                maxRadius: 18,
                 child: ImageIcon(
                   const AssetImage(AppAssets.homeTabIcon),
                   color: viewModel.currentIndex == 0 ? AppColors.primaryColor : AppColors.white,
+                  size: 18,
                 ),
               )
           ),
@@ -40,9 +42,11 @@ class CustomBottomNavBar extends StatelessWidget {
               },
               icon: CircleAvatar(
                 backgroundColor: viewModel.currentIndex == 1 ? AppColors.white : AppColors.primaryColor,
+                maxRadius: 18,
                 child: ImageIcon(
                   const AssetImage(AppAssets.categoryTabIcon),
                   color: viewModel.currentIndex == 1 ? AppColors.primaryColor : AppColors.white,
+                  size: 18,
                 ),
               )
           ),
@@ -52,9 +56,11 @@ class CustomBottomNavBar extends StatelessWidget {
               },
               icon: CircleAvatar(
                 backgroundColor: viewModel.currentIndex == 2 ? AppColors.white : AppColors.primaryColor,
+                maxRadius: 18,
                 child: ImageIcon(
                   const AssetImage(AppAssets.wishListTabIcon),
                   color: viewModel.currentIndex == 2 ? AppColors.primaryColor : AppColors.white,
+                  size: 18,
                 ),
               )
           ),
@@ -64,9 +70,11 @@ class CustomBottomNavBar extends StatelessWidget {
               },
               icon: CircleAvatar(
                 backgroundColor: viewModel.currentIndex == 3 ? AppColors.white : AppColors.primaryColor,
+                maxRadius: 18,
                 child: ImageIcon(
                   const AssetImage(AppAssets.profileTabIcon),
                   color: viewModel.currentIndex == 3 ? AppColors.primaryColor : AppColors.white,
+                  size: 18,
                 ),
               )
           ),

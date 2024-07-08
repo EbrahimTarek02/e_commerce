@@ -40,11 +40,11 @@ class CustomTextFormField extends StatelessWidget {
             hintText: hintText,
             hintStyle: GoogleFonts.poppins(
                 color: AppColors.black.withOpacity(0.7),
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.w300),
             errorStyle:
             GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             suffixIcon: isPassword
                 ? IconButton(
                     icon: viewModel!.isObscured

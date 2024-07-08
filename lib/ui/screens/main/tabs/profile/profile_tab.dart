@@ -1,4 +1,6 @@
 import 'package:e_commerce/domain/di/di.dart';
+import 'package:e_commerce/ui/screens/all_products/all_products_screen.dart';
+import 'package:e_commerce/ui/screens/cart/cart_screen.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/profile_tab_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/addresses/addresses_tab.dart';
@@ -46,7 +48,7 @@ class _ProfileTabState extends State<ProfileTab> {
                 Text(
                   "Profile",
                   style: GoogleFonts.poppins(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: AppColors.primaryColor,
                   ),
@@ -67,7 +69,49 @@ class _ProfileTabState extends State<ProfileTab> {
                   Text(
                     "Addresses",
                     style: GoogleFonts.poppins(
-                      fontSize: 18,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const Spacer(),
+                  const Icon(Icons.arrow_forward_ios),
+                ],
+              )
+          ),
+          TextButton(
+              onPressed: (){
+                mainViewModel.changeBottomNavBarIndex(2);
+              },
+              child: Row(
+                children: [
+                  const Icon(Icons.favorite_outline_outlined),
+                  SizedBox(width: MediaQuery.sizeOf(context).width * 0.03,),
+                  Text(
+                    "Favourites",
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const Spacer(),
+                  const Icon(Icons.arrow_forward_ios),
+                ],
+              )
+          ),
+          TextButton(
+              onPressed: (){
+                Navigator.pushNamed(context, CartScreen.routeName);
+              },
+              child: Row(
+                children: [
+                  const Icon(Icons.shopping_cart_outlined),
+                  SizedBox(width: MediaQuery.sizeOf(context).width * 0.03,),
+                  Text(
+                    "Cart",
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: AppColors.primaryColor,
                     ),
@@ -88,7 +132,49 @@ class _ProfileTabState extends State<ProfileTab> {
                   Text(
                     "Orders",
                     style: GoogleFonts.poppins(
-                      fontSize: 18,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const Spacer(),
+                  const Icon(Icons.arrow_forward_ios),
+                ],
+              )
+          ),
+          TextButton(
+              onPressed: (){
+                Navigator.pushNamed(context, AllProductsScreen.routeName);
+              },
+              child: Row(
+                children: [
+                  const Icon(Icons.search),
+                  SizedBox(width: MediaQuery.sizeOf(context).width * 0.03,),
+                  Text(
+                    "Explore Products",
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const Spacer(),
+                  const Icon(Icons.arrow_forward_ios),
+                ],
+              )
+          ),
+          TextButton(
+              onPressed: (){
+                mainViewModel.changeBottomNavBarIndex(1);
+              },
+              child: Row(
+                children: [
+                  const Icon(Icons.category_outlined),
+                  SizedBox(width: MediaQuery.sizeOf(context).width * 0.03,),
+                  Text(
+                    "Brands",
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: AppColors.primaryColor,
                     ),
@@ -109,7 +195,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   Text(
                     "Logout",
                     style: GoogleFonts.poppins(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: AppColors.primaryColor,
                     ),

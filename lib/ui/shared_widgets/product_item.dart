@@ -41,8 +41,8 @@ class _ProductItemState extends State<ProductItem> {
             arguments: [widget.product, widget.isInWishList, widget.isInCart]);
       },
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.45,
-        height: MediaQuery.of(context).size.height * 0.33,
+        width: MediaQuery.of(context).size.width * 0.38,
+        height: widget.isVertical ?  MediaQuery.of(context).size.height * 0.33 : MediaQuery.of(context).size.height * 0.3,
         margin: widget.isVertical
             ? const EdgeInsets.symmetric(vertical: 8.0)
             : const EdgeInsets.symmetric(horizontal: 8.0),
@@ -60,7 +60,7 @@ class _ProductItemState extends State<ProductItem> {
               children: [
                 CachedNetworkImage(
                     imageUrl: widget.product.imageCover ?? "",
-                    height: MediaQuery.of(context).size.height * 0.18,
+                    height: widget.isVertical ? MediaQuery.sizeOf(context).height * 0.2 : MediaQuery.sizeOf(context).height * 0.17,
                     width: double.infinity,
                     imageBuilder: (context, imageProvider) => Container(
                           decoration: BoxDecoration(
@@ -81,47 +81,50 @@ class _ProductItemState extends State<ProductItem> {
                     errorWidget: (_, __, ___) => const Center(
                           child: Icon(Icons.error),
                         )),
-                Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      if (widget.isInWishList) {
-                        mainViewModel.removeFromWishList(
-                            widget.product, false).then((_) {
-                          Navigator.pop(context);
-                        });
-                        LoadingWidget.showLoading(context);
-                      }
-                      else {
-                        mainViewModel.addToWishList(widget.product, false).then((_){
-                          Navigator.pop(context);
-                        });
-                        LoadingWidget.showLoading(context);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.white,
-                        shadowColor: AppColors.tabBarBackgroundColor,
-                        elevation: 3.0),
-                    icon: ImageIcon(
-                            AssetImage(
-                              widget.isInWishList
-                                  ? AppAssets.inWishListIcon
-                                  : AppAssets.wishListTabIcon,
+                Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: CircleAvatar(
+                    maxRadius: 15.0,
+                    child: IconButton(
+                      onPressed: () {
+                        if (widget.isInWishList) {
+                          mainViewModel.removeFromWishList(
+                              widget.product, false).then((_) {
+                            Navigator.pop(context);
+                          });
+                          LoadingWidget.showLoading(context);
+                        }
+                        else {
+                          mainViewModel.addToWishList(widget.product, false).then((_){
+                            Navigator.pop(context);
+                          });
+                          LoadingWidget.showLoading(context);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.white,
+                          shadowColor: AppColors.tabBarBackgroundColor,
+                          padding: EdgeInsets.zero,
+                          elevation: 3.0),
+                      icon: ImageIcon(
+                              AssetImage(
+                                widget.isInWishList
+                                    ? AppAssets.inWishListIcon
+                                    : AppAssets.wishListTabIcon,
+                              ),
+                              size: 18,
+                              color: AppColors.primaryColor,
                             ),
-                            color: AppColors.primaryColor,
-                          ),
+                    ),
                   ),
                 )
               ],
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.005,
+              height: MediaQuery.sizeOf(context).height * 0.01,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 6.0),
               child: Text(
                 "${widget.product.price ?? "Price"} EGP",
                 textAlign: TextAlign.start,
@@ -133,38 +136,35 @@ class _ProductItemState extends State<ProductItem> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 6.0),
               child: Text(
                 widget.product.title ?? "Product",
                 textAlign: TextAlign.start,
                 style: GoogleFonts.poppins(
-                    fontSize: 14.0,
+                    fontSize: 12.0,
                     fontWeight: FontWeight.w500,
                     color: AppColors.primaryColor),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.005,
-            ),
             const Spacer(),
             Padding(
-              padding: const EdgeInsets.only(left: 8.0),
+              padding: const EdgeInsets.only(left: 6.0),
               child: Row(
                 children: [
+                  const Icon(
+                    Icons.star_rate_rounded,
+                    color: AppColors.yellow,
+                    size: 20,
+                  ),
                   Text(
-                    "Reviews: ${widget.product.ratingsAverage?.toStringAsFixed(2) ?? "Rate"}",
+                    widget.product.ratingsAverage?.toStringAsFixed(2) ?? "Rate",
                     style: GoogleFonts.poppins(
                       fontSize: 11.0,
                       fontWeight: FontWeight.w500,
                       color: AppColors.primaryColor,
                     ),
                     overflow: TextOverflow.ellipsis,
-                  ),
-                  const Icon(
-                    Icons.star_rate_rounded,
-                    color: AppColors.yellow,
-                    size: 20,
                   ),
                   const Spacer(),
                   IconButton(
@@ -183,9 +183,9 @@ class _ProductItemState extends State<ProductItem> {
                         }
                       },
                     icon: Icon(
-                            widget.isInCart ? Icons.check_circle : Icons.add_circle,
+                            widget.isInCart ? Icons.check_circle : Icons.shopping_bag_outlined,
                             color: AppColors.primaryColor,
-                            size: 26,
+                            size: 24,
                           )
                   ),
                 ],

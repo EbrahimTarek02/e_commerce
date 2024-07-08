@@ -45,9 +45,12 @@ class _ShippingTabState extends State<ShippingTab> {
             style: GoogleFonts.poppins(
                 color: AppColors.primaryColor,
                 fontSize: 16,
-                fontWeight: FontWeight.w600),
+                fontWeight: FontWeight.w600,
+            ),
           ),
+
           SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
+
           ElevatedButton(
               onPressed: () {
                 showModalBottomSheet(
@@ -159,7 +162,7 @@ class _ShippingTabState extends State<ShippingTab> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,
                   elevation: 0.0,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15))),
               child: Row(
@@ -170,17 +173,19 @@ class _ShippingTabState extends State<ShippingTab> {
                     color: AppColors.white,
                     size: 20,
                   ),
+                  const SizedBox(width: 8.0,),
                   Text(
                     "Add New Address",
                     style: GoogleFonts.poppins(
                         color: AppColors.white,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.w400
                     ),
                   ),
                 ],
               )
           ),
+
           BlocBuilder<AddressesViewModel, UserAddressesStates>(
             bloc: addressesViewModel,
             builder: (context, addressesState) {

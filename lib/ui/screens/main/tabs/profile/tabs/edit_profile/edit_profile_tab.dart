@@ -223,7 +223,7 @@ class EditProfileTab extends StatelessWidget {
                       viewModel: viewModel,
                       isEnabled: viewModel.isEnabled,
                     ),
-                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.13),
+                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.15),
                     state is AuthenticationLoadingState ?
                     const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,))
                     :
@@ -234,7 +234,7 @@ class EditProfileTab extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primaryColor,
                             elevation: 0.0,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15))),
                         child: Text(

@@ -1,6 +1,7 @@
 import 'package:e_commerce/data/model/authentication_response/authentication_response.dart';
 import 'package:e_commerce/domain/use_cases/authentication_use_cases/sign_in_use_case.dart';
 import 'package:e_commerce/ui/screens/authentication/authentication_states.dart';
+import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class SignInViewModel extends Cubit<AuthenticationStates> {
     emit(AuthenticationInitialState(isObscured: isObscured));
   }
 
-  Future<void> signIn() async{
+  Future<void> signIn(BuildContext context) async{
     if (!formKey.currentState!.validate()) return;
 
     emit(AuthenticationLoadingState());
@@ -57,8 +58,16 @@ class SignInViewModel extends Cubit<AuthenticationStates> {
 
     response.fold((error) {
       emit(AuthenticationErrorState(error.toString()));
-    }, (success) {
-      emit(AuthenticationSuccessState());
+    }, (success) async{
+      MainViewModel mainViewModel = BlocProvider.of(context);
+      await mainViewModel.getCart().then((_) async{
+        await mainViewModel.getWishList().then((__) async{
+          await mainViewModel.getAllProducts();
+          await mainViewModel.getAllCategories();
+          await mainViewModel.getAllBrands();
+          emit(AuthenticationSuccessState());
+        });
+      });
     });
   }
 }

@@ -1,4 +1,4 @@
-import 'package:e_commerce/data/model/categories_response/CategoriesResponseDM.dart';
+import 'package:e_commerce/data/model/categories_response/categories_response_DM.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_products_with_category_id_use_case.dart';
@@ -97,36 +97,37 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                         CrossAxisAlignment.stretch,
                                     children: [
                                       Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: IconButton(
-                                          onPressed: () {
+                                        alignment: Alignment.center,
+                                        child: InkWell(
+                                          onTap: () {
                                             Navigator.pop(context);
                                           },
-                                          icon: const Icon(
-                                            Icons.close,
+                                          child: const Icon(
+                                            Icons.keyboard_arrow_down,
                                             color: AppColors.primaryColor,
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                AppColors.tabBarBackgroundColor,
+                                            size: 30,
                                           ),
                                         ),
                                       ),
+
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.02,
                                       ),
+
                                       Text(
                                         "Brand",
                                         textAlign: TextAlign.start,
                                         style: GoogleFonts.poppins(
-                                            fontSize: 18.0,
+                                            fontSize: 16.0,
                                             fontWeight: FontWeight.w500,
                                             color: AppColors.primaryColor),
                                         overflow: TextOverflow.ellipsis,
                                       ),
+
                                       const Divider(),
+
                                       SizedBox(
                                         height: GetProductsWithCategoryIDUseCase
                                                     .categoryBrands.length >
@@ -185,8 +186,12 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                         Radio(
                                                           groupValue: viewModel
                                                               .selectedBrand,
-                                                          onChanged: (_) {},
+                                                          onChanged: (_) {
+                                                            viewModel.changeRadioButton(
+                                                                index);
+                                                          },
                                                           value: index,
+                                                          toggleable: true,
                                                         ),
                                                         Text(
                                                           GetProductsWithCategoryIDUseCase
@@ -211,21 +216,25 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                           },
                                         ),
                                       ),
+
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.03,
                                       ),
+
                                       Text(
                                         "Price Range",
                                         textAlign: TextAlign.start,
                                         style: GoogleFonts.poppins(
-                                            fontSize: 18.0,
+                                            fontSize: 16.0,
                                             fontWeight: FontWeight.w500,
                                             color: AppColors.primaryColor),
                                         overflow: TextOverflow.ellipsis,
                                       ),
+
                                       const Divider(),
+
                                       StatefulBuilder(
                                         builder: (context, priceSliderState) {
                                           return Column(
@@ -251,7 +260,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                         .toInt()}",
                                                 textAlign: TextAlign.center,
                                                 style: GoogleFonts.poppins(
-                                                    fontSize: 18.0,
+                                                    fontSize: 14.0,
                                                     fontWeight: FontWeight.w500,
                                                     color:
                                                         AppColors.primaryColor),
@@ -261,23 +270,26 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                           );
                                         },
                                       ),
+
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.03,
                                       ),
+
                                       Text(
                                         "Sort",
                                         textAlign: TextAlign.start,
                                         style: GoogleFonts.poppins(
-                                            fontSize: 18.0,
+                                            fontSize: 16.0,
                                             fontWeight: FontWeight.w500,
                                             color: AppColors.primaryColor),
                                         overflow: TextOverflow.ellipsis,
                                       ),
+
                                       const Divider(),
-                                      BlocBuilder<ProductsOfCategoryViewModel,
-                                          ProductsOfCategoryStates>(
+
+                                      BlocBuilder<ProductsOfCategoryViewModel, ProductsOfCategoryStates>(
                                         bloc: viewModel,
                                         builder: (context, _) {
                                           return Row(
@@ -308,8 +320,12 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                       Radio(
                                                         groupValue: viewModel
                                                             .selectedSortingType,
-                                                        onChanged: (val) {},
+                                                        onChanged: (_) {
+                                                          viewModel
+                                                              .changeSortingType(0);
+                                                        },
                                                         value: 0,
+                                                        toggleable: true,
                                                       ),
                                                       Text(
                                                         "Highest Price",
@@ -350,7 +366,11 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                       Radio(
                                                         groupValue: viewModel
                                                             .selectedSortingType,
-                                                        onChanged: (val) {},
+                                                        onChanged: (_) {
+                                                          viewModel
+                                                              .changeSortingType(1);
+                                                        },
+                                                        toggleable: true,
                                                         value: 1,
                                                       ),
                                                       Text(
@@ -372,11 +392,13 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                           );
                                         },
                                       ),
+
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.03,
                                       ),
+
                                       ElevatedButton(
                                           onPressed: () {
                                             mainViewModel.getProductsWithCategoryID(
@@ -394,7 +416,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                               elevation: 0.0,
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                      vertical: 16),
+                                                      vertical: 12),
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -404,7 +426,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                             'Show Results',
                                             style: GoogleFonts.poppins(
                                                 color: AppColors.white,
-                                                fontSize: 18,
+                                                fontSize: 16,
                                                 fontWeight: FontWeight.w500),
                                           )),
                                     ],
@@ -414,7 +436,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                     },
                     backgroundColor: AppColors.primaryColor,
                     child: const Icon(
-                      Icons.filter_list_alt,
+                      Icons.tune,
                       color: AppColors.white,
                     ),
                   )

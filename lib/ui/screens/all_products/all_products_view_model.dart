@@ -1,4 +1,4 @@
-import 'package:e_commerce/data/model/categories_response/CategoriesResponseDM.dart';
+import 'package:e_commerce/data/model/categories_response/categories_response_DM.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/ui/screens/all_products/all_products_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

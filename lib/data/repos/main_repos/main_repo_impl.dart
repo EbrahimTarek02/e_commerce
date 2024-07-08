@@ -1,6 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:e_commerce/data/model/brands_response/BrandsResponseDM.dart';
-import 'package:e_commerce/data/model/categories_response/CategoriesResponseDM.dart';
+import 'package:e_commerce/data/model/brands_response/brands_response_DM.dart';
+import 'package:e_commerce/data/model/categories_response/categories_response_DM.dart';
 import 'package:e_commerce/data/model/get_wish_list_response/get_wish_list_response.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/domain/repos/main_repos/main_repo.dart';

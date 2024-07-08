@@ -56,11 +56,11 @@ class OrderDetailsScreen extends StatelessWidget {
                     "Order Details",
                     style: GoogleFonts.poppins(
                         color: AppColors.primaryColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600
                     ),
                   ),
-                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
+                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -68,7 +68,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         "Order ID",
                         style: GoogleFonts.poppins(
                             color: AppColors.primaryColor,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500
                         ),
                       ),
@@ -76,13 +76,12 @@ class OrderDetailsScreen extends StatelessWidget {
                         "#${order.orderID.toString()}",
                         style: GoogleFonts.poppins(
                             color: AppColors.primaryColor,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -90,7 +89,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         "Order Placed",
                         style: GoogleFonts.poppins(
                             color: AppColors.primaryColor,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500
                         ),
                       ),
@@ -98,18 +97,18 @@ class OrderDetailsScreen extends StatelessWidget {
                         viewModel.reformatDate(order.createdAt),
                         style: GoogleFonts.poppins(
                             color: AppColors.primaryColor,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
+                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.005,),
                   Text(
                     viewModel.isDelivered(order.createdAt),
                     style: GoogleFonts.poppins(
                         color: AppColors.primaryColor,
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500
                     ),
                   ),
@@ -138,35 +137,34 @@ class OrderDetailsScreen extends StatelessWidget {
                     "Shipping Details",
                     style: GoogleFonts.poppins(
                         color: AppColors.primaryColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600
                     ),
                   ),
-                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
+                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
                   Text(
                     order.shippingAddress.details,
                     style: GoogleFonts.poppins(
                         color: AppColors.primaryColor,
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500
                     ),
                   ),
-                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
                   Text(
                     order.shippingAddress.city,
                     style: GoogleFonts.poppins(
                         color: AppColors.primaryColor,
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500
                     ),
                   ),
-                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
+                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.005,),
                   Text(
                     order.shippingAddress.phone,
                     style: GoogleFonts.poppins(
                         color: AppColors.primaryColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600
                     ),
                   ),
                 ],
@@ -194,8 +192,8 @@ class OrderDetailsScreen extends StatelessWidget {
                     "Order #${order.orderID}",
                     style: GoogleFonts.poppins(
                         color: AppColors.primaryColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600
                     ),
                   ),
                   Column(
@@ -210,16 +208,16 @@ class OrderDetailsScreen extends StatelessWidget {
                         "Sub Total",
                         style: GoogleFonts.poppins(
                             color: AppColors.primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600
                         ),
                       ),
                       Text(
                         "${order.totalOrderPrice.toString()} EGP",
                         style: GoogleFonts.poppins(
                             color: AppColors.primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600
                         ),
                       ),
                     ],
@@ -232,16 +230,16 @@ class OrderDetailsScreen extends StatelessWidget {
                         "Shipping Fee",
                         style: GoogleFonts.poppins(
                             color: AppColors.primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600
                         ),
                       ),
                       Text(
                         "${viewModel.calculateShippingPrice(order.totalOrderPrice)} EGP",
                         style: GoogleFonts.poppins(
                             color: AppColors.primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600
                         ),
                       ),
                     ],
@@ -256,16 +254,16 @@ class OrderDetailsScreen extends StatelessWidget {
                         "Total",
                         style: GoogleFonts.poppins(
                             color: AppColors.primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600
                         ),
                       ),
                       Text(
                         "${viewModel.calculateTotalPrice(order.totalOrderPrice)} EGP",
                         style: GoogleFonts.poppins(
                             color: AppColors.primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600
                         ),
                       ),
                     ],
@@ -295,20 +293,20 @@ class OrderDetailsScreen extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: item.product.imageCover ?? "",
                   fit: BoxFit.fill,
-                  width: MediaQuery.sizeOf(context).width * 0.2,
-                  height: MediaQuery.sizeOf(context).height * 0.15,
+                  width: MediaQuery.sizeOf(context).width * 0.18,
+                  height: MediaQuery.sizeOf(context).height * 0.13,
                 ),
               ),
               Column(
                 children: [
                   SizedBox(
-                    width: MediaQuery.sizeOf(context).width * 0.55,
+                    width: MediaQuery.sizeOf(context).width * 0.56,
                     child: Text(
                       item.product.title ?? "",
                       style: GoogleFonts.poppins(
                           color: AppColors.primaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -320,7 +318,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       "Quantity ${item.count}",
                       style: GoogleFonts.poppins(
                           color: AppColors.primaryColor.withOpacity(0.5),
-                          fontSize: 14,
+                          fontSize: 12,
                           fontWeight: FontWeight.w400
                       ),
                     ),
@@ -332,8 +330,8 @@ class OrderDetailsScreen extends StatelessWidget {
                       "${item.price.toString()} EGP",
                       style: GoogleFonts.poppins(
                           color: AppColors.primaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,

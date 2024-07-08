@@ -22,7 +22,7 @@ class OrderItem extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.all(16.0),
-        margin: const EdgeInsets.only(top: 16.0),
+        margin: const EdgeInsets.symmetric(vertical: 8.0),
         decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(14.0),
@@ -47,7 +47,7 @@ class OrderItem extends StatelessWidget {
                       "Order #${order.orderID}",
                       style: GoogleFonts.poppins(
                           color: AppColors.primaryColor,
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600
                       ),
                     ),
@@ -57,22 +57,22 @@ class OrderItem extends StatelessWidget {
                           viewModel.reformatDate(order.createdAt),
                           style: GoogleFonts.poppins(
                               color: AppColors.primaryColor.withOpacity(0.7),
-                              fontSize: 14,
+                              fontSize: 12,
                               fontWeight: FontWeight.w400
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.015,
+                          height: MediaQuery.sizeOf(context).height * 0.012,
                           child: VerticalDivider(
                             color: AppColors.primaryColor.withOpacity(0.7),
-                            thickness: 1.5,
+                            thickness: 1.1,
                           )
                         ),
                         Text(
                           viewModel.reformatTime(order.createdAt),
                           style: GoogleFonts.poppins(
                               color: AppColors.primaryColor.withOpacity(0.7),
-                              fontSize: 14,
+                              fontSize: 12,
                               fontWeight: FontWeight.w400
                           ),
                         ),
@@ -95,12 +95,8 @@ class OrderItem extends StatelessWidget {
                 ),
                 order.cartItems.length > 3
                     ?
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    color: AppColors.tabBarBackgroundColor,
-                    borderRadius: BorderRadius.circular(20.0)
-                  ),
+                CircleAvatar(
+                  backgroundColor: AppColors.tabBarBackgroundColor,
                   child: Text(
                     "+ ${order.cartItems.length - 3}",
                     style: GoogleFonts.poppins(
@@ -121,7 +117,7 @@ class OrderItem extends StatelessWidget {
                   viewModel.isDelivered(order.createdAt),
                   style: GoogleFonts.poppins(
                       color: AppColors.primaryColor,
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600
                   ),
                 ),
@@ -129,7 +125,7 @@ class OrderItem extends StatelessWidget {
                   "${viewModel.calculateTotalPrice(order.totalOrderPrice)} EGP",
                   style: GoogleFonts.poppins(
                       color: AppColors.primaryColor,
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600
                   ),
                 ),
