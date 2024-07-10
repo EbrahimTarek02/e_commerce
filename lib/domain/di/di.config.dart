@@ -56,14 +56,14 @@ import '../../ui/screens/all_products/all_products_view_model.dart' as _i4;
 import '../../ui/screens/authentication/forgot_password/reset_password/reset_password_view_model.dart'
     as _i93;
 import '../../ui/screens/authentication/forgot_password/verify_email/verify_email_view_model.dart'
-    as _i97;
+    as _i96;
 import '../../ui/screens/authentication/forgot_password/verify_sent_code/verify_sent_code_view_model.dart'
-    as _i95;
+    as _i94;
 import '../../ui/screens/authentication/sign_in/sign_in_view_model.dart'
     as _i87;
 import '../../ui/screens/authentication/sign_up/sign_up_view_model.dart'
-    as _i96;
-import '../../ui/screens/cart/cart_view_model.dart' as _i98;
+    as _i95;
+import '../../ui/screens/cart/cart_view_model.dart' as _i97;
 import '../../ui/screens/checkout/checkout_view_model.dart' as _i5;
 import '../../ui/screens/checkout/tabs/confirmation/confirmation_view_model.dart'
     as _i82;
@@ -72,7 +72,7 @@ import '../../ui/screens/checkout/tabs/payment_methods/payment_methods_view_mode
     as _i6;
 import '../../ui/screens/checkout/tabs/shipping/shipping_view_model.dart'
     as _i7;
-import '../../ui/screens/main/main_view_model.dart' as _i94;
+import '../../ui/screens/main/main_view_model.dart' as _i98;
 import '../../ui/screens/main/tabs/profile/profile_tab_view_model.dart' as _i8;
 import '../../ui/screens/main/tabs/profile/tabs/addresses/addresses_view_model.dart'
     as _i80;
@@ -296,7 +296,19 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.factory<_i93.ResetPasswordViewModel>(
         () => _i93.ResetPasswordViewModel(gh<_i78.ResetPasswordUseCase>()));
-    gh.factory<_i94.MainViewModel>(() => _i94.MainViewModel(
+    gh.factory<_i94.VerifySentCodeViewModel>(() => _i94.VerifySentCodeViewModel(
+          gh<_i79.VerifyEmailUseCase>(),
+          gh<_i73.VerifySentCodeUseCase>(),
+        ));
+    gh.factory<_i95.SignUpViewModel>(
+        () => _i95.SignUpViewModel(gh<_i86.SignUpUseCase>()));
+    gh.factory<_i96.VerifyEmailViewModel>(
+        () => _i96.VerifyEmailViewModel(gh<_i79.VerifyEmailUseCase>()));
+    gh.factory<_i97.CartViewModel>(() => _i97.CartViewModel(
+          gh<_i91.UpdateProductInCartUseCase>(),
+          gh<_i70.CheckoutUseCase>(),
+        ));
+    gh.factory<_i98.MainViewModel>(() => _i98.MainViewModel(
           gh<_i47.GetAllCategoriesUseCase>(),
           gh<_i48.GetAllProductsUseCase>(),
           gh<_i46.GetAllBrandsUseCase>(),
@@ -310,18 +322,7 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i88.AddToCartUseCase>(),
           gh<_i90.RemoveFromCartUseCase>(),
           gh<_i91.UpdateProductInCartUseCase>(),
-        ));
-    gh.factory<_i95.VerifySentCodeViewModel>(() => _i95.VerifySentCodeViewModel(
-          gh<_i79.VerifyEmailUseCase>(),
-          gh<_i73.VerifySentCodeUseCase>(),
-        ));
-    gh.factory<_i96.SignUpViewModel>(
-        () => _i96.SignUpViewModel(gh<_i86.SignUpUseCase>()));
-    gh.factory<_i97.VerifyEmailViewModel>(
-        () => _i97.VerifyEmailViewModel(gh<_i79.VerifyEmailUseCase>()));
-    gh.factory<_i98.CartViewModel>(() => _i98.CartViewModel(
-          gh<_i91.UpdateProductInCartUseCase>(),
-          gh<_i70.CheckoutUseCase>(),
+          gh<_i41.MainRepo>(),
         ));
     return this;
   }

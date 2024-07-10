@@ -8,6 +8,8 @@ import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/product_details/product_details_states.dart';
 import 'package:e_commerce/ui/screens/product_details/product_details_view_model.dart';
+import 'package:e_commerce/ui/shared_widgets/error_widget.dart';
+import 'package:e_commerce/ui/shared_widgets/failure_widget.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -69,8 +71,35 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               fontWeight: FontWeight.w600),
         ),
         actions: [
-          BlocBuilder<MainViewModel, MainStates>(
+          BlocConsumer<MainViewModel, MainStates>(
             bloc: mainViewModel,
+            listener: (context, state) {
+              if (state is MainErrorState) {
+                MyErrorWidget.showError(
+                  context: context,
+                  errorTitle: "Error",
+                  errorDescription: state.errorMessage,
+                    actions: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryColor
+                        ),
+                        child: Text(
+                          "Ok",
+                          style: GoogleFonts.poppins(
+                              color: AppColors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400
+                          ),
+                        ),
+                      )
+                  ]
+                );
+              }
+            },
             builder: (context, wishIconState) {
               return Padding(
                 padding: const EdgeInsets.only(right: 14.0),
@@ -79,76 +108,82 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   child: IconButton(
                     onPressed: (){
                       if (mainViewModel.isInWishList) {
-                          mainViewModel.removeFromWishList(product, true);
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                backgroundColor: AppColors.red,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                ),
-                                behavior: SnackBarBehavior.floating,
-                                margin: const EdgeInsets.only(
-                                    bottom: 14.0,
-                                    right: 20.0,
-                                    left: 20.0
-                                ),
-                                content: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.clear,
-                                      color: AppColors.white,
-                                    ),
-                                    const SizedBox(width: 4.0,),
-                                    Text(
-                                      'Product Removed Successfully',
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.w400,
-                                          color: AppColors.white
+                          mainViewModel.removeFromWishList(product, true).then((_){
+                            if (wishIconState is MainSuccessState) {
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      backgroundColor: AppColors.red,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16.0),
                                       ),
-                                    ),
-                                  ],
-                                )
-                            )
-                        );
+                                      behavior: SnackBarBehavior.floating,
+                                      margin: const EdgeInsets.only(
+                                          bottom: 14.0,
+                                          right: 20.0,
+                                          left: 20.0
+                                      ),
+                                      content: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                            Icons.clear,
+                                            color: AppColors.white,
+                                          ),
+                                          const SizedBox(width: 4.0,),
+                                          Text(
+                                            'Product Removed Successfully',
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.white
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                  )
+                              );
+                            }
+                          });
                       }
                       else {
-                          mainViewModel.addToWishList(product, true);
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  backgroundColor: AppColors.green,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0),
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  margin: const EdgeInsets.only(
-                                      bottom: 10.0,
-                                      right: 20.0,
-                                      left: 20.0
-                                  ),
-                                  content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.check,
-                                        color: AppColors.white,
+                          mainViewModel.addToWishList(product, true).then((_) {
+                            if (wishIconState is MainSuccessState) {
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      backgroundColor: AppColors.green,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16.0),
                                       ),
-                                      const SizedBox(width: 4.0,),
-                                      Text(
-                                        'Product Added Successfully',
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 14.0,
-                                            fontWeight: FontWeight.w400,
-                                            color: AppColors.white
-                                        ),
+                                      behavior: SnackBarBehavior.floating,
+                                      margin: const EdgeInsets.only(
+                                          bottom: 10.0,
+                                          right: 20.0,
+                                          left: 20.0
                                       ),
-                                    ],
+                                      content: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                            Icons.check,
+                                            color: AppColors.white,
+                                          ),
+                                          const SizedBox(width: 4.0,),
+                                          Text(
+                                            'Product Added Successfully',
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.white
+                                            ),
+                                          ),
+                                        ],
+                                      )
                                   )
-                              )
-                          );
+                              );
+                            }
+                          });
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -492,7 +527,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       bloc: mainViewModel,
                       builder: (context, cartState) {
                         if (cartState is CartIconLoadingState) {
-                          return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
+                          return SizedBox(height: MediaQuery.sizeOf(context).height * 0.03, child: const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),));
                         }
                         else {
                           return Padding(
@@ -526,7 +561,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     mainViewModel.isInCart ? "Remove from Cart" : 'Add to Cart',
                                     style: GoogleFonts.poppins(
                                         color: AppColors.white,
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ],
@@ -542,17 +577,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             );
           }
           else if (state is MainErrorState) {
-            return Center(
-              child: Text(
-                state.errorMessage,
-                textAlign: TextAlign.start,
-                style: GoogleFonts.poppins(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryColor
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
+            return FailureWidget(
+              errorMessage: state.errorMessage,
+              tryAgainFunction: () {
+                viewModel.getProductDetails(product.id!);
+              }
             );
           }
           else {

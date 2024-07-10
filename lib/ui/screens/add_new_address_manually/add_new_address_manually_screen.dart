@@ -1,6 +1,7 @@
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/addresses/addresses_states.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/addresses/addresses_view_model.dart';
 import 'package:e_commerce/ui/shared_widgets/custom_text_form_field.dart';
+import 'package:e_commerce/ui/shared_widgets/error_widget.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -120,8 +121,35 @@ class _AddNewAddressManuallyState extends State<AddNewAddressManually> {
               SizedBox(
                   height: MediaQuery.sizeOf(context).height * 0.13),
 
-              BlocBuilder<AddressesViewModel, UserAddressesStates>(
+              BlocConsumer<AddressesViewModel, UserAddressesStates>(
                 bloc: viewModel,
+                listener: (context, state) {
+                  if (state is UserAddressesErrorState) {
+                    return MyErrorWidget.showError(
+                      context: context,
+                      errorTitle: "Error",
+                      errorDescription: state.errorMessage,
+                        actions: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primaryColor
+                            ),
+                            child: Text(
+                              "Ok",
+                              style: GoogleFonts.poppins(
+                                  color: AppColors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400
+                              ),
+                            ),
+                          )
+                        ]
+                    );
+                  }
+                },
                 builder: (context, state) {
                   return ElevatedButton(
                     onPressed: () {

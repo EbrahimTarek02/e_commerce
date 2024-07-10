@@ -5,6 +5,7 @@ import 'package:e_commerce/data/model/get_wish_list_response/get_wish_list_respo
 import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/domain/repos/main_repos/main_repo.dart';
 import 'package:e_commerce/domain/repos/main_repos/main_repo_ds.dart';
+import 'package:e_commerce/ui/utils/constants.dart';
 import 'package:either_dart/either.dart';
 import 'package:injectable/injectable.dart';
 
@@ -23,7 +24,7 @@ class MainRepoImpl extends MainRepo{
       return mainRepoDS.getAllCategories();
     }
     else{
-      return const Left("Please check your internet connection and try again later");
+      return const Left(Constants.networkErrorMessage);
     }
   }
 
@@ -48,7 +49,7 @@ class MainRepoImpl extends MainRepo{
       );
     }
     else{
-      return const Left("Please check your internet connection and try again later");
+      return const Left(Constants.networkErrorMessage);
     }
   }
 
@@ -60,7 +61,7 @@ class MainRepoImpl extends MainRepo{
       return mainRepoDS.getAllBrands();
     }
     else{
-      return const Left("Please check your internet connection and try again later");
+      return const Left(Constants.networkErrorMessage);
     }
   }
 
@@ -72,7 +73,7 @@ class MainRepoImpl extends MainRepo{
       return mainRepoDS.getWishList();
     }
     else{
-      return const Left("Please check your internet connection and try again later");
+      return const Left(Constants.networkErrorMessage);
     }
   }
 
@@ -84,7 +85,7 @@ class MainRepoImpl extends MainRepo{
       return mainRepoDS.addToWishList(productID);
     }
     else{
-      return "Please check your internet connection and try again later";
+      return Constants.networkErrorMessage;
     }
   }
 
@@ -96,7 +97,7 @@ class MainRepoImpl extends MainRepo{
       return mainRepoDS.removeFromWishList(productID);
     }
     else{
-      return "Please check your internet connection and try again later";
+      return Constants.networkErrorMessage;
     }
   }
 

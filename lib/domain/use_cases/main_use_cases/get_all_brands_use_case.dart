@@ -12,6 +12,7 @@ class GetAllBrandsUseCase extends Cubit<MainStates>{
   GetAllBrandsUseCase(this.mainRepo) : super(MainLoadingState());
 
   Future<void> execute() async{
+    emit(MainLoadingState());
 
     Either<String, BrandsResponseDm> response = await mainRepo.getAllBrands();
     response.fold((error) {

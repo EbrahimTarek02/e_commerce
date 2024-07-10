@@ -8,7 +8,9 @@ import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/products_of_category/products_of_category_view_model.dart';
 import 'package:e_commerce/ui/screens/products_of_category/products_of_category_states.dart';
+import 'package:e_commerce/ui/shared_widgets/failure_widget.dart';
 import 'package:e_commerce/ui/shared_widgets/product_item.dart';
+import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,7 +61,6 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
       builder: (context, state) {
         return Scaffold(
             backgroundColor: AppColors.white,
-
             appBar: AppBar(
               iconTheme: const IconThemeData(color: AppColors.primaryColor),
               title: Text(
@@ -81,8 +82,9 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                     ))
               ],
             ),
-
-            floatingActionButton: state is! MainLoadingState
+            floatingActionButton: state
+                        is MainSuccessState<ProductsResponseDM> &&
+                    state.data.products!.isNotEmpty
                 ? FloatingActionButton(
                     onPressed: () {
                       showModalBottomSheet(
@@ -109,13 +111,11 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                           ),
                                         ),
                                       ),
-
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.02,
                                       ),
-
                                       Text(
                                         "Brand",
                                         textAlign: TextAlign.start,
@@ -125,9 +125,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                             color: AppColors.primaryColor),
                                         overflow: TextOverflow.ellipsis,
                                       ),
-
                                       const Divider(),
-
                                       SizedBox(
                                         height: GetProductsWithCategoryIDUseCase
                                                     .categoryBrands.length >
@@ -187,8 +185,9 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                           groupValue: viewModel
                                                               .selectedBrand,
                                                           onChanged: (_) {
-                                                            viewModel.changeRadioButton(
-                                                                index);
+                                                            viewModel
+                                                                .changeRadioButton(
+                                                                    index);
                                                           },
                                                           value: index,
                                                           toggleable: true,
@@ -216,13 +215,11 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                           },
                                         ),
                                       ),
-
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.03,
                                       ),
-
                                       Text(
                                         "Price Range",
                                         textAlign: TextAlign.start,
@@ -232,9 +229,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                             color: AppColors.primaryColor),
                                         overflow: TextOverflow.ellipsis,
                                       ),
-
                                       const Divider(),
-
                                       StatefulBuilder(
                                         builder: (context, priceSliderState) {
                                           return Column(
@@ -255,9 +250,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                         .toDouble(),
                                               ),
                                               Text(
-                                                "${priceRange.start
-                                                        .toInt()}    ${priceRange.end
-                                                        .toInt()}",
+                                                "${priceRange.start.toInt()}    ${priceRange.end.toInt()}",
                                                 textAlign: TextAlign.center,
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 14.0,
@@ -270,13 +263,11 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                           );
                                         },
                                       ),
-
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.03,
                                       ),
-
                                       Text(
                                         "Sort",
                                         textAlign: TextAlign.start,
@@ -286,10 +277,9 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                             color: AppColors.primaryColor),
                                         overflow: TextOverflow.ellipsis,
                                       ),
-
                                       const Divider(),
-
-                                      BlocBuilder<ProductsOfCategoryViewModel, ProductsOfCategoryStates>(
+                                      BlocBuilder<ProductsOfCategoryViewModel,
+                                          ProductsOfCategoryStates>(
                                         bloc: viewModel,
                                         builder: (context, _) {
                                           return Row(
@@ -302,8 +292,9 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                       .changeSortingType(0);
                                                 },
                                                 child: Container(
-                                                  padding: const EdgeInsets.only(
-                                                      right: 10.0),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10.0),
                                                   decoration: BoxDecoration(
                                                     border: Border.all(
                                                       color: AppColors
@@ -322,7 +313,8 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                             .selectedSortingType,
                                                         onChanged: (_) {
                                                           viewModel
-                                                              .changeSortingType(0);
+                                                              .changeSortingType(
+                                                                  0);
                                                         },
                                                         value: 0,
                                                         toggleable: true,
@@ -348,8 +340,9 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                       .changeSortingType(1);
                                                 },
                                                 child: Container(
-                                                  padding: const EdgeInsets.only(
-                                                      right: 10.0),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10.0),
                                                   decoration: BoxDecoration(
                                                     border: Border.all(
                                                       color: AppColors
@@ -368,7 +361,8 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                             .selectedSortingType,
                                                         onChanged: (_) {
                                                           viewModel
-                                                              .changeSortingType(1);
+                                                              .changeSortingType(
+                                                                  1);
                                                         },
                                                         toggleable: true,
                                                         value: 1,
@@ -392,27 +386,41 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                           );
                                         },
                                       ),
-
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.03,
                                       ),
-
                                       ElevatedButton(
                                           onPressed: () {
                                             mainViewModel.getProductsWithCategoryID(
-                                                category?.id ?? "",
-                                                false,
-                                                priceLessThan: priceRange.end.ceil(),
-                                                priceGreaterThan: priceRange.start.floor(),
-                                                brandID: viewModel.selectedBrand != null ? GetProductsWithCategoryIDUseCase.categoryBrandIDs.toList()[viewModel.selectedBrand!] : null,
-                                                sortLowToHeightPrice: viewModel.selectedSortingType == null ? null : viewModel.selectedSortingType == 0 ? false : true
-                                            );
+                                                category?.id ?? "", false,
+                                                priceLessThan:
+                                                    priceRange.end.ceil(),
+                                                priceGreaterThan:
+                                                    priceRange.start.floor(),
+                                                brandID: viewModel
+                                                            .selectedBrand !=
+                                                        null
+                                                    ? GetProductsWithCategoryIDUseCase
+                                                            .categoryBrandIDs
+                                                            .toList()[
+                                                        viewModel
+                                                            .selectedBrand!]
+                                                    : null,
+                                                sortLowToHeightPrice: viewModel
+                                                            .selectedSortingType ==
+                                                        null
+                                                    ? null
+                                                    : viewModel.selectedSortingType ==
+                                                            0
+                                                        ? false
+                                                        : true);
                                             Navigator.pop(context);
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              backgroundColor: AppColors.primaryColor,
+                                              backgroundColor:
+                                                  AppColors.primaryColor,
                                               elevation: 0.0,
                                               padding:
                                                   const EdgeInsets.symmetric(
@@ -421,8 +429,7 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           15))),
-                                          child:
-                                              Text(
+                                          child: Text(
                                             'Show Results',
                                             style: GoogleFonts.poppins(
                                                 color: AppColors.white,
@@ -441,20 +448,35 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                     ),
                   )
                 : const SizedBox(),
-
             body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: state is MainSuccessState<ProductsResponseDM>
                     ? state.data.products!.isEmpty
-                        ? Center(
-                            child: Text(
-                              "There is no available products.",
-                              style: GoogleFonts.poppins(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.primaryColor),
-                              textAlign: TextAlign.center,
-                            ),
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Image.asset(
+                                AppAssets.outOfStockImage,
+                                height: MediaQuery.sizeOf(context).height * 0.3,
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.05,
+                              ),
+                              Text(
+                                "There is no available ${category?.name ?? ""} products",
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.primaryColor),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height:
+                                MediaQuery.sizeOf(context).height * 0.05,
+                              ),
+                            ],
                           )
                         : BlocBuilder<MainViewModel, MainStates>(
                             bloc: mainViewModel,
@@ -464,30 +486,41 @@ class _ProductsOfCategoryScreenState extends State<ProductsOfCategoryScreen> {
                                   scrollDirection: Axis.vertical,
                                   itemCount: state.data.products!.length,
                                   gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 10.0,
-                                      childAspectRatio: 0.60),
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 10.0,
+                                          childAspectRatio: 0.60),
                                   itemBuilder: (context, index) {
                                     bool isInWishList = MainViewModel.wishList
                                         .contains(
-                                        state.data.products![index].id);
-                                    bool isInCart = MainViewModel.cartIDs.contains(state.data.products![index].id);
+                                            state.data.products![index].id);
+                                    bool isInCart = MainViewModel.cartIDs
+                                        .contains(
+                                            state.data.products![index].id);
                                     return ProductItem(
                                         state.data.products![index],
                                         true,
                                         isInWishList,
-                                        isInCart
-                                    );
+                                        isInCart);
                                   });
                             })
                     : state is MainErrorState
-                        ? Text(state.errorMessage)
+                        ? FailureWidget(
+                            errorMessage: state.errorMessage,
+                            tryAgainFunction: () {
+                              mainViewModel
+                                  .getProductsWithCategoryID(category?.id ?? "", true)
+                                  .then((value) {
+                                priceRange = RangeValues(
+                                    GetProductsWithCategoryIDUseCase.minPrice.toDouble(),
+                                    GetProductsWithCategoryIDUseCase.maxPrice.toDouble());
+                              });
+                            },
+                          )
                         : const Center(
                             child: CircularProgressIndicator(
                             color: AppColors.primaryColor,
-                          )))
-        );
+                          ))));
       },
     );
   }

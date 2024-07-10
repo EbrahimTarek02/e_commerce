@@ -11,6 +11,7 @@ import 'package:e_commerce/ui/screens/cart/cart_screen.dart';
 import 'package:e_commerce/ui/screens/cart/cart_view_model.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
+import 'package:e_commerce/ui/shared_widgets/failure_widget.dart';
 import 'package:e_commerce/ui/shared_widgets/product_item.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
               ],
             ),
 
-            floatingActionButton: state is! MainLoadingState
+            floatingActionButton: state is MainSuccessState
                 ? FloatingActionButton(
                     onPressed: () {
                       showModalBottomSheet(
@@ -570,7 +571,13 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                   });
                             })
                     : state is MainErrorState
-                        ? Text(state.errorMessage)
+                        ? FailureWidget(
+                            errorMessage: state.errorMessage,
+                            tryAgainFunction: (){
+                              priceRange = const RangeValues(0, 100000);
+                              mainViewModel.getAllProductsWithFiltration();
+                            },
+                          )
                         : const Center(
                             child: CircularProgressIndicator(
                             color: AppColors.primaryColor,

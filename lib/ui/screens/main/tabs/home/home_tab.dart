@@ -7,6 +7,7 @@ import 'package:e_commerce/ui/screens/all_products/all_products_screen.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/home/widgets/grid_view_builder.dart';
+import 'package:e_commerce/ui/shared_widgets/failure_widget.dart';
 import 'package:e_commerce/ui/shared_widgets/product_item.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
@@ -89,6 +90,7 @@ class _HomeTabState extends State<HomeTab> {
                   color: AppColors.primaryColor),
             ),
           ),
+
           BlocBuilder<GetAllCategoriesUseCase, MainStates>(
               bloc: mainViewModel.getAllCategoriesUseCase,
               builder: (context, state) {
@@ -104,8 +106,14 @@ class _HomeTabState extends State<HomeTab> {
                           itemCount: state.data.Categories!.length,
                           itemBuilder: (context, index) =>
                               GridViewBuilder(state.data.Categories![index])));
-                } else if (state is MainErrorState) {
-                  return Text(state.errorMessage);
+                }
+                else if (state is MainErrorState) {
+                  return FailureWidget(
+                    errorMessage: state.errorMessage,
+                    tryAgainFunction: () {
+                      mainViewModel.getAllCategories();
+                    },
+                  );
                 } else {
                   return SizedBox(
                       height: MediaQuery.sizeOf(context).height * 0.28,
@@ -145,6 +153,7 @@ class _HomeTabState extends State<HomeTab> {
               ],
             ),
           ),
+
           BlocBuilder<GetAllProductsUseCase, MainStates>(
               bloc: mainViewModel.getAllProductsUseCase,
               builder: (context, state) {
@@ -174,8 +183,14 @@ class _HomeTabState extends State<HomeTab> {
                       },
                     ),
                   );
-                } else if (state is MainErrorState) {
-                  return Text(state.errorMessage);
+                }
+                else if (state is MainErrorState) {
+                  return FailureWidget(
+                    errorMessage: state.errorMessage,
+                    tryAgainFunction: () {
+                      mainViewModel.getAllProducts();
+                    },
+                  );
                 } else {
                   return SizedBox(
                       height: MediaQuery.sizeOf(context).height * 0.33,

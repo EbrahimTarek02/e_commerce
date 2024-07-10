@@ -5,7 +5,10 @@ import 'package:e_commerce/ui/screens/cart/widgets/cart_item.dart';
 import 'package:e_commerce/ui/screens/checkout/checkout_screen.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
+import 'package:e_commerce/ui/shared_widgets/error_widget.dart';
+import 'package:e_commerce/ui/shared_widgets/failure_widget.dart';
 import 'package:e_commerce/ui/shared_widgets/loading_widget.dart';
+import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,52 +51,35 @@ class _CartScreenState extends State<CartScreen> {
             LoadingWidget.showLoading(context);
           }
           else if (state is CartErrorState) {
+
             Navigator.pop(context);
 
-            showDialog(
+            MyErrorWidget.showError(
                 context: context,
-                barrierDismissible: true,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text(
-                      "Error",
-                      style: GoogleFonts.poppins(
-                          color: AppColors.primaryColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600
-                      ),
+                errorTitle: "Error",
+                errorDescription: state.errorMessage,
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryColor
                     ),
-                    content: Text(
-                      state.errorMessage,
+                    child: Text(
+                      "Ok",
                       style: GoogleFonts.poppins(
-                          color: AppColors.primaryColor,
+                          color: AppColors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.w400
                       ),
                     ),
-                    actions: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor
-                        ),
-                        child: Text(
-                          "Ok",
-                          style: GoogleFonts.poppins(
-                              color: AppColors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                }
+                  )
+                ]
             );
           }
+
           else if (state is CartSuccessState && viewModel.popBack){
             Navigator.pop(context);
             Navigator.pop(context);
@@ -121,17 +107,36 @@ class _CartScreenState extends State<CartScreen> {
                   viewModel.subTotalPrice = cartState.data.cart?.totalCartPrice ?? 0;
                   if (cartState.data.cart.cartProducts.length == 0){
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: Center(
-                        child: Text(
-                          "You don't have any products in your cart",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.primaryColor
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            AppAssets.emptyCartImage
                           ),
-                        ),
+                          SizedBox(height: MediaQuery.sizeOf(context).height * 0.03,),
+                          Text(
+                            "Your cart is empty",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primaryColor
+                            ),
+                          ),
+                          SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
+                          Text(
+                            "Looks like you have not added anything to your cart.",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primaryColor.withOpacity(0.7)
+                            ),
+                          ),
+                          SizedBox(height: MediaQuery.sizeOf(context).height * 0.08,),
+                        ],
                       ),
                     );
                   }
@@ -291,7 +296,6 @@ class _CartScreenState extends State<CartScreen> {
                                       ],
                                     ),
                                     const Spacer(),
-                                    // SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
                                     ElevatedButton(
                                       onPressed: (){
                                         viewModel.updateCartCounter(false).then((_) {
@@ -333,6 +337,9 @@ class _CartScreenState extends State<CartScreen> {
                       ],
                     );
                   }
+                }
+                else if (cartState is MainErrorState) {
+                  return FailureWidget(errorMessage: cartState.errorMessage, tryAgainFunction: mainViewModel.getCart);
                 }
                 else {
                   return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);

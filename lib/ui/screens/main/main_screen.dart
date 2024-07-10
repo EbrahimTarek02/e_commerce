@@ -34,6 +34,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     mainViewModel = BlocProvider.of(context);
     mainViewModel.changeBottomNavBarIndex(0);
+    mainViewModel.prepareAppDate();
     super.initState();
   }
 

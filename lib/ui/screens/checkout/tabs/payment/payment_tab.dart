@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:e_commerce/ui/screens/checkout/checkout_states.dart';
 import 'package:e_commerce/ui/screens/checkout/checkout_view_model.dart';
 import 'package:e_commerce/ui/screens/checkout/tabs/payment/payment_states.dart';
 import 'package:e_commerce/ui/screens/checkout/tabs/payment/payment_view_model.dart';
+import 'package:e_commerce/ui/shared_widgets/failure_widget.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -43,114 +43,131 @@ class _PaymentTabState extends State<PaymentTab> {
       constraints: BoxConstraints(maxHeight: checkoutViewModel.maxHeight - MediaQuery.sizeOf(context).height * 0.18),
       margin: EdgeInsets.only(top: checkoutViewModel.paymentMethodIndex! < 3 ? 0 : 20),
       child: Center(
-        child: BlocListener<CheckoutViewModel, CheckoutStates>(
-          bloc: checkoutViewModel,
-          listener: (context, state) {},
-          child: BlocBuilder<PaymentViewModel, PaymentStates>(
-            bloc: viewModel,
-            builder: (context, state) {
-              if (state is PaymentErrorState) {
-                return Text(state.errorMessage);
-              }
-              else if (state is PaymentSuccessState) {
-                if (checkoutViewModel.paymentMethodIndex! < 3) {
-                  PlatformWebViewControllerCreationParams params = const PlatformWebViewControllerCreationParams();
+        child: BlocBuilder<PaymentViewModel, PaymentStates>(
+          bloc: viewModel,
+          builder: (context, state) {
+            if (state is PaymentErrorState) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FailureWidget(
+                    errorMessage: state.errorMessage,
+                    tryAgainFunction: () {
+                      checkoutViewModel.paymentMethodIndex! < 3 ? viewModel.payWithCard() : viewModel.payWithKiosk();
+                    },
+                  ),
+                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.1,)
+                ],
+              );
+            }
+            else if (state is PaymentSuccessState) {
+              if (checkoutViewModel.paymentMethodIndex! < 3) {
+                PlatformWebViewControllerCreationParams params = const PlatformWebViewControllerCreationParams();
 
-                  WebViewController controller = WebViewController.fromPlatformCreationParams(params);
+                WebViewController controller = WebViewController.fromPlatformCreationParams(params);
 
-                  controller
-                    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-                    ..setBackgroundColor(AppColors.white)
-                    ..setNavigationDelegate(
-                      NavigationDelegate(
-                        onPageFinished: (String url) {
-                          if (url.startsWith("https://accept.paymobsolutions.com/api/acceptance/post_pay")) {
-                            checkoutViewModel.changePaymentState(url);
-                            checkoutViewModel.changeIsPayDoneState(true);
-                          }
-                        },
-                        onWebResourceError: (WebResourceError error) {
-                          debugPrint('''
-                            Page resource error:
-                              code: ${error.errorCode}
-                              description: ${error.description}
-                              errorType: ${error.errorType}
-                              isForMainFrame: ${error.isForMainFrame}
-                          ''');
-                        },
-                        onNavigationRequest: (NavigationRequest request) {
-                          return NavigationDecision.navigate;
-                        },
-                        onHttpError: (HttpResponseError error) {
-                          debugPrint('Error occurred on page: ${error.response?.statusCode}');
-                        },
-                        onHttpAuthRequest: (HttpAuthRequest request) {
-                          openDialog(request);
-                        },
-                      ),
-                    )
-                    ..addJavaScriptChannel(
-                      'Toaster',
-                      onMessageReceived: (JavaScriptMessage message) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(message.message)),
-                        );
+                controller
+                  ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                  ..setBackgroundColor(AppColors.white)
+                  ..setNavigationDelegate(
+                    NavigationDelegate(
+                      onPageFinished: (String url) {
+                        if (url.startsWith("https://accept.paymobsolutions.com/api/acceptance/post_pay")) {
+                          checkoutViewModel.changePaymentState(url);
+                          checkoutViewModel.changeIsPayDoneState(true);
+                        }
                       },
-                    )
-                    ..loadRequest(Uri.parse("https://accept.paymob.com/api/acceptance/iframes/852779?payment_token=${state.data}"));
+                      onWebResourceError: (WebResourceError error) {
+                        debugPrint('''
+                          Page resource error:
+                            code: ${error.errorCode}
+                            description: ${error.description}
+                            errorType: ${error.errorType}
+                            isForMainFrame: ${error.isForMainFrame}
+                        ''');
+                      },
+                      onNavigationRequest: (NavigationRequest request) {
+                        return NavigationDecision.navigate;
+                      },
+                      onHttpError: (HttpResponseError error) {
+                        debugPrint('Error occurred on page: ${error.response?.statusCode}');
+                      },
+                      onHttpAuthRequest: (HttpAuthRequest request) {
+                        openDialog(request);
+                      },
+                    ),
+                  )
+                  ..addJavaScriptChannel(
+                    'Toaster',
+                    onMessageReceived: (JavaScriptMessage message) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(message.message)),
+                      );
+                    },
+                  )
+                  ..loadRequest(Uri.parse("https://accept.paymob.com/api/acceptance/iframes/852779?payment_token=${state.data}"));
 
-                  if (controller.platform is AndroidWebViewController) {
-                    AndroidWebViewController.enableDebugging(true);
-                    (controller.platform as AndroidWebViewController)
-                        .setMediaPlaybackRequiresUserGesture(false);
-                  }
-
-                  _controller = controller;
-
-                  return WebViewWidget(
-                    controller: _controller,
-                  );
+                if (controller.platform is AndroidWebViewController) {
+                  AndroidWebViewController.enableDebugging(true);
+                  (controller.platform as AndroidWebViewController)
+                      .setMediaPlaybackRequiresUserGesture(false);
                 }
-                else {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        AppAssets.payWitCodeIcon,
-                        width: MediaQuery.sizeOf(context).width * 0.6,
-                        height: MediaQuery.sizeOf(context).height * 0.3,
-                      ),
-                      SizedBox(height: MediaQuery.sizeOf(context).height * 0.05,),
-                      Text(
-                        "Order Reference Number",
-                        style: GoogleFonts.poppins(
-                            color: AppColors.primaryColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Text(
-                        state.data,
-                        style: GoogleFonts.poppins(
-                            color: AppColors.primaryColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Text(
-                        "Code will expire after 24 hours",
-                        style: GoogleFonts.poppins(
-                            color: AppColors.red,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  );
-                }
+
+                _controller = controller;
+
+                return WebViewWidget(
+                  controller: _controller,
+                );
               }
               else {
-                return const CircularProgressIndicator(color: AppColors.primaryColor,);
+                checkoutViewModel.changeIsPayDoneState(true);
+                return Column(
+                  children: [
+                    Image.asset(
+                      AppAssets.payWitCodeIcon,
+                      height: MediaQuery.sizeOf(context).height * 0.27,
+                    ),
+                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.05,),
+                    Text(
+                      "Order Reference Number",
+                      style: GoogleFonts.poppins(
+                          color: AppColors.primaryColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      state.data,
+                      style: GoogleFonts.poppins(
+                          color: AppColors.primaryColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "To pay go to nearest Aman, Massary, Momken or Sadad outlet and ask for مدفوعات اكسبت and provide your reference number.",
+                        style: GoogleFonts.poppins(
+                            color: AppColors.primaryColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Text(
+                      "Code will expire after 24 hours",
+                      style: GoogleFonts.poppins(
+                          color: AppColors.red,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                );
               }
-            },
-          ),
+            }
+            else {
+              return const CircularProgressIndicator(color: AppColors.primaryColor,);
+            }
+          },
         ),
       ),
     );

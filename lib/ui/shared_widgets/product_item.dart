@@ -79,7 +79,7 @@ class _ProductItemState extends State<ProductItem> {
                           ),
                         ),
                     errorWidget: (_, __, ___) => const Center(
-                          child: Icon(Icons.error),
+                          child: Icon(Icons.error, color: AppColors.red,),
                         )),
                 Padding(
                   padding: const EdgeInsets.all(6.0),
@@ -88,17 +88,17 @@ class _ProductItemState extends State<ProductItem> {
                     child: IconButton(
                       onPressed: () {
                         if (widget.isInWishList) {
+                          LoadingWidget.showLoading(context);
                           mainViewModel.removeFromWishList(
                               widget.product, false).then((_) {
                             Navigator.pop(context);
                           });
-                          LoadingWidget.showLoading(context);
                         }
                         else {
+                          LoadingWidget.showLoading(context);
                           mainViewModel.addToWishList(widget.product, false).then((_){
                             Navigator.pop(context);
                           });
-                          LoadingWidget.showLoading(context);
                         }
                       },
                       style: ElevatedButton.styleFrom(

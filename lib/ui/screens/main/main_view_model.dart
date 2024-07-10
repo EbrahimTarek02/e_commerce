@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:e_commerce/data/model/cart_response/cart_response_DM.dart';
 import 'package:e_commerce/data/model/get_wish_list_response/get_wish_list_response.dart';
 import 'package:e_commerce/data/model/products_response/products_response.dart';
+import 'package:e_commerce/domain/repos/main_repos/main_repo.dart';
 import 'package:e_commerce/domain/use_cases/cart_use_cases/add_to_cart_use_case.dart';
 import 'package:e_commerce/domain/use_cases/cart_use_cases/get_cart_use_case.dart';
 import 'package:e_commerce/domain/use_cases/cart_use_cases/remove_from_cart_use_case.dart';
@@ -37,6 +37,8 @@ class MainViewModel extends Cubit<MainStates> {
   AddToCartUseCase addToCartUseCase;
   RemoveFromCartUseCase removeFromCartUseCase;
   UpdateProductInCartUseCase updateProductInCartUseCase;
+  MainRepo mainRepo;
+  bool? navigate;
 
   MainViewModel(
       this.getAllCategoriesUseCase,
@@ -51,7 +53,8 @@ class MainViewModel extends Cubit<MainStates> {
       this.getCartUseCase,
       this.addToCartUseCase,
       this.removeFromCartUseCase,
-      this.updateProductInCartUseCase)
+      this.updateProductInCartUseCase,
+      this.mainRepo)
       : super(MainInitialState());
 
   int currentIndex = 0;
@@ -184,6 +187,7 @@ class MainViewModel extends Cubit<MainStates> {
     Either<String, CartResponseDm> response = await getCartUseCase.getCart();
 
     response.fold((error) {
+      navigate = false;
       emit(MainErrorState(error));
     }, (success) {
       for (CartProducts cartProduct in success.cart!.cartProducts!) {
@@ -244,6 +248,16 @@ class MainViewModel extends Cubit<MainStates> {
       emit(MainErrorState(error));
     }, (success) {
       emit(MainSuccessState(success));
+    });
+  }
+
+  Future<void> prepareAppDate() async{
+    await getWishList().then((_) async{
+      await getCart().then((_) async {
+        await getAllProducts();
+        await getAllCategories();
+        await getAllBrands();
+      });
     });
   }
 }

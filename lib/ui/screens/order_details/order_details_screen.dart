@@ -292,6 +292,14 @@ class OrderDetailsScreen extends StatelessWidget {
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: CachedNetworkImage(
                   imageUrl: item.product.imageCover ?? "",
+                  progressIndicatorBuilder: (_, __, ___) => const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  errorWidget: (_, __, ___) => const Center(
+                    child: Icon(Icons.error, color: AppColors.red,),
+                  ),
                   fit: BoxFit.fill,
                   width: MediaQuery.sizeOf(context).width * 0.18,
                   height: MediaQuery.sizeOf(context).height * 0.13,

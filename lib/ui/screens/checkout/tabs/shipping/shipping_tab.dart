@@ -7,6 +7,7 @@ import 'package:e_commerce/ui/screens/checkout/tabs/shipping/shipping_view_model
 import 'package:e_commerce/ui/screens/checkout/tabs/shipping/widgets/shipping_item.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/addresses/addresses_states.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/addresses/addresses_view_model.dart';
+import 'package:e_commerce/ui/shared_widgets/failure_widget.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,7 @@ class _ShippingTabState extends State<ShippingTab> {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
             ),
+            textAlign: TextAlign.center,
           ),
 
           SizedBox(height: MediaQuery.sizeOf(context).height * 0.02,),
@@ -190,23 +192,45 @@ class _ShippingTabState extends State<ShippingTab> {
             bloc: addressesViewModel,
             builder: (context, addressesState) {
               if (addressesState is UserAddressesErrorState) {
-                return Text(addressesState.errorMessage);
+                return Padding(
+                  padding: EdgeInsets.only(top: MediaQuery.sizeOf(context).height *0.15),
+                  child: FailureWidget(
+                    errorMessage: addressesState.errorMessage,
+                    tryAgainFunction: addressesViewModel.getUserAddresses,
+                  ),
+                );
               }
               else if (addressesState is UserAddressesSuccessState<AddressesResponse>) {
                 return (addressesState.data.data?.isEmpty ?? true) ?
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: MediaQuery.sizeOf(context).height *0.2),
-                    child: Text(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                        AppAssets.emptyAddressListImage
+                    ),
+                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.03,),
+                    Text(
                       "You don't have any saved addresses",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w600,
                           color: AppColors.primaryColor
                       ),
                     ),
-                  ),
+                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
+                    Text(
+                      "Add new addresses to be able to make order.",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primaryColor.withOpacity(0.7)
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.08,),
+                  ],
                 )
                   :
                 BlocBuilder<ShippingViewModel, ShippingStates>(

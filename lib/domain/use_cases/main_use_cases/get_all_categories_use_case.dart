@@ -13,6 +13,8 @@ class GetAllCategoriesUseCase extends Cubit<MainStates> {
 
   Future<void> execute() async{
 
+    emit(MainLoadingState());
+
     Either<String, CategoriesResponseDm> response = await mainRepo.getAllCategories();
 
     response.fold((error) {

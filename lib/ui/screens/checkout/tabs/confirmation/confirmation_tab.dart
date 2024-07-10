@@ -4,6 +4,7 @@ import 'package:e_commerce/ui/screens/checkout/checkout_view_model.dart';
 import 'package:e_commerce/ui/screens/checkout/tabs/confirmation/confirmation_states.dart';
 import 'package:e_commerce/ui/screens/checkout/tabs/confirmation/confirmation_view_model.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
+import 'package:e_commerce/ui/shared_widgets/failure_widget.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +39,14 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
       bloc: viewModel,
       builder: (context, state) {
         if (state is ConfirmationErrorState) {
-          return Center(
-            child: Text(state.errorMessage),
+          return SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.7,
+            child: FailureWidget(
+              errorMessage: state.errorMessage,
+              tryAgainFunction: () {
+                viewModel.addNewOrder(checkoutViewModel.cartID, checkoutViewModel.shippingAddress?.details ?? "", checkoutViewModel.shippingAddress?.phone ?? "", checkoutViewModel.shippingAddress?.city ?? "");
+              },
+            ),
           );
         }
         else if (state is ConfirmationSuccessState<CheckoutResponse>) {
@@ -401,7 +408,10 @@ class _ConfirmationTabState extends State<ConfirmationTab> {
           );
         }
         else {
-          return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
+          return SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.7,
+              child: const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),)
+          );
         }
       },
     );

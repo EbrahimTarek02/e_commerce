@@ -6,6 +6,7 @@ import 'package:e_commerce/data/model/products_response/products_response.dart';
 import 'package:e_commerce/data/utils/shared_prefs_utils.dart';
 import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/domain/repos/main_repos/main_repo_ds.dart';
+import 'package:e_commerce/ui/utils/constants.dart';
 import 'package:either_dart/either.dart';
 import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
@@ -27,11 +28,11 @@ class MainRepoDSImpl extends MainRepoDS{
         return Right(categoriesResponseDm);
       }
       else{
-        return const Left("Something went wrong please try again latter");
+        return const Left(Constants.defaultErrorMessage);
       }
     }
     catch(_) {
-      return const Left("Something went wrong please try again latter");
+      return const Left(Constants.defaultErrorMessage);
     }
   }
 
@@ -161,11 +162,11 @@ class MainRepoDSImpl extends MainRepoDS{
         return Right(productsResponse);
       }
       else{
-        return const Left("Something went wrong please try again latter");
+        return const Left(Constants.defaultErrorMessage);
       }
     }
     catch(_) {
-      return const Left("Something went wrong please try again latter");
+      return const Left(Constants.defaultErrorMessage);
     }
   }
 
@@ -184,11 +185,11 @@ class MainRepoDSImpl extends MainRepoDS{
         return Right(brandsResponseDm);
       }
       else{
-        return const Left("Something went wrong please try again latter");
+        return const Left(Constants.defaultErrorMessage);
       }
     }
     catch(_) {
-      return const Left("Something went wrong please try again latter");
+      return const Left(Constants.defaultErrorMessage);
     }
   }
 
@@ -216,11 +217,11 @@ class MainRepoDSImpl extends MainRepoDS{
         return Right(getWishListResponse);
       }
       else{
-        return Left(getWishListResponse.message ?? "Something went wrong please try again latter");
+        return Left(getWishListResponse.message ?? Constants.defaultErrorMessage);
       }
     }
     catch(_) {
-      return const Left("Something went wrong please try again latter");
+      return const Left(Constants.defaultErrorMessage);
     }
   }
 
@@ -249,11 +250,11 @@ class MainRepoDSImpl extends MainRepoDS{
         return null;
       }
       else{
-        return "Something went wrong please try again latter";
+        return Constants.defaultErrorMessage;
       }
     }
     catch(_) {
-      return "Something went wrong please try again latter";
+      return Constants.defaultErrorMessage;
     }
   }
 
@@ -279,11 +280,11 @@ class MainRepoDSImpl extends MainRepoDS{
         return null;
       }
       else{
-        return "Something went wrong please try again latter";
+        return Constants.defaultErrorMessage;
       }
     }
     catch(_) {
-      return "Something went wrong please try again latter";
+      return Constants.defaultErrorMessage;
     }
   }
 

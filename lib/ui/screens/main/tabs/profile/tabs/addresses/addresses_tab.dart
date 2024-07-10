@@ -5,6 +5,7 @@ import 'package:e_commerce/ui/screens/add_new_address_using_map/add_new_address_
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/addresses/addresses_states.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/addresses/addresses_view_model.dart';
 import 'package:e_commerce/ui/screens/main/tabs/profile/tabs/addresses/widgets/address_item.dart';
+import 'package:e_commerce/ui/shared_widgets/failure_widget.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -195,23 +196,49 @@ class _AddressesTabState extends State<AddressesTab> {
             bloc: viewModel,
             builder: (context, state) {
               if (state is UserAddressesErrorState) {
-                return Text(state.errorMessage);
+                return Padding(
+                  padding: EdgeInsets.only(top: MediaQuery.sizeOf(context).height *0.27),
+                  child: FailureWidget(
+                    errorMessage: state.errorMessage,
+                    tryAgainFunction: viewModel.getUserAddresses,
+                  ),
+                );
               }
               else if (state is UserAddressesSuccessState<AddressesResponse>) {
                 return state.data.data!.isEmpty
                     ?
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: MediaQuery.sizeOf(context).height *0.35),
-                    child: Text(
-                      "You don't have any saved addresses",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primaryColor
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: MediaQuery.sizeOf(context).height * 0.1,),
+                      Image.asset(
+                          AppAssets.emptyAddressListImage
                       ),
-                    ),
+                      SizedBox(height: MediaQuery.sizeOf(context).height * 0.03,),
+                      Text(
+                        "You don't have any saved addresses",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryColor
+                        ),
+                      ),
+                      SizedBox(height: MediaQuery.sizeOf(context).height * 0.01,),
+                      Text(
+                        "Add new addresses to be able to make order.",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryColor.withOpacity(0.7)
+                        ),
+                      ),
+                      SizedBox(height: MediaQuery.sizeOf(context).height * 0.08,),
+                    ],
                   ),
                 )
                     :

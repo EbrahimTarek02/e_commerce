@@ -21,30 +21,24 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
+  late MainViewModel mainViewModel;
+
   @override
   void initState() {
+    mainViewModel = BlocProvider.of(context);
     Future.delayed(
-          Duration.zero,
+          const Duration(seconds: 3),
             () async {
           SharedPrefsUtils sharedPrefsUtils = getIt<SharedPrefsUtils>();
           User? user = await sharedPrefsUtils.getUser();
           String? token = await sharedPrefsUtils.getToken();
           if (user != null && token != null) {
             if (!mounted) return;
-            MainViewModel mainViewModel = BlocProvider.of(context);
-            await mainViewModel.getCart().then((_) async{
-              await mainViewModel.getWishList().then((__) async{
-                await mainViewModel.getAllProducts();
-                await mainViewModel.getAllCategories();
-                await mainViewModel.getAllBrands();
-              });
-            });
-            if (!mounted) return;
             Navigator.pushNamedAndRemoveUntil(context, MainScreen.routeName, (Route<dynamic> route) => false);
           }
           else {
             if (!mounted) return;
-            Future.delayed(const Duration(seconds: 3), () => Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routeName, (Route<dynamic> route) => false));
+            Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routeName, (Route<dynamic> route) => false);
           }
         }
     );

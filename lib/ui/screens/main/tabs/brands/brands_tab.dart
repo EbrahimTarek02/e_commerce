@@ -4,7 +4,9 @@ import 'package:e_commerce/domain/use_cases/main_use_cases/get_all_brands_use_ca
 import 'package:e_commerce/domain/use_cases/main_use_cases/get_products_with_brand_id_use_case.dart';
 import 'package:e_commerce/ui/screens/main/main_states.dart';
 import 'package:e_commerce/ui/screens/main/main_view_model.dart';
+import 'package:e_commerce/ui/shared_widgets/failure_widget.dart';
 import 'package:e_commerce/ui/shared_widgets/product_item.dart';
+import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,7 +84,12 @@ class _BrandsTabState extends State<BrandsTab> {
             );
           }
           else if (state is MainErrorState) {
-            return const Center(child: Text("Error"));
+            return FailureWidget(
+              errorMessage: state.errorMessage,
+              tryAgainFunction: () {
+                mainViewModel.getAllBrands();
+              },
+            );
           }
           else {
             return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
@@ -100,7 +107,7 @@ List<Widget> buildTabBarTabs(List<Brand> brands) {
       child: RotatedBox(
         quarterTurns: 3,
         child: Text(
-          brand.name ?? "Category Name",
+          brand.name ?? "Brand Name",
           style: GoogleFonts.poppins(
               fontSize: 14.0,
               fontWeight: FontWeight.w600,
@@ -133,15 +140,23 @@ List<Widget> buildTabBarViewTabs(BuildContext context, List<Brand> brands, MainV
                 if (state is MainSuccessState<ProductsResponseDM>){
                   return state.data.products!.isEmpty
                       ?
-                    Center(
-                      child: Text(
-                        "There is no available products for ${brand.name ?? "this brand"}.",
-                        style: GoogleFonts.poppins(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryColor
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          AppAssets.outOfStockImage
                         ),
-                      ),
+                        SizedBox(height: MediaQuery.sizeOf(context).height * 0.05,),
+                        Text(
+                          "There is no available products for ${brand.name ?? "this brand"}",
+                          style: GoogleFonts.poppins(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primaryColor
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     )
                       :
                     BlocBuilder<MainViewModel, MainStates>(
@@ -162,8 +177,11 @@ List<Widget> buildTabBarViewTabs(BuildContext context, List<Brand> brands, MainV
                     );
                 }
                 else if (state is MainErrorState) {
-                  return Text(
-                      state.errorMessage
+                  return FailureWidget(
+                    errorMessage: state.errorMessage,
+                    tryAgainFunction: () {
+                      viewModel.getProductsWithBrandID(brands[0].id ?? "");
+                    },
                   );
                 }
                 else {

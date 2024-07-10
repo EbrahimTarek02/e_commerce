@@ -2,6 +2,7 @@ import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/ui/screens/authentication/authentication_states.dart';
 import 'package:e_commerce/ui/screens/authentication/forgot_password/reset_password/reset_password_screen.dart';
 import 'package:e_commerce/ui/screens/authentication/forgot_password/verify_sent_code/verify_sent_code_view_model.dart';
+import 'package:e_commerce/ui/shared_widgets/error_widget.dart';
 import 'package:e_commerce/ui/shared_widgets/sent_code_item.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -42,40 +43,29 @@ class VerifySentCodeScreen extends StatelessWidget {
             bloc: viewModel,
             listener: (context, state) {
               if (state is AuthenticationErrorState) {
-                showDialog(
+                MyErrorWidget.showError(
                     context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
-                        title: Text(
-                          "Failed to Verify Your code",
-                          style: GoogleFonts.poppins(
-                              color: AppColors.black.withOpacity(0.7),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500),
+                    errorTitle: "Failed to Verify Your code",
+                    errorDescription: state.errorMessage,
+                    actions: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryColor
                         ),
-                        content: Text(
-                          state.errorMessage,
+                        child: Text(
+                          "Ok",
                           style: GoogleFonts.poppins(
-                              color: AppColors.black.withOpacity(0.7),
+                              color: AppColors.white,
                               fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                              fontWeight: FontWeight.w400
+                          ),
                         ),
-                        actions: [
-                          TextButton(
-                            child: Text(
-                              "Confirm",
-                              style: GoogleFonts.poppins(
-                                  color: AppColors.black.withOpacity(0.7),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            onPressed: () => Navigator.pop(context),
-                          )
-                        ],
-                      );
-                    });
+                      )
+                    ]
+                );
               }
               else if (state is AuthenticationSuccessState) {
                 Navigator.pushReplacementNamed(context, routeName);

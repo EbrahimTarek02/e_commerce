@@ -4,6 +4,7 @@ import 'package:e_commerce/ui/screens/authentication/sign_up/sign_up_view_model.
 import 'package:e_commerce/ui/screens/authentication/sign_in/sign_in_screen.dart';
 import 'package:e_commerce/ui/screens/main/main_screen.dart';
 import 'package:e_commerce/ui/shared_widgets/custom_text_form_field.dart';
+import 'package:e_commerce/ui/shared_widgets/error_widget.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -22,43 +23,29 @@ class SignUpScreen extends StatelessWidget {
     return BlocConsumer<SignUpViewModel, AuthenticationStates>(
       bloc: viewModel,
       listener: (context, state) {
-        if (state is AuthenticationErrorState){
-          showDialog(
+        if (state is AuthenticationErrorState) {
+          MyErrorWidget.showError(
               context: context,
-              builder: (context) {
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                  title: Text(
-                    "Register Failed",
-                    style: GoogleFonts.poppins(
-                        color: AppColors.black.withOpacity(0.7),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500
-                    ),
+              errorTitle: "Registration Failed",
+              errorDescription: state.errorMessage,
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryColor
                   ),
-                  content: Text(
-                    state.errorMessage,
+                  child: Text(
+                    "Ok",
                     style: GoogleFonts.poppins(
-                        color: AppColors.black.withOpacity(0.7),
+                        color: AppColors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w400
                     ),
                   ),
-                  actions: [
-                    TextButton(
-                      child: Text(
-                        "Confirm",
-                        style: GoogleFonts.poppins(
-                            color: AppColors.black.withOpacity(0.7),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500
-                        ),
-                      ),
-                      onPressed:  () => Navigator.pop(context),
-                    )
-                  ],
-                );
-              }
+                )
+              ]
           );
         }
         else if (state is AuthenticationSuccessState) {

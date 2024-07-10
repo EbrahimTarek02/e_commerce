@@ -1,36 +1,27 @@
 import 'package:e_commerce/ui/utils/app_colors.dart';
-import 'package:e_commerce/ui/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MyErrorWidget {
+class SuccessAlert {
 
-  static void showError(
+  static void showSuccessAlert(
       {required BuildContext context,
-      required String errorTitle,
-      required String errorDescription,
-      required List<Widget> actions
+        required String title,
+        required String description,
+        required List<Widget> actions
       }) {
     showDialog(
         context: context,
         barrierDismissible: true,
         builder: (context) {
           return AlertDialog(
-            icon: errorDescription == Constants.networkErrorMessage
-                ?
-            const Icon(
-              Icons.wifi_off,
-              color: AppColors.red,
-              size: 40,
-            )
-                :
-            const Icon(
-              Icons.error,
-              color: AppColors.red,
+            icon: const Icon(
+              Icons.check_circle,
+              color: AppColors.primaryColor,
               size: 40,
             ),
             title: Text(
-              errorDescription == Constants.networkErrorMessage ? "Network Error" : errorTitle,
+              title,
               style: GoogleFonts.poppins(
                   color: AppColors.primaryColor,
                   fontSize: 18,
@@ -38,7 +29,7 @@ class MyErrorWidget {
               ),
             ),
             content: Text(
-              errorDescription,
+              description,
               style: GoogleFonts.poppins(
                   color: AppColors.primaryColor,
                   fontSize: 16,
@@ -49,7 +40,6 @@ class MyErrorWidget {
             actions: actions,
             alignment: Alignment.center,
             actionsAlignment: MainAxisAlignment.center,
-            surfaceTintColor: AppColors.red,
             scrollable: true,
           );
         }

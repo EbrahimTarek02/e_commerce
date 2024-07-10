@@ -95,7 +95,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         child: FloatingActionButton(
                           onPressed: (){
                             if(viewModel.shippingAddress == null) {
-                              MyErrorWidget.showError(context, 'Missing Data', "Select your shipping address or add new one");
+                              // MyErrorWidget.showError(context, 'Missing Data', "Select your shipping address or add new one");
                             }
                             else {
                               viewModel.changeTabIndex(viewModel.currentIndex - 1);
@@ -110,7 +110,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                       ),
                       Visibility(
-                        visible: (viewModel.currentIndex < 2 || (viewModel.currentIndex == 2 && viewModel.paymentMethodIndex == 3) || (viewModel.currentIndex == 2 && viewModel.isPayDone)),
+                        visible: (viewModel.currentIndex < 2 || (viewModel.currentIndex == 2 && viewModel.isPayDone)),
                         child:
                         viewModel.currentIndex == 2 && !viewModel.paymentSuccess && viewModel.paymentMethodIndex != 3
                             ?
@@ -140,10 +140,54 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         FloatingActionButton(
                           onPressed: (){
                             if(viewModel.currentIndex == 0 && viewModel.shippingAddress == null) {
-                              MyErrorWidget.showError(context, 'Missing Data', "Select your shipping address or add new one");
+                              MyErrorWidget.showError(
+                                context: context,
+                                errorTitle: 'Missing Data',
+                                errorDescription: "Select your shipping address or add new one",
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.primaryColor
+                                      ),
+                                      child: Text(
+                                        "Ok",
+                                        style: GoogleFonts.poppins(
+                                            color: AppColors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400
+                                        ),
+                                      ),
+                                    )
+                                  ]
+                              );
                             }
                             else if (viewModel.currentIndex == 1 && viewModel.paymentMethodIndex == null) {
-                              MyErrorWidget.showError(context, 'Missing Data', "Select your payment method");
+                              MyErrorWidget.showError(
+                                  context: context,
+                                  errorTitle: 'Missing Data',
+                                  errorDescription: "Select your payment method",
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.primaryColor
+                                      ),
+                                      child: Text(
+                                        "Ok",
+                                        style: GoogleFonts.poppins(
+                                            color: AppColors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400
+                                        ),
+                                      ),
+                                    )
+                                  ]
+                              );
                             }
                             else if (viewModel.currentIndex == 1 && viewModel.paymentMethodIndex == 4) {
                               viewModel.changeTabIndex(3);

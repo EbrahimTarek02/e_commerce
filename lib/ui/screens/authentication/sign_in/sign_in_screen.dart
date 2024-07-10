@@ -5,6 +5,7 @@ import 'package:e_commerce/ui/screens/authentication/sign_in/sign_in_view_model.
 import 'package:e_commerce/ui/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:e_commerce/ui/screens/main/main_screen.dart';
 import 'package:e_commerce/ui/shared_widgets/custom_text_form_field.dart';
+import 'package:e_commerce/ui/shared_widgets/error_widget.dart';
 import 'package:e_commerce/ui/utils/app_assets.dart';
 import 'package:e_commerce/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -25,40 +26,29 @@ class SignInScreen extends StatelessWidget {
 
       listener: (context, state) {
         if (state is AuthenticationErrorState) {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  title: Text(
-                    "Login Failed",
-                    style: GoogleFonts.poppins(
-                        color: AppColors.black.withOpacity(0.7),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500),
+          MyErrorWidget.showError(
+            context: context,
+            errorTitle: "Login Failed",
+            errorDescription: state.errorMessage,
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor
+                ),
+                child: Text(
+                  "Ok",
+                  style: GoogleFonts.poppins(
+                      color: AppColors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400
                   ),
-                  content: Text(
-                    state.errorMessage,
-                    style: GoogleFonts.poppins(
-                        color: AppColors.black.withOpacity(0.7),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400),
-                  ),
-                  actions: [
-                    TextButton(
-                      child: Text(
-                        "Confirm",
-                        style: GoogleFonts.poppins(
-                            color: AppColors.black.withOpacity(0.7),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                    )
-                  ],
-                );
-              });
+                ),
+              )
+            ]
+          );
         }
         else if (state is AuthenticationSuccessState) {
           Navigator.pushNamedAndRemoveUntil(context, MainScreen.routeName, (Route<dynamic> route) => false);
@@ -150,7 +140,7 @@ class SignInScreen extends StatelessWidget {
                               backgroundColor: state is AuthenticationLoadingState
                                   ? AppColors.primaryColor
                                   : AppColors.white,
-                              elevation: 3.0,
+                              elevation: 0.0,
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12))),

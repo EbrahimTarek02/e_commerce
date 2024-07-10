@@ -23,4 +23,8 @@ class AppAssets{
   static const String offer_2 = '${imagesPath}offer_2.jpg';
   static const String offer_3 = '${imagesPath}offer_3.jpg';
   static const String googleLogo = '${imagesPath}google_logo.png';
+  static const String outOfStockImage = '${imagesPath}out_of_stock_image.jpeg';
+  static const String emptyCartImage = '${imagesPath}empty_cart_image.png';
+  static const String emptyWishListImage = '${imagesPath}empty_wish_list_image.png';
+  static const String emptyAddressListImage = '${imagesPath}empty_address_list_image.jpg';
 }
