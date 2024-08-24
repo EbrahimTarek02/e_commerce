@@ -21,6 +21,27 @@
       <li>Password Recovery: Forgot your password? No worries! Reset it with just a few simple steps.</li>
     </ul>
   </section>
+
+  ## Screenshots
+  <img src="screenshots/IMG-20240824-WA0004.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0005.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0006.jpg" width="200" height="400" />
+  
+  <img src="screenshots/IMG-20240824-WA0032.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0033.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0034.jpg" width="200" height="400" />
+
+  <img src="screenshots/IMG-20240824-WA0008.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0007.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0010.jpg" width="200" height="400" /> <img src="screenshots/IMG-20240824-WA0009.jpg" width="200" height="400" />
+
+  <img src="screenshots/IMG-20240824-WA0011.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0012.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0013.jpg" width="200" height="400" /> <img src="screenshots/WhatsApp Image 2024-08-24 at 12.33.39_cfe9aafd.jpg" width="200" height="400" />
+
+  <img src="screenshots/WhatsApp Image 2024-08-24 at 12.33.39_f612582a.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0014.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0015.jpg" width="200" height="400" />
+
+  <img src="screenshots/IMG-20240824-WA0016.jpg" width="190" height="400" />  <img src="screenshots/IMG-20240824-WA0020.jpg" width="190" height="400" />  <img src="screenshots/IMG-20240824-WA0021.jpg" width="190" height="400" /> <img src="screenshots/IMG-20240824-WA0017.jpg" width="190" height="400" /> <img src="screenshots/IMG-20240824-WA0016.jpg" width="190" height="400" />
+
+  <img src="screenshots/WhatsApp Image 2024-08-24 at 12.35.51_3df900e6.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0026.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0018.jpg" width="200" height="400" />
+
+  <img src="screenshots/IMG-20240824-WA0025.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0022.jpg" width="200" height="400" />
+
+  <img src="screenshots/IMG-20240824-WA0023.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0028.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0031.jpg" width="200" height="400" /> <img src="screenshots/IMG-20240824-WA0024.jpg" width="200" height="400" />
+
+  <img src="screenshots/IMG-20240824-WA0027.jpg" width="200" height="400" />  <img src="screenshots/IMG-20240824-WA0029.jpg" width="200" height="400" /> <img src="screenshots/IMG-20240824-WA0030.jpg" width="200" height="400" />
   
   <section>
     <h2>Getting Started</h2>
