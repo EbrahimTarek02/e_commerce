@@ -55,70 +55,73 @@ class _ProductItemState extends State<ProductItem> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Stack(
-              alignment: Alignment.topRight,
-              children: [
-                CachedNetworkImage(
-                    imageUrl: widget.product.imageCover ?? "",
-                    height: widget.isVertical ? MediaQuery.sizeOf(context).height * 0.2 : MediaQuery.sizeOf(context).height * 0.17,
-                    width: double.infinity,
-                    imageBuilder: (context, imageProvider) => Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(14.0),
-                                topRight: Radius.circular(14.0)),
-                          ),
-                        ),
-                    progressIndicatorBuilder: (_, __, ___) => const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                    errorWidget: (_, __, ___) => const Center(
-                          child: Icon(Icons.error, color: AppColors.red,),
-                        )),
-                Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: CircleAvatar(
-                    maxRadius: 15.0,
-                    child: IconButton(
-                      onPressed: () {
-                        if (widget.isInWishList) {
-                          LoadingWidget.showLoading(context);
-                          mainViewModel.removeFromWishList(
-                              widget.product, false).then((_) {
-                            Navigator.pop(context);
-                          });
-                        }
-                        else {
-                          LoadingWidget.showLoading(context);
-                          mainViewModel.addToWishList(widget.product, false).then((_){
-                            Navigator.pop(context);
-                          });
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.white,
-                          shadowColor: AppColors.tabBarBackgroundColor,
-                          padding: EdgeInsets.zero,
-                          elevation: 3.0),
-                      icon: ImageIcon(
-                              AssetImage(
-                                widget.isInWishList
-                                    ? AppAssets.inWishListIcon
-                                    : AppAssets.wishListTabIcon,
+            Expanded(
+              flex: 9,
+              child: Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  CachedNetworkImage(
+                      imageUrl: widget.product.imageCover ?? "",
+                      // height: widget.isVertical ? MediaQuery.sizeOf(context).height * 0.2 : MediaQuery.sizeOf(context).height * 0.17,
+                      width: double.infinity,
+                      imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.fill,
                               ),
-                              size: 18,
+                              borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(14.0),
+                                  topRight: Radius.circular(14.0)),
+                            ),
+                          ),
+                      progressIndicatorBuilder: (_, __, ___) => const Center(
+                            child: CircularProgressIndicator(
                               color: AppColors.primaryColor,
                             ),
+                          ),
+                      errorWidget: (_, __, ___) => const Center(
+                            child: Icon(Icons.error, color: AppColors.red,),
+                          )),
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: CircleAvatar(
+                      maxRadius: 15.0,
+                      child: IconButton(
+                        onPressed: () {
+                          if (widget.isInWishList) {
+                            LoadingWidget.showLoading(context);
+                            mainViewModel.removeFromWishList(
+                                widget.product, false).then((_) {
+                              Navigator.pop(context);
+                            });
+                          }
+                          else {
+                            LoadingWidget.showLoading(context);
+                            mainViewModel.addToWishList(widget.product, false).then((_){
+                              Navigator.pop(context);
+                            });
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.white,
+                            shadowColor: AppColors.tabBarBackgroundColor,
+                            padding: EdgeInsets.zero,
+                            elevation: 3.0),
+                        icon: ImageIcon(
+                                AssetImage(
+                                  widget.isInWishList
+                                      ? AppAssets.inWishListIcon
+                                      : AppAssets.wishListTabIcon,
+                                ),
+                                size: 18,
+                                color: AppColors.primaryColor,
+                              ),
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
             SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.01,
@@ -147,7 +150,7 @@ class _ProductItemState extends State<ProductItem> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const Spacer(),
+            const Spacer(flex: 1,),
             Padding(
               padding: const EdgeInsets.only(left: 6.0),
               child: Row(

@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:e_commerce/domain/di/di.dart';
 import 'package:e_commerce/ui/screens/add_new_address_manually/add_new_address_manually_screen.dart';
 import 'package:e_commerce/ui/screens/add_new_address_using_map/add_new_address_using_map_screen.dart';
@@ -26,17 +27,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() {
   configureDependencies();
   runApp(
-        MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => getIt<MainViewModel>(),
-            ),
-            BlocProvider(
-              create: (context) => getIt<CartViewModel>(),
-            ),
-          ],
-          child: const MyApp(),
-        )
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => getIt<MainViewModel>(),
+          ),
+          BlocProvider(
+            create: (context) => getIt<CartViewModel>(),
+          ),
+        ],
+        child: const MyApp(),
+      )
   );
 }
 
@@ -47,6 +48,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      // useInheritedMediaQuery: true,
+      // locale: DevicePreview.locale(context),
+      // builder: DevicePreview.appBuilder,
 
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
